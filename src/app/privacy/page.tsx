@@ -34,17 +34,27 @@ export default function PrivacyPage() {
         period afterward for accounting and dispute handling (typically up to seven years for
         invoices). You can ask us to delete marketing records earlier.
       </p>
-      <h2>Your choices</h2>
+      <h2>Your choices (PIPEDA)</h2>
       <p>
-        Email {site.email} to access, correct, or delete your information, or to opt out of
-        communications. If you are in a US state with a consumer privacy law, we honor those requests
-        as required.
+        {site.legalName} is based in Alberta, Canada, and handles personal information under the
+        Personal Information Protection and Electronic Documents Act (PIPEDA): we collect only what
+        we need, use it only for the purposes stated here, and protect it with reasonable
+        safeguards. Email {site.email} to access, correct, or delete your information, or to opt out
+        of communications. Every marketing email we send includes a one-click unsubscribe link,
+        actioned immediately.
+      </p>
+      <h2>Email & CASL</h2>
+      <p>
+        Commercial emails from us comply with Canada's Anti-Spam Legislation (CASL): we identify the
+        sender, include our mailing address, and provide a working unsubscribe in every message. We
+        do not buy, sell, or scrape email lists, and we do not send commercial email without your
+        consent or an existing business relationship (e.g. you requested an audit or contacted us).
       </p>
       <h2>Contact</h2>
       <p>
-        Privacy questions: <a href={`mailto:${site.email}`}>{site.email}</a>. This policy describes
-        our current practice. Have counsel review it against your actual entity, hosting, and
-        analytics stack before you treat it as final legal advice.
+        Privacy questions: <a href={`mailto:${site.email}`}>{site.email}</a>, {site.mailingAddress}.
+        This policy describes our current practice. Have counsel review it against your actual
+        entity, hosting, and analytics stack before you treat it as final legal advice.
       </p>
     </article>
   );

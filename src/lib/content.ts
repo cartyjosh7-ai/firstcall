@@ -6,6 +6,8 @@ export const site = {
   url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://firstcallmarketing.ai",
   email: process.env.NEXT_PUBLIC_CONTACT_EMAIL ?? "josh@firstcallmarketing.ai",
   legalName: process.env.LEGAL_ENTITY_NAME ?? "First Call",
+  // CASL requires a valid mailing address in every commercial electronic message.
+  mailingAddress: process.env.NEXT_PUBLIC_MAILING_ADDRESS ?? "[Set NEXT_PUBLIC_MAILING_ADDRESS — required by CASL]",
 } as const;
 
 export const trades = [
@@ -346,7 +348,7 @@ export const guides = [
 export const foundation = {
   name: "Foundation",
   priceMonthly: 4500,
-  priceLabel: "$4,500 / month",
+  priceLabel: "CAD $4,500 / month",
   cadence: "Month-to-month. Cancel anytime with 30 days' notice.",
   forWho: "Single-location home-service businesses getting found.",
   included: [
@@ -364,3 +366,55 @@ export const foundation = {
     "Custom software builds",
   ],
 };
+
+/**
+ * Scoped ahead of when we sell them, per the agency's own playbook: keep the
+ * first sale (Foundation) simple, and have Growth/Domination fully scoped
+ * and ready to publish once there are Foundation clients to upsell.
+ */
+export const upcomingPackages = [
+  {
+    id: "growth",
+    name: "Growth",
+    priceLabel: "CAD $1,500–$2,500 / month",
+    forWho: "Established local/regional businesses ready to scale past the basics.",
+    included: [
+      "Everything in Foundation",
+      "Technical SEO audit + fixes",
+      "4–8 optimized content pages/month",
+      "Internal linking strategy + basic link building",
+      "GA4 + rank tracking",
+    ],
+  },
+  {
+    id: "domination",
+    name: "Domination",
+    priceLabel: "CAD $3,000–$5,000 / month",
+    forWho: "Multi-location businesses and competitive niches that need to win outright.",
+    included: [
+      "Everything in Growth",
+      "Aggressive content production (8–12 pages/month)",
+      "Digital PR and link building",
+      "Conversion rate optimization",
+      "GEO / AI-visibility monitoring",
+      "Quarterly strategy review",
+    ],
+  },
+] as const;
+
+export const oneOffAndAddOns = [
+  {
+    id: "audit",
+    name: "Technical SEO Audit",
+    priceLabel: "CAD $500–$2,000 one-time",
+    description:
+      "Full technical, on-page, local, backlink, and AI-visibility audit with a prioritized action plan and a walkthrough call. (The free live scan at /audit is the entry-level version of this.)",
+  },
+  {
+    id: "geo",
+    name: "GEO / AI-Visibility Add-on",
+    priceLabel: "CAD $300–$1,000 / month",
+    description:
+      "AI citation monitoring, answer-engine optimization, schema, and entity consistency — an add-on for existing retainer clients, not a standalone entry point.",
+  },
+] as const;

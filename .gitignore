@@ -5,6 +5,7 @@ out
 .env.local
 data/leads.jsonl
 data/reports/
+data/unsubscribed.jsonl
 *.log
 .DS_Store
 *.tsbuildinfo

@@ -26,11 +26,11 @@ const CATEGORY_TO_PLAN: Record<AuditCategoryId, PlanAction["category"]> = {
 };
 
 const REMEDIATION: Record<string, { hint: string; effort: "low" | "medium" | "high"; owner: "agency" | "client" }> = {
-  nap: { hint: "Add a visible name/address/phone block matching your Google Business Profile exactly.", effort: "low", owner: "agency" },
+  nap: { hint: "Add a visible name/address/phone block matching your Google Business Profile exactly — Google Business Profile signals carry roughly a third of local ranking weight, and NAP mismatches undercut all of it.", effort: "low", owner: "agency" },
   "local-schema": { hint: "Add LocalBusiness JSON-LD schema with legal name, address, phone, and service area.", effort: "medium", owner: "agency" },
   "city-service": { hint: "Add explicit city/neighborhood and service-area language to the homepage and service pages.", effort: "low", owner: "agency" },
   "maps-embed": { hint: "Link to your Google Business Profile so engines can connect the site to the profile.", effort: "low", owner: "agency" },
-  hours: { hint: "Publish hours of operation, matching your Business Profile exactly.", effort: "low", owner: "client" },
+  hours: { hint: "Publish hours of operation, matching your Business Profile exactly — 'business is open at time of search' is a top-tier local ranking factor; wrong hours cost rankings during real operating hours.", effort: "low", owner: "client" },
   faq: { hint: "Add an FAQ section answering the questions customers actually ask before calling.", effort: "medium", owner: "agency" },
   "faq-schema": { hint: "Mark up the FAQ with FAQPage schema so AI Overviews can extract it directly.", effort: "medium", owner: "agency" },
   "answer-first": { hint: "Rewrite interior pages to lead with a direct answer in the first two sentences.", effort: "medium", owner: "agency" },
@@ -47,8 +47,8 @@ const REMEDIATION: Record<string, { hint: string; effort: "low" | "medium" | "hi
   title: { hint: "Write a unique, descriptive title tag for every page.", effort: "low", owner: "agency" },
   "meta-desc": { hint: "Add a meta description with a call to action on every page.", effort: "low", owner: "agency" },
   h1: { hint: "Ensure each page has exactly one clear H1 stating the page's topic.", effort: "low", owner: "agency" },
-  reviews: { hint: "Display recent Google reviews on the homepage and start a review-acquisition system.", effort: "high", owner: "agency" },
-  speed: { hint: "Improve homepage load time — it's currently responding slowly.", effort: "medium", owner: "agency" },
+  reviews: { hint: "Display recent Google reviews on the homepage and start a review-acquisition system — target 4.5+ average with 20+ recent reviews, responded to within 24-72 hours; recency matters more than historical volume.", effort: "high", owner: "agency" },
+  speed: { hint: "Improve homepage load time toward Core Web Vitals thresholds (LCP under 2.5s, INP under 200ms, CLS under 0.1) — never lazy-load the hero image, cut time-to-first-byte, and defer non-critical scripts.", effort: "medium", owner: "agency" },
   robots: { hint: "Publish a robots.txt file documenting crawler access.", effort: "low", owner: "agency" },
   indexable: { hint: "Remove the noindex tag currently blocking search engines.", effort: "low", owner: "agency" },
   "images-alt": { hint: "Add descriptive alt text to images.", effort: "low", owner: "agency" },
@@ -166,6 +166,6 @@ export function buildMockPlan(brief: ResearchBrief): ImplementationPlan {
       "Click-to-call and form conversions",
       "Pages cited in AI Overviews / assistant answers",
     ],
-    summary: `Rule-based 90-day preview for ${brief.business}, built from the real audit plus placeholder keyword/competitor data. Sequenced foundational technical and local fixes first, content next, authority-building last.`,
+    summary: `Rule-based 90-day preview for ${brief.business}, built from the real audit plus placeholder keyword/competitor data. Sequenced foundational technical and local fixes first, content next, authority-building last. No specific ranking, traffic, or timeline outcome is guaranteed — meaningful SEO results typically take 3-6 months to show and 6-12 months to compound.`,
   };
 }

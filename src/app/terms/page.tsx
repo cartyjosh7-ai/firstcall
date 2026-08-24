@@ -40,9 +40,14 @@ export default function TermsPage() {
         in the MSA. We are not liable for lost profits from search-engine or AI-platform changes we
         do not control.
       </p>
+      <h2>Governing law</h2>
+      <p>
+        These terms are governed by the laws of Alberta, Canada. {site.legalName} is based in
+        Calgary, Alberta.
+      </p>
       <h2>Contact</h2>
       <p>
-        <a href={`mailto:${site.email}`}>{site.email}</a>
+        <a href={`mailto:${site.email}`}>{site.email}</a>, {site.mailingAddress}
       </p>
     </article>
   );

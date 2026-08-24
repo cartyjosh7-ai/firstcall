@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ContactForm } from "@/components/forms";
-import { foundation, site } from "@/lib/content";
+import { foundation, oneOffAndAddOns, site, upcomingPackages } from "@/lib/content";
 
 export const metadata: Metadata = { title: "Foundation pricing" };
 
@@ -43,6 +43,37 @@ export default function PricingPage() {
           Run the free audit first
         </Link>
       </div>
+      <div className="mt-16">
+        <h2 className="font-serif text-2xl">Beyond Foundation</h2>
+        <p className="mt-2 text-sm text-muted">
+          Scoped and ready when you outgrow Foundation. Not sold standalone yet — ask a strategist.
+        </p>
+        <div className="mt-6 grid gap-6 md:grid-cols-2">
+          {upcomingPackages.map((p) => (
+            <div key={p.id} className="rounded-2xl border border-line p-6">
+              <p className="text-xs uppercase tracking-widest text-gold">Coming soon</p>
+              <h3 className="mt-2 font-serif text-2xl">{p.name}</h3>
+              <p className="mt-1 text-gold">{p.priceLabel}</p>
+              <p className="mt-2 text-sm text-muted">{p.forWho}</p>
+              <ul className="mt-4 space-y-1 text-sm text-muted">
+                {p.included.map((i) => (
+                  <li key={i}>— {i}</li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+        <div className="mt-6 grid gap-6 md:grid-cols-2">
+          {oneOffAndAddOns.map((a) => (
+            <div key={a.id} className="rounded-2xl border border-line p-6">
+              <h3 className="font-serif text-xl">{a.name}</h3>
+              <p className="mt-1 text-gold">{a.priceLabel}</p>
+              <p className="mt-2 text-sm text-muted">{a.description}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+
       <div className="mt-16">
         <h2 className="font-serif text-2xl">Prefer an invoice?</h2>
         <p className="mt-2 text-sm text-muted">
