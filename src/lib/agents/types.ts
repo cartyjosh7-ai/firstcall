@@ -75,4 +75,6 @@ export type EngineReport = {
   brief: ResearchBrief;
   plan: ImplementationPlan;
   generatedAt: string;
+  /** True when built by the zero-cost rule-based engine instead of the Claude agents. */
+  mock: boolean;
 };

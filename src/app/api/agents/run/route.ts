@@ -42,6 +42,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({
       id: report.id,
       reportUrl: `${site.url}/reports/${report.id}`,
+      mock: report.mock,
     });
   } catch (err) {
     return NextResponse.json(

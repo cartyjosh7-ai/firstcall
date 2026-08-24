@@ -29,6 +29,13 @@ export default async function ReportPage({ params }: { params: Promise<{ id: str
 
   return (
     <div className="mx-auto max-w-3xl px-5 py-16">
+      {report.mock ? (
+        <div className="mb-8 rounded-xl border border-rust bg-rust/10 p-4 text-sm text-rust">
+          Preview data. Built by the zero-cost rule-based engine (no AI synthesis), not the real
+          agents. The audit above is real; the keyword/competitor figures and plan wording are
+          illustrative placeholders. Do not send this link to a client.
+        </div>
+      ) : null}
       <p className="text-xs uppercase tracking-widest text-gold">Research & 90-day plan</p>
       <h1 className="mt-3 font-serif text-5xl">{brief.business}</h1>
       <p className="mt-2 text-sm text-muted">

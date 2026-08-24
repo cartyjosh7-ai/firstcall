@@ -46,13 +46,18 @@ export async function POST(req: NextRequest) {
       after(async () => {
         try {
           const report = await runEngine({ business, website, trade, email });
+          const reportUrl = `${site.url}/reports/${report.id}`;
           await captureLead({
             kind: "won",
-            email,
+            // Mock-mode reports are rule-based placeholders, not a real
+            // deliverable — never auto-send them to the paying client.
+            // Notify the team internally instead so someone regenerates
+            // the real report once ANTHROPIC_API_KEY is set.
+            email: report.mock ? undefined : email,
             business,
             website,
             trade,
-            reportUrl: `${site.url}/reports/${report.id}`,
+            reportUrl: report.mock ? `${reportUrl} (MOCK DATA — regenerate before contacting the client)` : reportUrl,
           });
         } catch {
           await captureLead({ kind: "won", email, business, website, trade }).catch(() => {});
