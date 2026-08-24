@@ -69,6 +69,20 @@ export type ImplementationPlan = {
   summary: string;
 };
 
+export type Proposal = {
+  business: string;
+  website: string;
+  objectives: string[];
+  scope: string[];
+  approach: string;
+  deliverables: { phase: string; items: string[] }[];
+  investment: { label: string; amount: string; cadence: string };
+  expectedOutcomes: string[];
+  notIncluded: string[];
+  terms: string[];
+  nextSteps: string[];
+};
+
 export type EngineReport = {
   id: string;
   input: EngineInput;

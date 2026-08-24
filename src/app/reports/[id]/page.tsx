@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import Link from "next/link";
 import { loadReport } from "@/lib/reports";
 
 export const metadata: Metadata = { title: "Your research & implementation plan" };
@@ -36,7 +37,15 @@ export default async function ReportPage({ params }: { params: Promise<{ id: str
           illustrative placeholders. Do not send this link to a client.
         </div>
       ) : null}
-      <p className="text-xs uppercase tracking-widest text-gold">Research & 90-day plan</p>
+      <div className="flex items-center justify-between gap-4">
+        <p className="text-xs uppercase tracking-widest text-gold">Research & 90-day plan</p>
+        <Link
+          href={`/reports/${id}/proposal`}
+          className="rounded-full border border-line px-4 py-1.5 text-xs no-underline hover:border-gold"
+        >
+          Generate proposal →
+        </Link>
+      </div>
       <h1 className="mt-3 font-serif text-5xl">{brief.business}</h1>
       <p className="mt-2 text-sm text-muted">
         {brief.trade}

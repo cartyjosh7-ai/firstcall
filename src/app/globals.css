@@ -37,3 +37,22 @@ a {
 .prose-fc a {
   @apply text-gold hover:underline;
 }
+
+@media print {
+  header,
+  footer {
+    display: none;
+  }
+  /* Scoped reset for documents meant to be printed/saved as PDF (e.g. the
+     proposal page) — forces legible black-on-white instead of the site's
+     dark theme, without touching print output for the rest of the site. */
+  .print-doc {
+    background: white !important;
+    color: black !important;
+  }
+  .print-doc * {
+    background: transparent !important;
+    color: black !important;
+    border-color: #999 !important;
+  }
+}
