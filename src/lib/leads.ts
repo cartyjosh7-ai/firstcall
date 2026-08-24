@@ -3,7 +3,7 @@ import path from "node:path";
 import { site } from "./content";
 
 export type LeadPayload = {
-  kind: "audit" | "contact" | "proposal";
+  kind: "audit" | "contact" | "proposal" | "won";
   name?: string;
   email?: string;
   phone?: string;
@@ -13,6 +13,7 @@ export type LeadPayload = {
   message?: string;
   score?: number;
   url?: string;
+  reportUrl?: string;
 };
 
 function inbox() {
@@ -38,7 +39,9 @@ async function emailLead(lead: LeadPayload) {
       ? `Audit lead${lead.score != null ? ` · ${lead.score}/100` : ""} · ${lead.website || lead.url || "no url"}`
       : lead.kind === "proposal"
         ? `Proposal / Foundation request · ${lead.business || lead.email}`
-        : `Contact · ${lead.business || lead.name || lead.email}`;
+        : lead.kind === "won"
+          ? `Deal closed · ${lead.business || lead.email} · Foundation`
+          : `Contact · ${lead.business || lead.name || lead.email}`;
 
   const text = Object.entries(lead)
     .filter(([, v]) => v != null && v !== "")
@@ -60,13 +63,17 @@ async function emailLead(lead: LeadPayload) {
       subject:
         lead.kind === "audit"
           ? "Your First Call visibility audit is in"
-          : "First Call received your note",
+          : lead.kind === "won"
+            ? "Welcome to First Call — your onboarding audit is ready"
+            : "First Call received your note",
       text:
         lead.kind === "audit"
           ? `We scanned ${lead.url || lead.website || "your site"}${
               lead.score != null ? ` and scored it ${lead.score}/100` : ""
             }.\n\nA senior strategist reviews every scan by hand and will follow up within one business day with what the scanner cannot see (Business Profile, rivals, who is getting the calls) and a clear next step.\n\nIf you already know you want Foundation ($4,500/month, month-to-month), start here: ${site.url}/start\n\n— First Call\n${site.email}`
-          : `Thanks. A senior strategist will get back to you within one business day.\n\n— First Call\n${site.email}`,
+          : lead.kind === "won"
+            ? `Payment received. Your first research and 90-day implementation plan is ready:\n\n${lead.reportUrl || `${site.url}/start/success`}\n\nReply with GBP, analytics, and CMS access and we'll start month one.\n\n— First Call\n${site.email}`
+            : `Thanks. A senior strategist will get back to you within one business day.\n\n— First Call\n${site.email}`,
     });
   }
 

@@ -2,9 +2,13 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { foundation } from "@/lib/content";
+import { foundation, trades } from "@/lib/content";
 
 export default function StartPage() {
+  const [business, setBusiness] = useState("");
+  const [website, setWebsite] = useState("");
+  const [trade, setTrade] = useState("");
+  const [email, setEmail] = useState("");
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [fallback, setFallback] = useState<string | null>(null);
@@ -13,7 +17,11 @@ export default function StartPage() {
     setBusy(true);
     setError(null);
     try {
-      const res = await fetch("/api/checkout", { method: "POST" });
+      const res = await fetch("/api/checkout", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ business, website, trade, email }),
+      });
       const data = await res.json();
       if (data.url) {
         window.location.href = data.url;
@@ -31,6 +39,8 @@ export default function StartPage() {
     }
   }
 
+  const ready = business.trim() && website.trim() && trade && email.trim();
+
   return (
     <div className="mx-auto max-w-xl px-5 py-16">
       <p className="text-xs uppercase tracking-widest text-gold">Start Foundation</p>
@@ -39,9 +49,60 @@ export default function StartPage() {
         Month-to-month. 30 days&apos; notice to cancel. By paying you agree to the{" "}
         <Link href="/legal/msa">MSA</Link> and <Link href="/legal/sow">Foundation SOW</Link>.
       </p>
+
+      <div className="mt-8 grid gap-3 rounded-2xl border border-line bg-[#12130f] p-6">
+        <p className="text-sm text-muted">
+          A few details so we can build your first research brief and 90-day plan the moment payment
+          clears.
+        </p>
+        <label className="text-sm">
+          Business name
+          <input
+            required
+            value={business}
+            onChange={(e) => setBusiness(e.target.value)}
+            className="mt-1 w-full rounded-lg border border-line bg-ink px-3 py-2"
+          />
+        </label>
+        <label className="text-sm">
+          Website
+          <input
+            required
+            value={website}
+            onChange={(e) => setWebsite(e.target.value)}
+            placeholder="yourbusiness.com"
+            className="mt-1 w-full rounded-lg border border-line bg-ink px-3 py-2"
+          />
+        </label>
+        <label className="text-sm">
+          Trade
+          <select
+            required
+            value={trade}
+            onChange={(e) => setTrade(e.target.value)}
+            className="mt-1 w-full rounded-lg border border-line bg-ink px-3 py-2"
+          >
+            <option value="">Select your trade</option>
+            {trades.map((t) => (
+              <option key={t}>{t}</option>
+            ))}
+          </select>
+        </label>
+        <label className="text-sm">
+          Email
+          <input
+            required
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            className="mt-1 w-full rounded-lg border border-line bg-ink px-3 py-2"
+          />
+        </label>
+      </div>
+
       <button
         onClick={startCheckout}
-        disabled={busy}
+        disabled={busy || !ready}
         className="mt-8 w-full rounded-full bg-gold py-3 font-medium text-ink disabled:opacity-60"
       >
         {busy ? "Redirecting…" : "Continue to payment"}
