@@ -74,7 +74,7 @@ async function fetchText(url: string, timeoutMs = 8000) {
       signal: controller.signal,
       redirect: "follow",
       headers: {
-        "user-agent": "FirstCallAudit/1.0 (+https://firstcallmarketing.ai/audit)",
+        "user-agent": "FirstCallAudit/1.0 (+https://firstcallconsulting.ai/audit)",
         accept: "text/html,application/xhtml+xml,text/plain;q=0.9,*/*;q=0.8",
       },
     });

@@ -3,8 +3,8 @@ export const site = {
   tagline: "Be the first call.",
   description:
     "Local SEO for home services. We get owner-led local businesses ranked #1 on Google and the Map Pack, so the phone rings first.",
-  url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://firstcallmarketing.ai",
-  email: process.env.NEXT_PUBLIC_CONTACT_EMAIL ?? "josh@firstcallmarketing.ai",
+  url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://firstcallconsulting.ai",
+  email: process.env.NEXT_PUBLIC_CONTACT_EMAIL ?? "cartyjosh7@gmail.com",
   legalName: process.env.LEGAL_ENTITY_NAME ?? "First Call",
   // CASL requires a valid mailing address in every commercial electronic message.
   mailingAddress: process.env.NEXT_PUBLIC_MAILING_ADDRESS ?? "[Set NEXT_PUBLIC_MAILING_ADDRESS — required by CASL]",
