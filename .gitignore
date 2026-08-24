@@ -9,3 +9,4 @@ data/unsubscribed.jsonl
 *.log
 .DS_Store
 *.tsbuildinfo
+.vercel
