@@ -5,7 +5,8 @@ import { site } from "@/lib/content";
 export const runtime = "nodejs";
 
 export async function POST(req: NextRequest) {
-  const price = process.env.STRIPE_PRICE_FOUNDATION;
+  const setupPrice = process.env.STRIPE_PRICE_FOUNDATION_SETUP;
+  const monthlyPrice = process.env.STRIPE_PRICE_FOUNDATION_MONTHLY;
   const stripe = getStripe();
 
   let body: Record<string, unknown> = {};
@@ -20,7 +21,7 @@ export async function POST(req: NextRequest) {
   const trade = typeof body.trade === "string" ? body.trade.trim() : "";
   const email = typeof body.email === "string" ? body.email.trim() : "";
 
-  if (!stripe || !price) {
+  if (!stripe || !setupPrice || !monthlyPrice) {
     return NextResponse.json({
       invoice: `Checkout isn't fully configured yet. Email ${site.email} with your business, website, and trade and we'll send a Stripe invoice or payment link directly.`,
     });
@@ -29,7 +30,10 @@ export async function POST(req: NextRequest) {
   try {
     const session = await stripe.checkout.sessions.create({
       mode: "subscription",
-      line_items: [{ price, quantity: 1 }],
+      line_items: [
+        { price: setupPrice, quantity: 1 },
+        { price: monthlyPrice, quantity: 1 },
+      ],
       success_url: `${site.url}/start/success`,
       cancel_url: `${site.url}/start`,
       customer_email: email || undefined,

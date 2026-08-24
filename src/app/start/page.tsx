@@ -44,9 +44,13 @@ export default function StartPage() {
   return (
     <div className="mx-auto max-w-xl px-5 py-16">
       <p className="text-xs uppercase tracking-widest text-gold">Start Foundation</p>
-      <h1 className="mt-3 font-serif text-4xl">Pay {foundation.priceLabel} and we start month one.</h1>
+      <h1 className="mt-3 font-serif text-4xl">
+        Pay {foundation.priceOneTimeLabel} today, then {foundation.priceMonthlyLabel}, and we start
+        month one.
+      </h1>
       <p className="mt-4 text-muted">
-        Month-to-month. 30 days&apos; notice to cancel. By paying you agree to the{" "}
+        One-time setup, then month-to-month. 30 days&apos; notice to cancel the retainer. By paying you
+        agree to the{" "}
         <Link href="/legal/msa">MSA</Link> and <Link href="/legal/sow">Foundation SOW</Link>.
       </p>
 

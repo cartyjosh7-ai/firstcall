@@ -10,7 +10,8 @@ export default function PricingPage() {
     <div className="mx-auto max-w-3xl px-5 py-16">
       <p className="text-xs uppercase tracking-widest text-gold">First-sale offer</p>
       <h1 className="mt-3 font-serif text-5xl">{foundation.name}</h1>
-      <p className="mt-4 font-serif text-4xl text-gold">{foundation.priceLabel}</p>
+      <p className="mt-4 font-serif text-4xl text-gold">{foundation.priceOneTimeLabel}</p>
+      <p className="mt-1 text-lg text-gold">then {foundation.priceMonthlyLabel}</p>
       <p className="mt-3 text-muted">
         {foundation.forWho} {foundation.cadence} Legal agreement:{" "}
         <Link href="/legal/msa">MSA</Link> + <Link href="/legal/sow">Foundation SOW</Link>.
@@ -28,9 +29,8 @@ export default function PricingPage() {
         ))}
       </ul>
       <p className="mt-8 text-sm text-muted">
-        Growth and Domination are scoped after Foundation is running. We do not publish those prices
-        here. Most home-service businesses already spend $5,000–$10,000 a month on digital marketing;
-        Foundation is the first productized altitude.
+        Most home-service businesses either pay agency rates of $2,500–$5,000+/month or nothing at all
+        and stay invisible on Google. Foundation gets you ranked for a fraction of that.
       </p>
       <div className="mt-10 flex flex-wrap gap-4">
         <Link

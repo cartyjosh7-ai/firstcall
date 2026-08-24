@@ -6,13 +6,13 @@ export default function HomePage() {
   return (
     <>
       <section className="mx-auto max-w-6xl px-5 pb-16 pt-16">
-        <p className="text-xs uppercase tracking-widest text-gold">AI-era local visibility</p>
+        <p className="text-xs uppercase tracking-widest text-gold">Google visibility that rings the phone</p>
         <h1 className="mt-4 max-w-4xl font-serif text-5xl leading-tight md:text-7xl">
           Be the first call your customers make.
         </h1>
         <p className="mt-6 max-w-2xl text-lg text-muted">
-          Customers decide in seconds, on the map, in an AI answer, out loud to an assistant. We put
-          one business first on every surface. Yours.
+          Your customers decide in seconds — on Google, on the map, on their phone. We get your
+          business ranked first on the search results that actually drive the call. Yours.
         </p>
         <div className="mt-8 flex flex-wrap gap-4">
           <Link
@@ -22,42 +22,40 @@ export default function HomePage() {
             Get your free visibility audit
           </Link>
           <Link href="/pricing" className="rounded-full border border-line px-5 py-3 no-underline">
-            See Foundation · {foundation.priceLabel}
+            See Foundation · {foundation.priceOneTimeLabel} + {foundation.priceMonthlyLabel}
           </Link>
         </div>
       </section>
 
       <section className="border-y border-line bg-[#10110e] py-20">
         <div className="mx-auto max-w-6xl px-5">
-          <p className="text-xs uppercase tracking-widest text-gold">The ground moved</p>
+          <p className="text-xs uppercase tracking-widest text-gold">Google decides who gets the call</p>
           <h2 className="mt-3 max-w-3xl font-serif text-4xl">
-            Customers decide in seconds, before they ever reach your website.
+            Three businesses get chosen. Everyone else gets scrolled past.
           </h2>
           <p className="mt-4 max-w-3xl text-muted">
-            Discovery left the ten blue links. It lives in the map pack, the AI overview, and the
-            spoken answer, where a machine names exactly one business. First Call engineers your
-            presence on every surface as one compounding system and reports calls, booked jobs, and
-            revenue.
+            Local discovery lives in the Google Map Pack and the search results above the fold. First
+            Call engineers your Google presence, profile, reviews, citations, and content, as one
+            compounding system, and reports calls, booked jobs, and revenue in plain English.
           </p>
           <dl className="mt-12 grid gap-8 md:grid-cols-3">
             <div>
-              <dt className="font-serif text-4xl">45%</dt>
+              <dt className="font-serif text-4xl">Top 3</dt>
               <dd className="mt-2 text-sm text-muted">
-                of consumers now use AI to find a local business (BrightLocal, Local Consumer Review
-                Survey 2026).
+                the Map Pack shows three businesses above the fold. Everyone else is a scroll away.
               </dd>
             </div>
             <div>
-              <dt className="font-serif text-4xl">1.2%</dt>
+              <dt className="font-serif text-4xl">Seconds</dt>
               <dd className="mt-2 text-sm text-muted">
-                of local businesses are recommended by ChatGPT — the single cited answer (SOCi Local
-                Visibility Index, 2026).
+                is how long it takes a customer to pick a name and dial. They don&apos;t scroll far.
               </dd>
             </div>
             <div>
-              <dt className="font-serif text-4xl">~25%</dt>
+              <dt className="font-serif text-4xl">Compounding</dt>
               <dd className="mt-2 text-sm text-muted">
-                projected drop in traditional search volume as discovery moves into AI (Gartner, 2024).
+                reviews, citations, and content build rank that holds, instead of stopping the moment
+                ad spend stops.
               </dd>
             </div>
           </dl>
@@ -69,7 +67,7 @@ export default function HomePage() {
         <h2 className="mt-3 font-serif text-4xl">The difference is what we refuse to do.</h2>
         <div className="mt-10 grid gap-8 md:grid-cols-2">
           {[
-            ["Built to be chosen", "We earn the reviews, citations, and structured authority that decide who AI and customers trust."],
+            ["Built to be chosen", "We earn the reviews, citations, and structured authority that decide who Google — and customers — trust."],
             ["Evidence over opinion", "Everything ties back to rankings, calls, and revenue. No vanity metrics, no black box."],
             ["We own the outcome", "Senior strategists run your account end to end. No junior hand-offs."],
             ["Compounding, not quick hits", "Owned assets widen your lead every quarter instead of stopping when spend stops."],
@@ -86,7 +84,8 @@ export default function HomePage() {
         <p className="text-xs uppercase tracking-widest text-gold">Packaging</p>
         <h2 className="mt-3 font-serif text-4xl">One offer to start. Foundation.</h2>
         <p className="mt-4 max-w-2xl text-muted">
-          Growth and Domination stay a conversation. The first sale is Foundation: {foundation.priceLabel},{" "}
+          Growth and Domination stay a conversation. The first sale is Foundation:{" "}
+          {foundation.priceOneTimeLabel} to start, then {foundation.priceMonthlyLabel}.{" "}
           {foundation.cadence}
         </p>
         <ul className="mt-6 grid gap-2 text-sm text-muted md:grid-cols-2">

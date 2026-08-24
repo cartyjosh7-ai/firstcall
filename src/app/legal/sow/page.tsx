@@ -9,8 +9,8 @@ export default function SowPage() {
       <p className="text-xs uppercase tracking-widest text-gold">Contract</p>
       <h1 className="font-serif text-5xl text-paper">Foundation Statement of Work</h1>
       <p>
-        This SOW is issued under the <a href="/legal/msa">MSA</a>. Offer: {foundation.name} at{" "}
-        {foundation.priceLabel}.
+        This SOW is issued under the <a href="/legal/msa">MSA</a>. Offer: {foundation.name} —{" "}
+        {foundation.priceOneTimeLabel} setup, then {foundation.priceMonthlyLabel}.
       </p>
       <h2>Scope — included</h2>
       <ul>
@@ -47,8 +47,9 @@ export default function SowPage() {
       </p>
       <h2>Commercials</h2>
       <p>
-        {foundation.cadence} Payment via Stripe or invoice to {site.email}. Work starts after the
-        first payment clears and access is granted.
+        {foundation.priceOneTimeLabel} setup fee, then {foundation.priceMonthlyLabel}. {foundation.cadence}{" "}
+        Payment via Stripe or invoice to {site.email}. Work starts after the first payment clears and
+        access is granted.
       </p>
     </article>
   );

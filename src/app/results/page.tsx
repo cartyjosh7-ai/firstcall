@@ -22,12 +22,12 @@ export default function ResultsPage() {
         </article>
         <article className="border-t border-line pt-6">
           <p className="text-xs uppercase tracking-widest text-muted">Roofing</p>
-          <h2 className="mt-2 font-serif text-2xl">Target: the cited answer for replacement queries</h2>
+          <h2 className="mt-2 font-serif text-2xl">Map pack target: Top 3 for storm and replacement terms</h2>
           <p className="mt-2 text-sm text-muted">Real-review velocity. No gating, no incentives.</p>
         </article>
         <article className="border-t border-line pt-6">
           <p className="text-xs uppercase tracking-widest text-muted">Remediation</p>
-          <h2 className="mt-2 font-serif text-2xl">Target: AI-cited across ChatGPT, Perplexity, and Gemini</h2>
+          <h2 className="mt-2 font-serif text-2xl">Map pack target: Top 3, zone by zone across every service area</h2>
           <p className="mt-2 text-sm text-muted">Near-me visibility zone by zone. Trust in under five seconds.</p>
         </article>
       </div>

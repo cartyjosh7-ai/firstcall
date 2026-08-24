@@ -19,8 +19,8 @@ export default function MsaPage() {
       <h2>2. Services</h2>
       <p>
         We provide the services described in each SOW. The current productized offer is Foundation
-        ({foundation.priceLabel}). Work is performed by a senior strategist. We do not guarantee map
-        pack rank, AI citations, call volume, or revenue.
+        ({foundation.priceOneTimeLabel} setup, then {foundation.priceMonthlyLabel}). Work is performed
+        by a senior strategist. We do not guarantee map pack rank, call volume, or revenue.
       </p>
       <h2>3. Term and cancellation</h2>
       <p>
@@ -30,8 +30,9 @@ export default function MsaPage() {
       </p>
       <h2>4. Fees and payment</h2>
       <p>
-        Fees are due in advance via Stripe Checkout or invoice. Late amounts may pause work. You are
-        responsible for applicable taxes.
+        The one-time setup fee is due before work begins. The monthly retainer is billed in advance via
+        Stripe Checkout or invoice. Late amounts may pause work. You are responsible for applicable
+        taxes.
       </p>
       <h2>5. Ownership</h2>
       <p>

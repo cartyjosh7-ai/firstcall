@@ -41,8 +41,8 @@ export function Footer() {
         <div>
           <p className="font-serif text-2xl">{site.name}</p>
           <p className="mt-3 max-w-xs text-sm text-muted">
-            The AI-era visibility firm. We make local and home-service businesses the first call
-            customers make, everywhere they search.
+            The Google visibility firm. We get local and home-service businesses ranked first on
+            Google, so they&apos;re the first call customers make.
           </p>
           <p className="mt-4 text-sm">
             <a href={`mailto:${site.email}`}>{site.email}</a>

@@ -2,7 +2,7 @@ export const site = {
   name: "First Call",
   tagline: "Be the first call.",
   description:
-    "AI-era local visibility for home services. We make owner-led local businesses the first call customers make across Google, Maps, AI assistants, and voice.",
+    "Local SEO for home services. We get owner-led local businesses ranked #1 on Google and the Map Pack, so the phone rings first.",
   url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://firstcallmarketing.ai",
   email: process.env.NEXT_PUBLIC_CONTACT_EMAIL ?? "josh@firstcallmarketing.ai",
   legalName: process.env.LEGAL_ENTITY_NAME ?? "First Call",
@@ -347,9 +347,12 @@ export const guides = [
 
 export const foundation = {
   name: "Foundation",
-  priceMonthly: 4500,
-  priceLabel: "CAD $4,500 / month",
-  cadence: "Month-to-month. Cancel anytime with 30 days' notice.",
+  priceOneTime: 2799,
+  priceOneTimeLabel: "CAD $2,799 one-time",
+  priceMonthly: 139.99,
+  priceMonthlyLabel: "CAD $139.99 / month",
+  priceLabel: "CAD $2,799 one-time + $139.99/month",
+  cadence: "One-time setup, then month-to-month. Cancel the monthly retainer anytime with 30 days' notice.",
   forWho: "Single-location home-service businesses getting found.",
   included: [
     "Business Profile + local optimization",
@@ -376,7 +379,7 @@ export const upcomingPackages = [
   {
     id: "growth",
     name: "Growth",
-    priceLabel: "CAD $1,500–$2,500 / month",
+    priceLabel: "CAD $3,800 one-time + $249–$349/month",
     forWho: "Established local/regional businesses ready to scale past the basics.",
     included: [
       "Everything in Foundation",
@@ -389,14 +392,14 @@ export const upcomingPackages = [
   {
     id: "domination",
     name: "Domination",
-    priceLabel: "CAD $3,000–$5,000 / month",
+    priceLabel: "CAD $5,500 one-time + $449–$649/month",
     forWho: "Multi-location businesses and competitive niches that need to win outright.",
     included: [
       "Everything in Growth",
       "Aggressive content production (8–12 pages/month)",
       "Digital PR and link building",
       "Conversion rate optimization",
-      "GEO / AI-visibility monitoring",
+      "Google Map Pack monitoring across every location",
       "Quarterly strategy review",
     ],
   },
@@ -406,15 +409,15 @@ export const oneOffAndAddOns = [
   {
     id: "audit",
     name: "Technical SEO Audit",
-    priceLabel: "CAD $500–$2,000 one-time",
+    priceLabel: "CAD $497–$997 one-time",
     description:
-      "Full technical, on-page, local, backlink, and AI-visibility audit with a prioritized action plan and a walkthrough call. (The free live scan at /audit is the entry-level version of this.)",
+      "Full technical, on-page, local, and backlink audit with a prioritized action plan and a walkthrough call. (The free live scan at /audit is the entry-level version of this.)",
   },
   {
     id: "geo",
-    name: "GEO / AI-Visibility Add-on",
-    priceLabel: "CAD $300–$1,000 / month",
+    name: "AI Search Add-on",
+    priceLabel: "CAD $99–$199/month",
     description:
-      "AI citation monitoring, answer-engine optimization, schema, and entity consistency — an add-on for existing retainer clients, not a standalone entry point.",
+      "Optional add-on for retainer clients who also want visibility inside ChatGPT, Perplexity, and Gemini answers. Not part of the core Google-first offer, and not a standalone entry point.",
   },
 ] as const;

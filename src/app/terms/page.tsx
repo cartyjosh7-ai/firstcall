@@ -30,9 +30,9 @@ export default function TermsPage() {
       </p>
       <h2>Foundation</h2>
       <p>
-        Foundation is {foundation.priceLabel}, billed monthly in advance, month-to-month, with 30
-        days&apos; written notice to cancel. Local SEO is not guaranteed placement. We report honestly
-        and do not fabricate results.
+        Foundation is {foundation.priceOneTimeLabel} up front, then {foundation.priceMonthlyLabel}{" "}
+        billed in advance, month-to-month, with 30 days&apos; written notice to cancel the retainer.
+        Local SEO is not guaranteed placement. We report honestly and do not fabricate results.
       </p>
       <h2>Liability</h2>
       <p>
