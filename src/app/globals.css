@@ -1,0 +1,39 @@
+@import url("https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Source+Sans+3:wght@400;500;600&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --font-sans: "Source Sans 3", ui-sans-serif, system-ui, sans-serif;
+  --font-serif: "Fraunces", ui-serif, Georgia, serif;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  @apply bg-ink text-paper antialiased;
+}
+
+a {
+  @apply underline-offset-4;
+}
+
+.prose-fc h2 {
+  @apply font-serif text-3xl mt-12 mb-4;
+}
+.prose-fc h3 {
+  @apply font-serif text-xl mt-8 mb-3;
+}
+.prose-fc p,
+.prose-fc li {
+  @apply text-muted leading-relaxed mb-4;
+}
+.prose-fc ul {
+  @apply list-disc pl-5 mb-6;
+}
+.prose-fc a {
+  @apply text-gold hover:underline;
+}
