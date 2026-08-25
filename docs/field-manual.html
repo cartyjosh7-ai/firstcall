@@ -203,10 +203,14 @@
         setup, then CAD $139.99/month, month-to-month. That's it. Growth and Domination tiers exist on paper
         (see <a href="#process">the process</a>) but aren't for sale yet — don't offer them.</p>
 
-        <p><b>The one link:</b> <span class="mono">firstcallmarketing.ai</span>. Right now the live site's
-        pricing and checkout pages are down (404) — see the Readiness report linked in the sidebar before you
-        try to sell anything. Everything in this manual describes how the business is supposed to run once
-        that's fixed.</p>
+        <p><b>The domain is changing — read this before you send anyone a link.</b>
+        <span class="mono">firstcallmarketing.ai</span> is not recoverable — it's registered and DNS-hosted
+        on accounts nobody here has access to (confirmed 2026-08-25), and it's frozen on an old, unrelated
+        snapshot of the site. The plan is to buy <span class="mono">firstcallconsulting.ai</span> (confirmed
+        available, $160/2yr) and use that instead — not purchased yet as of this writing. Everywhere this
+        manual says <span class="mono">firstcallmarketing.ai</span> below, mentally substitute whatever the
+        live domain actually is by the time you're reading this. Full story in the Readiness report linked in
+        the sidebar.</p>
 
         <p><b>Read this before you talk to a prospect:</b> some of what's "built" runs on placeholder data
         until real API keys are configured — the live audit score is always real, but keyword volumes and
@@ -580,8 +584,12 @@
           <div class="desc">Both documents explicitly ask for this and haven't gotten it yet.</div>
         </div>
         <div class="todo-card">
-          <div class="name">Production deployment + environment variables</div>
-          <div class="desc">The full technical punch list lives in the <a href="https://claude.ai/code/artifact/3b3447ad-cb89-4352-85a6-9e3570909e40" target="_blank" rel="noopener">Readiness report</a> — this manual assumes it's been worked through.</div>
+          <div class="name">Buy firstcallconsulting.ai ($160/2yr, confirmed available)</div>
+          <div class="desc">The real blocker to a working <span class="mono">/pricing</span> and <span class="mono">/start</span> — not a deployment bug, a domain nobody here can access. Decided 2026-08-25, not purchased yet. Full story in the <a href="https://claude.ai/code/artifact/3b3447ad-cb89-4352-85a6-9e3570909e40" target="_blank" rel="noopener">Readiness report</a>.</div>
+        </div>
+        <div class="todo-card">
+          <div class="name">Stripe / Resend / mailing-address environment variables</div>
+          <div class="desc">Separate from the domain — checkout and email still need real keys set in Vercel. Full punch list in the <a href="https://claude.ai/code/artifact/3b3447ad-cb89-4352-85a6-9e3570909e40" target="_blank" rel="noopener">Readiness report</a>.</div>
         </div>
         <div class="todo-card">
           <div class="name">CRM database not created yet</div>

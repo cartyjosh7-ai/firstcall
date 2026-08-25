@@ -126,23 +126,35 @@ corresponding key is set — everything degrades gracefully to a safe/mock/no-op
 confirmed unneeded; don't assume it's in-flight without checking `git log master..worktree-seo-agents-backend`
 first.
 
-### Production deployment gap (critical, unresolved as of 2026-08-25)
+### The domain problem (root-caused 2026-08-25 — don't re-diagnose this)
 
-`firstcallmarketing.ai` is live but is **not serving this repository's current state** — `/pricing`,
-`/start`, and `/admin` all 404 live, while `/why-first-call` and `/local-marketing-campaign-services`
-(no corresponding route in `src/app` at all) return 200. Vercel is serving a build that predates
-significant local history and has likely never redeployed from GitHub. No customer can check out until
-this is fixed. See `docs/first-call-readiness.md`-equivalent artifact for the full punch list (or ask
-Claude to regenerate it) — don't re-diagnose this from scratch each session.
+**`firstcallmarketing.ai` cannot be recovered and should be abandoned as this project's domain.** Full
+diagnosis, confirmed twice (once 2026-08-24, re-confirmed 2026-08-25 via the actual Vercel dashboard):
+
+- The `fc-consulting` Vercel team (account `cartyjosh7-6549`, the one connected to this GitHub repo) has
+  **a clean, current, "Ready" Production deployment** of `master` at all times — the Next.js
+  app/GitHub/Vercel pipeline itself has never been broken. Its only domain is the auto-generated
+  `firstcall-teal.vercel.app`.
+- `firstcallmarketing.ai` was registered via **GoDaddy on 2026-06-28** — before this repo existed — with
+  its nameservers (`ns1/ns2.vercel-dns.com`) delegated to a **different Vercel account**, and the user
+  confirmed 2026-08-25 they have never used GoDaddy. Attempting to add the domain to `fc-consulting`
+  returns "linked to another Vercel account" / verification-required, and neither the registrar nor the
+  DNS-hosting Vercel account is reachable. This is why the live site looks finished but is frozen in
+  time — it's serving a snapshot from that other, inaccessible setup, not this codebase.
+- **The fix is a new domain, not recovery.** `firstcallconsulting.ai` (the name already defaulted-to in
+  `content.ts` and `.env.example` from an earlier abandoned pivot attempt) is confirmed available —
+  $160 for a 2-year registration via Vercel's own domain purchase, which auto-configures DNS. As of
+  2026-08-25 the user has decided to buy it, just not yet — nothing is purchased. Once it is: set
+  `NEXT_PUBLIC_SITE_URL`, `NEXT_PUBLIC_CONTACT_EMAIL`, `LEAD_INBOX`, `RESEND_FROM` in Vercel to match, and
+  everything downstream (checkout success/cancel URLs, email footers, OG tags) just works — those already
+  read from `site.url`/`site.email` in `content.ts`, nothing else needs code changes for a domain swap.
 
 Also: no `.env`/`.env.local` exists locally — every integration (Stripe, Resend, Anthropic, admin/unsubscribe
 secrets, mailing address) is unset in local dev. Production Vercel env vars are unverified from this
 environment; check the Vercel dashboard directly.
 
 Known copy/schema bugs still assuming a US jurisdiction (business is Calgary, AB, Canada): root layout's
-JSON-LD `areaServed: "US"`, `/markets` page headline ("...across the US"), and `content.ts`'s default
-`site.url`/contact-email fallbacks pointing at the unregistered `firstcallconsulting.ai` instead of the
-real live domain `firstcallmarketing.ai`.
+JSON-LD `areaServed: "US"` and the `/markets` page headline ("...across the US").
 
 ## Working Log
 
@@ -154,3 +166,8 @@ last handful of entries; prune older ones once they're no longer load-bearing.
   night) built two local tools unrelated to this app's code: a Claude Code usage-dashboard generator and a PC
   cleanup script, both at `C:\Users\carty\.claude\scripts\`, launched via Desktop `.bat` shortcuts. Also
   confirmed a live pitch-deck Artifact exists for First Call.
+- **2026-08-25 (later same day)** — Built the CRM (`src/app/crm`, see above). Then used browser automation
+  against the live Vercel dashboard to finally root-cause the domain issue — see "The domain problem" above.
+  Conclusion: buy `firstcallconsulting.ai` ($160/2yr, available, checked live in Vercel) rather than keep
+  chasing `firstcallmarketing.ai`. User deferred the actual purchase to later — **next session, check
+  whether it's been bought yet before assuming it hasn't.**

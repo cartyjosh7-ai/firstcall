@@ -404,23 +404,32 @@
   <section id="gap">
     <div class="section-head"><h2>The one thing that matters most</h2></div>
     <div class="callout">
-      <h3>⚠ Production is not running current code</h3>
+      <h3>⚠ firstcallmarketing.ai can't be recovered — it needs to be replaced</h3>
       <p>
-        <b>firstcallmarketing.ai is live</b> and looks fully finished when you browse it — but it's serving a
-        build that predates a lot of what's in the repository today. Checked directly against the live domain
-        just now:
+        This was misdiagnosed in the first version of this report as a stale deployment. It isn't — checked
+        directly in the Vercel dashboard: the <span class="mono">fc-consulting</span> project has a clean,
+        current, <b>Ready Production deployment of <span class="mono">master</span></b> at all times. The
+        GitHub → Vercel pipeline has never been broken.
       </p>
       <div class="grid2">
-        <div class="box"><div class="k">Should exist, returns 404 live</div>
-          <div class="v"><span class="code404">/pricing</span> · <span class="code404">/start</span> · <span class="code404">/admin</span></div></div>
-        <div class="box"><div class="k">Live (200), but not in the current repo at all</div>
-          <div class="v"><span class="code200">/why-first-call</span> · <span class="code200">/local-marketing-campaign-services</span></div></div>
+        <div class="box"><div class="k">firstcallmarketing.ai, registered</div>
+          <div class="v">2026-06-28, via GoDaddy — before this repo existed</div></div>
+        <div class="box"><div class="k">Its DNS is delegated to</div>
+          <div class="v">a <b>different Vercel account</b> — confirmed not <span class="mono">cartyjosh7-6549</span></div></div>
       </div>
       <p style="margin-top:16px">
-        In plain terms: <b>Vercel has probably never redeployed from GitHub since an early snapshot.</b> Local
-        git is fully up to date with <span class="mono">origin/master</span>, so the code itself isn't the
-        problem — the deployment is. Nobody can currently reach the pricing page, submit payment, or hit the
-        internal dashboard. This is the single highest-priority fix before anything else on this page matters.
+        Neither the GoDaddy account nor that other Vercel account is reachable — the user has never used
+        GoDaddy. The live site looks finished because it's a frozen snapshot from that separate, inaccessible
+        setup, not this codebase — that's why it has pages (<span class="mono">/why-first-call</span>,
+        <span class="mono">/local-marketing-campaign-services</span>) that don't exist in the current repo,
+        while missing <span class="mono">/pricing</span>, <span class="mono">/start</span>, and
+        <span class="mono">/admin</span>, which do.
+      </p>
+      <p style="margin-top:16px">
+        <b>The fix is a new domain, not recovery.</b> <span class="mono">firstcallconsulting.ai</span> —
+        already the fallback used in the code — is confirmed available: <b>$160 for a 2-year registration</b>
+        via Vercel's own domain purchase, which auto-configures DNS with zero extra steps. As of this snapshot
+        the decision is made; the purchase itself is not done yet.
       </p>
     </div>
   </section>
@@ -430,8 +439,8 @@
     <p class="section-intro">In order — each step mostly unblocks the next.</p>
     <ol class="punch">
       <li class="crit">
-        <div class="t">Redeploy production from current <span class="mono">master</span></div>
-        <div class="d">In the Vercel dashboard, connect (or reconnect) the <span class="mono">firstcall</span> project's GitHub integration, or trigger a manual production deploy, so <span class="mono">/pricing</span>, <span class="mono">/start</span>, and <span class="mono">/admin</span> go live. Nothing else on this list matters until this is done.</div>
+        <div class="t">Buy firstcallconsulting.ai and connect it</div>
+        <div class="d">Confirmed available at $160/2yr via Vercel's own domain purchase (Domains → Buy, inside the <span class="mono">fc-consulting</span> project) — buying it there auto-wires the DNS, no separate registrar step. This is the only remaining blocker to a live, correct <span class="mono">/pricing</span> and <span class="mono">/start</span> — the deployment itself is already fine. See "The one thing that matters most" above for the full story.</div>
         <span class="tag">Blocks checkout entirely</span>
       </li>
       <li class="crit">
@@ -445,8 +454,8 @@
         <span class="tag">Blocks the CRM only, not checkout</span>
       </li>
       <li>
-        <div class="t">Fix the domain mismatch</div>
-        <div class="d"><span class="mono">NEXT_PUBLIC_SITE_URL</span> and the contact-email fallback in the code both default to <span class="mono">firstcallconsulting.ai</span> — a domain that doesn't resolve. The real, live domain is <span class="mono">firstcallmarketing.ai</span>. Confirm the Vercel env var overrides this; if not, every internal link, OG tag, and outbound email footer is pointing at the wrong address.</div>
+        <div class="t">Point the env vars at the new domain once it's bought</div>
+        <div class="d">Set <span class="mono">NEXT_PUBLIC_SITE_URL</span>, <span class="mono">NEXT_PUBLIC_CONTACT_EMAIL</span>, <span class="mono">LEAD_INBOX</span>, and <span class="mono">RESEND_FROM</span> in Vercel to match <span class="mono">firstcallconsulting.ai</span> — the code already reads all of these from <span class="mono">content.ts</span>, so nothing else needs to change for the domain swap to take effect everywhere (links, OG tags, email footers).</div>
       </li>
       <li>
         <div class="t">Fix the leftover "US" references</div>
