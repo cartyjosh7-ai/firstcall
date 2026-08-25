@@ -171,11 +171,11 @@
       <b>firstcallmarketing.ai</b> just now, not just the source folder. One thing changes the whole picture:
       <b>the live site cannot currently take a customer's money.</b>
     </p>
-    <p class="stamp">Snapshot taken 2026-08-25 · commit <span class="mono">57e0ea2</span> on <span class="mono">master</span></p>
+    <p class="stamp">Snapshot updated 2026-08-25 · commit <span class="mono">7acd942</span> on <span class="mono">master</span></p>
 
     <div class="stats">
       <div class="stat"><div class="n good">1</div><div class="l">sellable product built &amp; priced (Foundation)</div></div>
-      <div class="stat"><div class="n">18</div><div class="l">route sections built locally</div></div>
+      <div class="stat"><div class="n">19</div><div class="l">route sections built locally, incl. the new CRM</div></div>
       <div class="stat"><div class="n">0</div><div class="l">real leads captured (1 internal test, excluded)</div></div>
       <div class="stat"><div class="n bad">404</div><div class="l">what /start returns live, right now</div></div>
     </div>
@@ -184,7 +184,7 @@
   <section id="inventory">
     <div class="section-head">
       <h2>Everything built</h2>
-      <span class="count">7 categories</span>
+      <span class="count">8 categories</span>
     </div>
     <p class="section-intro">
       Grouped by what each piece does for the business, not by folder. Status reflects reality as of this
@@ -324,6 +324,42 @@
     </div>
 
     <div class="cat">
+      <h3>CRM — lead &amp; team management <span class="cat-meta">added 2026-08-25, login-gated, in this same app</span></h3>
+      <div class="items">
+        <div class="item">
+          <div><div class="name">Accounts, roles &amp; login</div>
+            <div class="desc">Email/password accounts, two roles — one manager account with full visibility, unlimited employee accounts scoped to their own leads.</div>
+            <div class="path"><code>/crm/login</code>, <code>src/lib/auth.ts</code></div></div>
+          <span class="pill partial">Built, needs DB setup</span>
+        </div>
+        <div class="item">
+          <div><div class="name">Lead tracking — cold / warm / hot</div>
+            <div class="desc">Status is derived, not manually set: scraper-sourced leads start cold, anyone-inputted leads start warm, and any lead flips to hot the instant a contact is logged against it.</div>
+            <div class="path"><code>src/lib/db/queries.ts</code></div></div>
+          <span class="pill partial">Built, needs DB setup</span>
+        </div>
+        <div class="item">
+          <div><div class="name">Customer profiles &amp; contact-log timeline</div>
+            <div class="desc">Per-lead page: contact info, notes, and a logged history of every call/email/text/meeting.</div>
+            <div class="path"><code>/crm/leads/[id]</code></div></div>
+          <span class="pill partial">Built, needs DB setup</span>
+        </div>
+        <div class="item">
+          <div><div class="name">Employee KPIs &amp; team dashboard</div>
+            <div class="desc">Assigned/contacted/won counts and contact-log volume, per employee and company-wide, visible to the manager account.</div>
+            <div class="path"><code>/crm</code>, <code>/crm/employees</code></div></div>
+          <span class="pill partial">Built, needs DB setup</span>
+        </div>
+        <div class="item">
+          <div><div class="name">Website leads auto-mirror in; scraper import endpoint ready</div>
+            <div class="desc">Audit/contact-form submissions and closed Stripe deals already feed this CRM automatically. A future scraper can bulk-insert cold leads via a secured endpoint — nothing calls it yet.</div>
+            <div class="path"><code>src/lib/leads.ts</code>, <code>/api/crm/import</code></div></div>
+          <span class="pill partial">Built, needs DB setup</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="cat">
       <h3>Legal &amp; compliance <span class="cat-meta">CASL / PIPEDA, since this is a Canadian business</span></h3>
       <div class="items">
         <div class="item">
@@ -404,6 +440,11 @@
         <span class="tag">No real payment or email works without this</span>
       </li>
       <li>
+        <div class="t">Stand up the CRM's database</div>
+        <div class="d">Separate from the checkout env vars above: create a Postgres database from the Vercel dashboard (Storage → Create Database → Postgres/Neon, connected to this project — auto-injects <span class="mono">POSTGRES_URL</span>), set <span class="mono">AUTH_SECRET</span>, run <span class="mono">npm run db:migrate</span> once, then visit <span class="mono">/crm/setup</span> to create the one manager account. Full steps are in <span class="mono">CLAUDE.md</span>.</div>
+        <span class="tag">Blocks the CRM only, not checkout</span>
+      </li>
+      <li>
         <div class="t">Fix the domain mismatch</div>
         <div class="d"><span class="mono">NEXT_PUBLIC_SITE_URL</span> and the contact-email fallback in the code both default to <span class="mono">firstcallconsulting.ai</span> — a domain that doesn't resolve. The real, live domain is <span class="mono">firstcallmarketing.ai</span>. Confirm the Vercel env var overrides this; if not, every internal link, OG tag, and outbound email footer is pointing at the wrong address.</div>
       </li>
@@ -440,8 +481,12 @@
         <div class="desc">The Research agent's keyword and competitor-gap numbers are explicitly labeled illustrative placeholders — no Ahrefs/Semrush/Google Search Console connection exists. Only the live site audit score is real, measured data.</div>
       </div>
       <div class="item2">
-        <div class="name">A real CRM / lead pipeline</div>
-        <div class="desc">Leads currently land in a flat local file plus an email notification — no stages, no follow-up reminders, no dashboard beyond the internal admin hub's raw table.</div>
+        <div class="name">A lead scraper</div>
+        <div class="desc">The CRM (see above) has a ready-to-use import endpoint for cold leads, but nothing scrapes or sources those leads yet — that pipeline itself doesn't exist.</div>
+      </div>
+      <div class="item2">
+        <div class="name">Self-serve password reset for CRM accounts</div>
+        <div class="desc">The manager sets each employee's initial password by hand. There's no "forgot password" flow yet — resetting one today means the manager creating a new login.</div>
       </div>
     </div>
   </section>

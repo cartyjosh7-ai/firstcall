@@ -220,7 +220,7 @@
       <section class="doc-section" id="software">
         <p class="kicker">02</p>
         <h2>The software stack</h2>
-        <p class="dek">Four systems. What each one actually does, and — just as important — what it doesn't.</p>
+        <p class="dek">Five systems. What each one actually does, and — just as important — what it doesn't.</p>
 
         <div class="tool">
           <h4>1. The website <a class="linkout" href="https://firstcallmarketing.ai" target="_blank" rel="noopener">firstcallmarketing.ai ↗</a></h4>
@@ -266,38 +266,67 @@
           don't quote a price or timeline for it yourself until there's a real process for it. It's fine to
           tell a prospect "we can scope that separately" and move the conversation back to Foundation.</p>
         </div>
+
+        <div class="tool">
+          <h4>5. The CRM <a class="linkout" href="https://firstcallmarketing.ai/crm" target="_blank" rel="noopener">/crm ↗</a></h4>
+          <p>Where every lead lives once it exists — see <a href="#leads">Leads</a> for the full walkthrough.
+          Login-gated: you (the manager) see every lead and every employee's numbers; each employee sees only
+          their own assigned leads. Not the public site — nothing here is indexed or linked from the marketing
+          pages.</p>
+        </div>
       </section>
 
       <!-- LEADS -->
       <section class="doc-section" id="leads">
         <p class="kicker">03</p>
         <h2>Leads</h2>
-        <p class="dek">Empty on purpose — this fills in once real lead sourcing starts.</p>
+        <p class="dek">Live in the CRM now. Empty today only because no real leads have loaded in yet.</p>
 
-        <p>Right now there is no lead list to work. Every audit submission, contact-form fill, and closed deal
-        gets appended to a plain local file (<span class="mono">data/leads.jsonl</span>) and, once the email
-        integration is configured, emailed to the inbox on file. There is no CRM, no pipeline stages, no
-        reminders — just a raw log. That's a known gap, not an oversight; it's on the Readiness report as a
-        "not built yet."</p>
+        <p>Every lead — however it arrives — lives in one place: <span class="mono">firstcallmarketing.ai/crm/leads</span>,
+        behind a login. There's no separate spreadsheet or file to check anymore; if it's not in the CRM, it
+        isn't tracked.</p>
 
-        <p>The table below is the format leads will be tracked in once real sourcing (scraping, outreach lists,
-        paid lists) starts. Use these exact columns so early data is usable later.</p>
-
+        <h3>Where a lead comes from decides its starting status</h3>
         <div class="tablewrap">
           <table>
             <thead>
-              <tr><th>Date</th><th>Business</th><th>Trade</th><th>Contact</th><th>Source</th><th>Status</th><th>Notes</th></tr>
+              <tr><th>Source</th><th>How it gets in</th><th>Starting status</th></tr>
             </thead>
             <tbody>
-              <tr class="empty-row"><td colspan="7">No leads loaded yet.</td></tr>
+              <tr><td class="mono">scraper</td><td>Bulk import once a lead scraper exists — nothing feeds this yet.</td><td><b>Cold</b> — this is the cold-call list.</td></tr>
+              <tr><td class="mono">website</td><td>Automatic — a prospect submits the audit or contact form, or a deal closes through Stripe checkout.</td><td><b>Warm</b></td></tr>
+              <tr><td class="mono">employee</td><td>An employee adds one by hand from <span class="mono">/crm/leads/new</span>.</td><td><b>Warm</b></td></tr>
+              <tr><td class="mono">manager</td><td>You add one by hand.</td><td><b>Warm</b></td></tr>
             </tbody>
           </table>
         </div>
-        <p class="muted" style="margin-top:10px;font-size:.85rem">
-          Status values to standardize on: <span class="mono">new</span> → <span class="mono">contacted</span> →
-          <span class="mono">audited</span> → <span class="mono">proposal sent</span> → <span class="mono">won</span> /
-          <span class="mono">lost</span>.
+
+        <p style="margin-top:16px">
+          <b>Status after that is automatic, not something you set:</b> the moment anyone logs a contact
+          against a lead — a call, email, text, meeting, or even just a note — it flips to <b>hot</b>,
+          regardless of where it came from. It stays hot until someone marks it <b>won</b> or <b>lost</b> from
+          the lead's own page. There's no way to manually mark a lead cold or warm — that would defeat the
+          point of the system telling you, at a glance, who's actually been touched.
         </p>
+
+        <h3>What you can do from a lead's page (its "customer profile")</h3>
+        <ul>
+          <li>See contact info, trade, source, and full history at a glance.</li>
+          <li>Log a contact — pick the type (call/email/text/meeting/note) and write what happened. This is
+          the single action that turns a name on a list into an actual worked lead.</li>
+          <li>Read every past contact, newest first — so anyone picking up a lead cold can see exactly what's
+          already been said.</li>
+          <li>Keep freeform notes separate from the contact log, for anything that doesn't belong in a
+          timeline.</li>
+          <li>(Manager only) Assign or reassign the lead to any employee.</li>
+          <li>Mark it won or lost once the outcome is known.</li>
+        </ul>
+
+        <h3>Logging in for the first time</h3>
+        <p>You (the manager) create your own account once, at <span class="mono">/crm/setup</span> — it only
+        works while the CRM has zero accounts, so nobody else can do this after you. From then on, create each
+        employee's account yourself from <span class="mono">/crm/employees</span>, including their first
+        password — hand it to them and have them change it after they sign in.</p>
       </section>
 
       <!-- FULL PROCESS -->
@@ -309,9 +338,10 @@
         <ol class="process">
           <li>
             <div class="t">Find or receive the prospect</div>
-            <div class="d">From the leads list once it exists, from outreach, or organically — someone runs the
-            free audit or fills the contact form themselves.
-            <span class="muted">Log them in the leads table the moment you know they exist, even before you've spoken to them.</span></div>
+            <div class="d">Check <span class="mono">/crm/leads</span> first — website submissions and closed
+            deals already land there automatically. If you found someone yourself (referral, outreach, in
+            person), add them from <span class="mono">/crm/leads/new</span> the moment you know they exist,
+            even before you've spoken to them — that's what keeps them warm instead of untracked.</div>
           </li>
           <li>
             <div class="t">Run the real audit</div>
@@ -469,6 +499,11 @@
               <tr><td class="mono">/reports/[id]/proposal</td><td>Client-ready, printable proposal built from the brief</td><td>Team + client</td></tr>
               <tr><td class="mono">/start</td><td>Checkout — where a prospect becomes a paying client</td><td>Prospects</td></tr>
               <tr><td class="mono">/playbook</td><td>Public Month-1 execution playbook</td><td>Team + client, as the delivery checklist</td></tr>
+              <tr><td class="mono">/crm</td><td>Dashboard — company-wide for you, personal queue for employees</td><td>Everyone, own login</td></tr>
+              <tr><td class="mono">/crm/leads</td><td>Every lead, filterable by status and source</td><td>Everyone, scoped by role</td></tr>
+              <tr><td class="mono">/crm/leads/new</td><td>Add a lead by hand</td><td>Everyone</td></tr>
+              <tr><td class="mono">/crm/employees</td><td>Team KPIs + create new employee accounts</td><td>Manager only</td></tr>
+              <tr><td class="mono">/crm/setup</td><td>One-time manager account creation</td><td>You, once, ever</td></tr>
             </tbody>
           </table>
         </div>
@@ -548,10 +583,14 @@
           <div class="name">Production deployment + environment variables</div>
           <div class="desc">The full technical punch list lives in the <a href="https://claude.ai/code/artifact/3b3447ad-cb89-4352-85a6-9e3570909e40" target="_blank" rel="noopener">Readiness report</a> — this manual assumes it's been worked through.</div>
         </div>
+        <div class="todo-card">
+          <div class="name">CRM database not created yet</div>
+          <div class="desc">The CRM (see <a href="#leads">Leads</a>) is built but has no database behind it until you create one from the Vercel dashboard and visit <span class="mono">/crm/setup</span> — steps in the Readiness report and in <span class="mono">CLAUDE.md</span>.</div>
+        </div>
       </section>
 
       <footer class="doc-footer">
-        First Call Field Manual — internal training document. Not for client distribution. Built 2026-08-25.
+        First Call Field Manual — internal training document. Not for client distribution. Built 2026-08-25, updated 2026-08-25.
       </footer>
     </div>
   </main>
