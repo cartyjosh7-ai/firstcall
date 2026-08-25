@@ -1,0 +1,517 @@
+<!doctype html><html><head><!-- frame-runtime --><base href="/_f/1787537296-6c8e/"><script>window.__FRAME_PREAMBLE={"capabilities":{"artifact":"artifact.oqIe8shs.js","assets":"assets.DBUJcvq_.js","comments":"comments.GLuHR3zP.js","db":"db.CRhVHzSt.js","downloads":"downloads.C3GSvEDP.js","embed":"embed.CZsbekoQ.js","mcp":"mcp.D3B2EyQu.js","network":"network.B5UA9Su4.js","permissions":"permissions.BNySkLV5.js","room":"room.DE7EMui-.js","sample":"sample.BW2Uysoh.js","self":"artifact.oqIe8shs.js","user":"user.BpKav-Rf.js"},"transforms":"_transforms.h3_8GSUa.js","comments":"_comments.BOgkE6qU.js","translate":"_translate.5HCW4BJh.js"}</script><script>(function(){"use strict";var Y=["light","dark","system"],X=/^[A-Za-z0-9_-]{1,64}$/,D=/^[a-zA-Z_:][a-zA-Z0-9_:.-]{0,127}$/,G=new Set(["class","hidden","value","checked"]);function V(e){const t=e.toLowerCase();return t.startsWith("data-")||t.startsWith("aria-")||G.has(t)}var be="http://www.w3.org/1999/xhtml",Z="http://www.w3.org/2000/svg",J=new Set(["script","style","iframe","noscript","noframes","noembed","xmp","plaintext","template","title","textarea","object","embed"]),Q=new Set(["script","style"]);function ee(e){const t=e.localName.toLowerCase();return e.namespaceURI==="http://www.w3.org/1999/xhtml"?!J.has(t):e.namespaceURI===Z?!Q.has(t):!1}var te=new Set(["html","head","body","frameset"]);function re(e){return e.namespaceURI==="http://www.w3.org/1999/xhtml"&&te.has(e.localName)}function ne(e){if(e===null||typeof e!="object")return!1;const t=e;if(typeof t.target!="string"||!X.test(t.target)||t.text!==void 0&&typeof t.text!="string")return!1;if(t.attrsSet!==void 0){if(t.attrsSet===null||typeof t.attrsSet!="object")return!1;for(const[n,s]of Object.entries(t.attrsSet))if(!D.test(n)||typeof s!="string")return!1}if(t.attrsRemoved!==void 0){if(!Array.isArray(t.attrsRemoved))return!1;for(const n of t.attrsRemoved)if(typeof n!="string"||!D.test(n))return!1}return!0}function se(e,t){if(e===null||typeof e!="object")return!1;const{seq:n,elements:s}=e;if(typeof n!="number"||!Number.isSafeInteger(n)||!Array.isArray(s)||s.length===0||s.length>64)return!1;for(let o=0;o<s.length;o++)if(!t(s[o]))return!1;return!0}function ae(e){return e===null||typeof e!="object"?!1:se(e.__frame_patch,ne)}function oe(e){if(e===null||typeof e!="object")return!1;const t=e.__frame_init;return t!==null&&typeof t=="object"}function ie(e){return e!==null&&typeof e=="object"&&e.__frame_size_poke===!0}function le(e){if(e===null||typeof e!="object")return!1;const t=e.__frame_theme;if(t===null||typeof t!="object")return!1;const n=t.theme;return typeof n=="string"&&Y.includes(n)}var O="__frame_scroll",ce=150,ue=310,fe=160,pe=3e4;function de(){let e=0,t=!1,n=!1,s=!1,o=0,l=null;const c=i=>{try{sessionStorage.setItem(O,JSON.stringify({y:i}))}catch{}},f=()=>{if(clearTimeout(e),l===null)return;const i=l;l=null,c(i)},S=()=>{if(t){t=!1;return}n=!0,l=scrollY,clearTimeout(e),e=setTimeout(f,ce)};try{addEventListener("scroll",S,{passive:!0}),addEventListener("pagehide",f)}catch{}const v=()=>{let i;try{i=sessionStorage.getItem(O)}catch{return null}if(i===null)return null;let d;try{d=JSON.parse(i)}catch{d=null}const u=d?.y;if(!(typeof u=="number"&&Number.isFinite(u)&&u>=0)){try{sessionStorage.removeItem(O)}catch{}return null}return u};let b=!1;const m=i=>{try{const d=scrollY;scrollTo({top:i,left:0,behavior:"instant"}),o=i,s=!0,clearTimeout(e),l=null,c(i);const u=scrollY;u!==d&&(t=!0),u!==i&&!b&&(b=!0,addEventListener("load",()=>{try{if(scrollY===u){const h=v();m(h!==null?h:o)}}catch{}},{once:!0}))}catch{}},y=()=>{try{return!!location.hash}catch{return!0}};let g=!1;const E=()=>{try{if(g||innerWidth>ue||innerHeight>fe)return;g=!0;const i=Date.now(),d=()=>{try{removeEventListener("resize",d)}catch{}if(Date.now()-i>pe||n||y())return;const u=v();m(u!==null?u:o)};addEventListener("resize",d)}catch{}};let r=!1,p=!1;return{restore(){if(r||(r=!0,y()))return;const i=v();i!==null&&(m(i),E())},promoted(){if(p||(p=!0,y()))return;const i=v();i!==null?(m(i),E()):s&&m(o)}}}var Ee="modulepreload",Ae=function(e){return"/"+e},Re={},me=function(t,n,s){let o=Promise.resolve();function l(c){const f=new Event("vite:preloadError",{cancelable:!0});if(f.payload=c,window.dispatchEvent(f),!f.defaultPrevented)throw c}return o.then(c=>{for(const f of c||[])f.status==="rejected"&&l(f.reason);return t().catch(l)})};(function(){const e=Object.defineProperty,t=globalThis,n=["RTCPeerConnection","webkitRTCPeerConnection","RTCDataChannel","RTCIceCandidate","RTCSessionDescription","RTCRtpSender","RTCRtpReceiver"];let s=0;for(let o=0;o<n.length;o++){const l=n[o];try{e(t,l,{value:void 0,writable:!1,configurable:!1})}catch{try{delete t[l]}catch{}try{e(t,l,{value:void 0,writable:!1,configurable:!0})}catch{}}typeof t[l]=="function"&&s++}if(s&&window!==top)try{parent.postMessage({__frame_rtc_lockdown_failed:s},"*")}catch{}})();var he=1e4,_e=Object.freeze([...window.__FRAME_PREAMBLE?.origins??["https://claude.ai","https://preview.claude.ai"]]);function F(e){for(const t of _e)if(t.endsWith(":*"))try{const n=new URL(e);if(`${n.protocol}//${n.hostname}:*`===t)return!0}catch{}else if(e===t)return!0;return!1}var M=Object.freeze({...window.__FRAME_PREAMBLE?.capabilities}),j=window.__FRAME_PREAMBLE?.transforms,N=window.__FRAME_PREAMBLE?.comments,I=window.__FRAME_PREAMBLE?.translate,L=/^[\w.-]+\.js$/;function T(e){return me(()=>import("/_runtime/"+e),void 0)}function z(e,t){return{contract:e.contract,changes:new Set(e.changes??[]),flags:new Set(e.flags??[]),capabilities:e.capabilities??{},capBudgets:e.capBudgets??{},transforms:new Map,shellOrigin:t,mount:W,pipe:()=>({wrap:(n,s)=>(...o)=>{try{return s(...o)}catch(l){return Promise.reject(l)}}})}}var P=null,w=null;function q(e,t,n){try{Object.defineProperty(e,t,{value:n,writable:!1,configurable:!1,enumerable:!0})}catch{try{Object.defineProperty(e,t,{value:n,writable:!1,configurable:!0,enumerable:!0})}catch{}}}var B=!1;function ve(e,t){const n=[];for(const s of e.elements){const o=document.querySelector(`[data-id="${s.target}"]`);if(!o){parent.postMessage({__frame_patch_miss:{seq:e.seq}},t);return}if([...Object.keys(s.attrsSet??{}),...s.attrsRemoved??[]].some(l=>!V(l))){parent.postMessage({__frame_patch_miss:{seq:e.seq}},t);return}if(s.text!==void 0&&(!ee(o)||re(o))){parent.postMessage({__frame_patch_miss:{seq:e.seq}},t);return}for(const[l,c]of Object.entries(s.attrsSet??{}))if(!$(o,l)){try{o.setAttribute(l,c)}catch{}H(o,l,c)}for(const l of s.attrsRemoved??[])$(o,l)||(o.removeAttribute(l),H(o,l,null));typeof s.text=="string"&&(o.textContent=s.text),n.push(s.target)}try{document.dispatchEvent(new CustomEvent("claude:edit",{detail:{seq:e.seq,targets:n}}))}catch{}}function H(e,t,n){if(!(e instanceof HTMLInputElement))return;const s=t.toLowerCase();s==="checked"?e.checked=n!==null:s==="value"&&e.type!=="file"&&(e.value=n??"")}function $(e,t){const n=t.toLowerCase(),s=e;return n==="data-id"||(n==="value"||n==="checked")&&(s.__artifactSecret===!0||/^(password|hidden|file)$/.test(s.type??"")||/(^|\s)(cc-|one-time-code|current-password|new-password)/i.test(`${e.getAttribute("autocomplete")??""} ${s.autocomplete??""}`))}function K(e){const t=document.documentElement;e==="light"||e==="dark"?(t.dataset.theme=e,t.style.colorScheme=e,B=!0):B&&(delete t.dataset.theme,t.style.colorScheme="",B=!1)}var R=new Map;function ye(){let e;const t={u:new Promise(n=>{e=n}),r:n=>{t.done=!0,e(n)},done:!1,nulled:!1};return t}var ge=Object.freeze(Object.assign(Object.create(null),{call:Function.prototype.call,apply:Function.prototype.apply,bind:Function.prototype.bind})),W=(e,t)=>{const n=R.get(e);if(!n||n.done){n?.nulled&&w&&parent.postMessage({__frame_cap_telemetry:{kind:"cap-load-error",cap:e}},w);return}const s=typeof t=="function"?Object.setPrototypeOf(t,ge):Object.assign(Object.create(null),t);typeof s.then=="function"&&delete s.then,n.r(Object.freeze(s))},U=Object.getOwnPropertyDescriptor(window,"claude");if(window!==top&&!(U&&U.writable===!1)){const e=j&&L.test(j)?T(j).catch(()=>{}):Promise.resolve(void 0),t=r=>{if(r.type==="auxclick"&&r.button!==1)return;const p=r.target,i=p&&p.closest?p.closest("a[href],area[href]"):null;if(!i)return;const d=i.getAttribute("href");if(!d)return;let u,h;try{u=new URL(d,document.baseURI),h=new URL(document.baseURI).origin}catch{return}if((u.protocol==="http:"||u.protocol==="https:")&&u.origin!==h){r.preventDefault();const _=(i.getAttribute("target")??"").toLowerCase(),C=r.type==="auxclick"||r.metaKey||r.ctrlKey||r.shiftKey||r.altKey||!["","_self","_top","_parent"].includes(_);parent.postMessage({__frame_nav:!0,url:u.href,newTab:C},"*")}};addEventListener("click",t,!0),addEventListener("auxclick",t,!0);const n={},s=r=>{r.isTrusted&&(n.pointer=!0)},o=r=>{r.isTrusted&&(n.click=!0)};addEventListener("pointermove",s,{capture:!0,passive:!0}),addEventListener("click",o,{capture:!0,passive:!0}),e.then(r=>{r?.wireNav&&(r.wireNav(),removeEventListener("click",t,!0),removeEventListener("auxclick",t,!0),removeEventListener("pointermove",s,!0),removeEventListener("click",o,!0),r.wireEngagement?.(n))});let l=null;try{l=de()}catch{}const c=U?.value??{};q(window,"claude",c);for(const r of Object.keys(M)){if(c[r]!==void 0){q(c,r,c[r]);continue}R.set(r,ye())}if(c.use===void 0){const r=p=>{if(typeof p!="string"||!Object.hasOwn(M,p))return Promise.resolve(null);const i=R.get(p);return i?i.u:Promise.resolve(c[p]??null)};try{Object.defineProperty(c,"use",{value:r,writable:!0,configurable:!0,enumerable:!1})}catch{}}let f=null,S=null,v=0;const b=r=>{r.source!==parent||!F(r.origin)||oe(r.data)&&(f=r.data.__frame_init,w=r.origin,removeEventListener("message",b),clearTimeout(v),S?.())};addEventListener("message",b),parent.postMessage({__frame_connect:!0},"*");const m=new Promise(r=>{S=r,v=setTimeout(()=>{removeEventListener("message",b),r()},he)}),y=document.readyState==="loading"?new Promise(r=>document.addEventListener("DOMContentLoaded",()=>r(),{once:!0})):Promise.resolve();y.then(()=>{try{l?.restore()}catch{}});const g={cb:null},E=r=>{if(!(r.source!==parent||!F(r.origin))&&ie(r.data)){try{l?.promoted()}catch{}g.cb?.()}};addEventListener("message",E),m.then(async()=>{if(!f||!w){for(const a of R.values())a.nulled=!0,a.r(null);return}K(f.theme);const r=w;let p=!1,i=!1;addEventListener("message",a=>{if(a.source!==parent||a.origin!==r)return;le(a.data)&&K(a.data.__frame_theme.theme),ae(a.data)&&ve(a.data.__frame_patch,r);const k=a.data?.__fc_mode;k&&typeof k=="object"&&!p&&N&&L.test(N)&&(p=!0,T(N).then(x=>x.install?.(r,k.on===!0)).catch(()=>{}));const A=a.data?.__ft_cmd;A&&typeof A=="object"&&!i&&I&&L.test(I)&&(i=!0,T(I).then(x=>x.install?.(r,A)).catch(()=>{}))});const d=Object.keys(f.capabilities??{}).filter(a=>Object.hasOwn(M,a)).map(a=>[a,M[a]]).filter(a=>typeof a[1]=="string"&&L.test(a[1])),u=await Promise.allSettled(d.map(([,a])=>T(a))),h=await e,_=w;if(h?.buildBoot||parent.postMessage({__frame_cap_telemetry:{kind:"cap-load-error",cap:"_transforms"}},_),h?.buildBoot)try{P=h.buildBoot(f,h.TRANSFORMS??{},{shellOrigin:_,mount:W},a=>parent.postMessage({__frame_cap_telemetry:a},_))}catch{parent.postMessage({__frame_cap_telemetry:{kind:"cap-load-error",cap:"_transforms"}},_),P=z(f,_)}else P=z(f,_);const C=a=>parent.postMessage({__frame_cap_telemetry:{kind:"cap-load-error",cap:a}},_),we=P;u.forEach((a,k)=>{const A=d[k][0];if(a.status!=="fulfilled"){C(A);return}try{a.value?.install?.(we)}catch{C(A)}});for(const a of R.values())a.done||(a.nulled=!0,a.r(null));await y,parent.postMessage({__frame_ready:!0},w),e.then(a=>a?.installSizeReporter?.(_,g))})}})();</script><!-- /frame-runtime --><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1"><style>:root{color-scheme:light}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}</style></head><body>
+<title>First Call</title>
+
+<style>
+  @import url("https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Source+Sans+3:wght@400;500;600;700&display=swap");
+
+  :root {
+    --ink: #0c0d0b;
+    --ink-raised: #131410;
+    --paper: #f4efe4;
+    --muted: #b7b1a4;
+    --muted-dim: #85806f;
+    --line: #2a2b26;
+    --line-soft: #1c1d18;
+    --gold: #c9a227;
+    --gold-dim: #8f7420;
+    --rust: #c45c26;
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    margin: 0;
+    background: var(--ink);
+    color: var(--paper);
+    font-family: "Source Sans 3", ui-sans-serif, system-ui, sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1, h2, h3, h4 {
+    font-family: "Fraunces", ui-serif, Georgia, serif;
+    font-weight: 600;
+    color: var(--paper);
+    text-wrap: balance;
+    margin: 0;
+  }
+
+  a { color: var(--gold); text-decoration-color: color-mix(in srgb, var(--gold) 50%, transparent); text-underline-offset: 3px; }
+  a:hover { text-decoration-color: var(--gold); }
+  a:focus-visible, button:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
+
+  .eyebrow {
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--gold);
+    font-weight: 600;
+  }
+
+  /* ---- top bar ---- */
+  .topbar {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.9rem clamp(1.25rem, 4vw, 3rem);
+    background: color-mix(in srgb, var(--ink) 88%, transparent);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--line);
+  }
+  .topbar .mark {
+    font-family: "Fraunces", serif;
+    font-size: 1.05rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+  .topbar nav { display: flex; gap: 1.5rem; flex-wrap: wrap; }
+  .topbar nav a {
+    font-size: 0.82rem;
+    color: var(--muted);
+    text-decoration: none;
+  }
+  .topbar nav a:hover { color: var(--paper); }
+
+  /* ---- shell / rhythm ---- */
+  .shell { max-width: 46rem; margin: 0 auto; padding: 0 clamp(1.25rem, 4vw, 2rem); }
+  .shell-wide { max-width: 68rem; margin: 0 auto; padding: 0 clamp(1.25rem, 4vw, 2rem); }
+  section { padding: clamp(3.5rem, 8vw, 6.5rem) 0; }
+  section + section { border-top: 1px solid var(--line); }
+  section > .eyebrow { display: block; margin-bottom: 0.9rem; }
+  section h2 { font-size: clamp(1.7rem, 3vw, 2.3rem); margin-bottom: 1.1rem; }
+  section > p.lede { color: var(--muted); font-size: 1.05rem; max-width: 42rem; margin-bottom: 2.5rem; }
+
+  /* ---- hero ---- */
+  .hero { padding-top: clamp(4rem, 10vw, 7rem); }
+  .hero h1 {
+    font-size: clamp(2.6rem, 6vw, 4.4rem);
+    line-height: 1.04;
+    letter-spacing: -0.01em;
+  }
+  .hero .sub {
+    margin-top: 1.5rem;
+    color: var(--muted);
+    font-size: 1.15rem;
+    max-width: 38rem;
+    line-height: 1.65;
+  }
+  .hero .note {
+    margin-top: 2.25rem;
+    padding: 0.9rem 1.1rem;
+    border: 1px solid var(--line);
+    border-left: 3px solid var(--gold);
+    background: var(--ink-raised);
+    font-size: 0.88rem;
+    color: var(--muted);
+    max-width: 38rem;
+  }
+  .hero .note strong { color: var(--paper); font-weight: 600; }
+
+  .stat-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(9.5rem, 1fr));
+    gap: 1px;
+    background: var(--line);
+    border: 1px solid var(--line);
+    margin-top: 3rem;
+  }
+  .stat {
+    background: var(--ink);
+    padding: 1.4rem 1.3rem;
+  }
+  .stat .n {
+    font-family: "Fraunces", serif;
+    font-size: 2rem;
+    color: var(--gold);
+    font-variant-numeric: tabular-nums;
+    line-height: 1;
+  }
+  .stat .l {
+    margin-top: 0.5rem;
+    font-size: 0.78rem;
+    color: var(--muted);
+    line-height: 1.4;
+  }
+
+  /* ---- surfaces (the problem) ---- */
+  .surfaces { display: grid; grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr)); gap: 1px; background: var(--line); border: 1px solid var(--line); }
+  .surface { background: var(--ink); padding: 1.5rem 1.4rem; }
+  .surface .k { font-size: 0.72rem; color: var(--gold-dim); text-transform: uppercase; letter-spacing: 0.1em; }
+  .surface h4 { font-size: 1.05rem; margin-top: 0.5rem; font-weight: 600; }
+  .surface p { margin: 0.55rem 0 0; color: var(--muted); font-size: 0.9rem; }
+
+  /* ---- feature cards ---- */
+  .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(15.5rem, 1fr)); gap: 1.1rem; }
+  .card { border: 1px solid var(--line); background: var(--ink-raised); padding: 1.5rem; border-radius: 2px; }
+  .card .tag {
+    display: inline-block;
+    font-size: 0.68rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--ink);
+    background: var(--gold);
+    padding: 0.15rem 0.5rem;
+    font-weight: 700;
+    margin-bottom: 0.9rem;
+  }
+  .card .tag.soon { background: transparent; color: var(--muted); border: 1px solid var(--muted-dim); }
+  .card h4 { font-size: 1.08rem; margin-bottom: 0.5rem; }
+  .card p { color: var(--muted); font-size: 0.9rem; margin: 0; }
+
+  /* ---- audit mock ---- */
+  .mock-wrap { margin-top: 2.5rem; display: grid; grid-template-columns: 1.1fr 1fr; gap: 2.5rem; align-items: center; }
+  .mock-copy p { color: var(--muted); font-size: 0.95rem; }
+  .mock-copy ul { margin: 1rem 0 0; padding: 0; list-style: none; }
+  .mock-copy li { color: var(--muted); font-size: 0.9rem; padding: 0.4rem 0; border-top: 1px solid var(--line-soft); }
+  .mock-copy li:first-child { border-top: none; }
+  .mock-copy li strong { color: var(--paper); font-weight: 600; }
+
+  .audit-card {
+    border: 1px solid var(--line);
+    background: var(--ink-raised);
+    padding: 1.6rem;
+    border-radius: 2px;
+  }
+  .audit-card .live { font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--gold); }
+  .audit-card .score { font-family: "Fraunces", serif; font-size: 3.2rem; color: var(--paper); line-height: 1; margin-top: 0.5rem; }
+  .audit-card .score span { font-size: 1.3rem; color: var(--muted); }
+  .audit-card .url { font-size: 0.82rem; color: var(--muted); margin-top: 0.35rem; }
+  .bar-row { margin-top: 1.3rem; }
+  .bar-row .bl { display: flex; justify-content: space-between; font-size: 0.82rem; margin-bottom: 0.3rem; }
+  .bar-row .bl span:last-child { color: var(--muted); font-variant-numeric: tabular-nums; }
+  .bar-track { height: 5px; background: var(--line); border-radius: 3px; overflow: hidden; }
+  .bar-fill { height: 100%; background: var(--gold); border-radius: 3px; }
+
+  /* ---- pipeline ---- */
+  .flow {
+    display: flex;
+    align-items: stretch;
+    gap: 0;
+    flex-wrap: wrap;
+    border: 1px solid var(--line);
+  }
+  .flow-step {
+    flex: 1 1 8.5rem;
+    padding: 1.4rem 1.2rem;
+    background: var(--ink-raised);
+    border-right: 1px solid var(--line);
+    min-width: 8.5rem;
+  }
+  .flow-step:last-child { border-right: none; }
+  .flow-step .fn { font-family: "Fraunces", serif; color: var(--gold); font-size: 1rem; }
+  .flow-step h4 { font-size: 0.95rem; margin-top: 0.45rem; line-height: 1.3; }
+  .flow-step p { font-size: 0.8rem; color: var(--muted); margin: 0.4rem 0 0; }
+  .flow-step.agent { background: color-mix(in srgb, var(--gold) 9%, var(--ink-raised)); }
+
+  .callout {
+    margin-top: 2rem;
+    border: 1px solid var(--line);
+    border-left: 3px solid var(--gold);
+    background: var(--ink-raised);
+    padding: 1.25rem 1.4rem;
+  }
+  .callout .eyebrow { display: block; margin-bottom: 0.5rem; }
+  .callout p { color: var(--muted); font-size: 0.92rem; margin: 0.4rem 0 0; }
+  .callout p:first-of-type { margin-top: 0; }
+
+  /* ---- pricing table ---- */
+  .price-table { border: 1px solid var(--line); }
+  .price-row {
+    display: grid;
+    grid-template-columns: 9rem 8rem 1fr 6.5rem;
+    gap: 1rem;
+    padding: 1rem 1.3rem;
+    align-items: center;
+    border-top: 1px solid var(--line);
+  }
+  .price-row:first-child { border-top: none; }
+  .price-row .name { font-family: "Fraunces", serif; font-weight: 600; font-size: 1.02rem; }
+  .price-row .price { color: var(--gold); font-size: 0.9rem; font-variant-numeric: tabular-nums; }
+  .price-row .desc { color: var(--muted); font-size: 0.85rem; }
+  .status-pill {
+    font-size: 0.68rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    padding: 0.25rem 0.55rem;
+    border-radius: 2px;
+    text-align: center;
+    white-space: nowrap;
+  }
+  .status-pill.live { background: var(--gold); color: var(--ink); font-weight: 700; }
+  .status-pill.soon { border: 1px solid var(--muted-dim); color: var(--muted); }
+
+  /* ---- stack chips ---- */
+  .chips { display: flex; flex-wrap: wrap; gap: 0.55rem; margin-top: 1.5rem; }
+  .chip {
+    border: 1px solid var(--line);
+    padding: 0.4rem 0.85rem;
+    font-size: 0.82rem;
+    color: var(--muted);
+    border-radius: 2px;
+  }
+  .chip strong { color: var(--paper); font-weight: 600; }
+
+  /* ---- status ---- */
+  .status-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2.5rem; }
+  .status-grid h4 { font-size: 0.95rem; color: var(--gold); text-transform: uppercase; letter-spacing: 0.06em; font-family: "Source Sans 3", sans-serif; font-weight: 700; margin-bottom: 0.9rem; }
+  .status-grid ul { margin: 0; padding: 0; list-style: none; }
+  .status-grid li { font-size: 0.9rem; color: var(--muted); padding: 0.5rem 0; border-top: 1px solid var(--line-soft); }
+  .status-grid li:first-child { border-top: none; }
+  .status-grid li strong { color: var(--paper); font-weight: 600; }
+
+  footer {
+    padding: 3rem clamp(1.25rem, 4vw, 3rem) 4rem;
+    text-align: center;
+    color: var(--muted-dim);
+    font-size: 0.85rem;
+    border-top: 1px solid var(--line);
+  }
+  footer .fmark { font-family: "Fraunces", serif; color: var(--paper); font-size: 1.1rem; margin-bottom: 0.6rem; }
+
+  @media (max-width: 720px) {
+    .mock-wrap { grid-template-columns: 1fr; }
+    .status-grid { grid-template-columns: 1fr; gap: 2rem; }
+    .price-row { grid-template-columns: 1fr; gap: 0.3rem; }
+    .price-row .status-pill { justify-self: start; }
+    .topbar nav { display: none; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+  }
+</style>
+
+<div class="topbar">
+  <span class="mark">First Call</span>
+  <nav>
+    <a href="#problem">Problem</a>
+    <a href="#live">What's live</a>
+    <a href="#engine">AI engine</a>
+    <a href="#model">Model</a>
+    <a href="#stack">Stack</a>
+    <a href="#status">Status</a>
+  </nav>
+</div>
+
+<div class="hero shell">
+  <p class="eyebrow">Product &amp; business overview · August 2026</p>
+  <h1>Be the first call.</h1>
+  <p class="sub">
+    First Call is an AI-era local visibility agency for home-service businesses — HVAC, roofing,
+    remediation, cleaning, auto, trucking — based in Calgary, Alberta. This page is everything built
+    so far: the live lead-gen site, the two-agent SEO engine behind every client deliverable, and the
+    business model underneath it. No fake traction, just what's actually running.
+  </p>
+  <div class="note">
+    <strong>Status in one line:</strong> pre-launch, backend fully engineered end to end — from a
+    stranger's first free scan to a paying client's auto-generated 90-day plan. Zero customers yet.
+  </div>
+
+  <div class="stat-row">
+    <div class="stat"><div class="n">5</div><div class="l">visibility surfaces scored — Maps, AI Overviews, Assistants, Voice, Website</div></div>
+    <div class="stat"><div class="n">2</div><div class="l">Claude agents — Research, then Implementation</div></div>
+    <div class="stat"><div class="n">100</div><div class="l">point live audit, real HTTP fetch, no fabricated data</div></div>
+    <div class="stat"><div class="n">$0</div><div class="l">spent on AI so far — zero-cost dev mode until first sale</div></div>
+  </div>
+</div>
+
+<section id="problem">
+  <div class="shell-wide">
+    <p class="eyebrow">The problem</p>
+    <h2>Local businesses are invisible on the surfaces that now decide the call.</h2>
+    <p class="lede">
+      A homeowner with a burst pipe doesn't just Google anymore — they ask an AI Overview, a voice
+      assistant, or ChatGPT. Most local operators have never been optimized for any of this. First
+      Call's own audit engine scores a business across all five:
+    </p>
+    <div class="surfaces">
+      <div class="surface"><span class="k">Surface 01</span><h4>Google &amp; Map Pack</h4><p>Profile signals, NAP, schema, hours.</p></div>
+      <div class="surface"><span class="k">Surface 02</span><h4>AI Overviews</h4><p>FAQ schema, answer-first pages.</p></div>
+      <div class="surface"><span class="k">Surface 03</span><h4>AI Assistants</h4><p>Entity clarity, citable facts, llms.txt.</p></div>
+      <div class="surface"><span class="k">Surface 04</span><h4>Voice &amp; near-me</h4><p>Click-to-call, viewport, spoken-answer copy.</p></div>
+      <div class="surface"><span class="k">Surface 05</span><h4>Website &amp; reviews</h4><p>HTTPS, speed, reviews, indexability.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="live">
+  <div class="shell-wide">
+    <p class="eyebrow">What's live today</p>
+    <h2>A working marketing &amp; lead-gen site — not a mockup.</h2>
+    <p class="lede">
+      The free audit actually fetches a business's public pages and scores them with a real
+      rule-based engine — no AI required, no invented numbers, and it's the front door into
+      everything else.
+    </p>
+    <div class="cards">
+      <div class="card"><span class="tag">Live</span><h4>100-point live audit</h4><p>Real HTTP fetch, 27 checks across the 5 surfaces, results in seconds.</p></div>
+      <div class="card"><span class="tag">Live</span><h4>60-second visibility quiz</h4><p>Self-assessment lead magnet by trade, feeds into the full audit.</p></div>
+      <div class="card"><span class="tag">Live</span><h4>Industry &amp; service pages</h4><p>6 trades, 5 service lines, each with its own findable-problem story.</p></div>
+      <div class="card"><span class="tag">Live</span><h4>Foundation checkout</h4><p>Stripe subscription, CAD $4,500/mo, month-to-month.</p></div>
+      <div class="card"><span class="tag">Live</span><h4>Lead capture &amp; email</h4><p>Every scan and inquiry lands in the inbox and gets a reply, automatically.</p></div>
+      <div class="card"><span class="tag">Live</span><h4>Legal &amp; compliance pages</h4><p>Privacy (PIPEDA), terms, MSA, SOW, CASL-compliant unsubscribe.</p></div>
+    </div>
+
+    <div class="mock-wrap">
+      <div class="mock-copy">
+        <p><strong style="color:var(--paper)">The hook that starts every relationship.</strong> A visitor
+        drops in a URL, and within seconds sees exactly where they're losing the call — no lead form
+        wall, no fake number.</p>
+        <ul>
+          <li><strong>Live fetch</strong> — reads the actual homepage, robots.txt, and up to 2 interior pages</li>
+          <li><strong>27 checks</strong> — schema, NAP, FAQ, click-to-call, speed, reviews, and more</li>
+          <li><strong>Honest by design</strong> — never estimates traffic or rankings it can't verify</li>
+        </ul>
+      </div>
+      <div class="audit-card">
+        <span class="live">Live scan</span>
+        <div class="score">47<span>/100</span></div>
+        <div class="url">example-hvac-co.com · 2 pages read</div>
+        <div class="bar-row"><div class="bl"><span>Google &amp; Map Pack</span><span>6/20</span></div><div class="bar-track"><div class="bar-fill" style="width:30%"></div></div></div>
+        <div class="bar-row"><div class="bl"><span>AI Overviews</span><span>5/20</span></div><div class="bar-track"><div class="bar-fill" style="width:25%"></div></div></div>
+        <div class="bar-row"><div class="bl"><span>AI Assistants</span><span>4/15</span></div><div class="bar-track"><div class="bar-fill" style="width:27%"></div></div></div>
+        <div class="bar-row"><div class="bl"><span>Voice &amp; Near-Me</span><span>9/15</span></div><div class="bar-track"><div class="bar-fill" style="width:60%"></div></div></div>
+        <div class="bar-row"><div class="bl"><span>Website &amp; Reviews</span><span>23/30</span></div><div class="bar-track"><div class="bar-fill" style="width:77%"></div></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="engine">
+  <div class="shell-wide">
+    <p class="eyebrow">The AI engine</p>
+    <h2>Two agents turn a signed client into a real deliverable — automatically.</h2>
+    <p class="lede">
+      The moment a Stripe payment clears, the backend runs the client's business through a Research
+      agent and an Implementation agent, then emails them a research brief and a sequenced 90-day
+      plan. No strategist has to start from a blank page.
+    </p>
+
+    <div class="flow">
+      <div class="flow-step"><span class="fn">01</span><h4>Client pays</h4><p>Stripe Checkout, Foundation retainer</p></div>
+      <div class="flow-step"><span class="fn">02</span><h4>Webhook fires</h4><p>checkout.session.completed</p></div>
+      <div class="flow-step agent"><span class="fn">03</span><h4>Research agent</h4><p>Runs the real audit + market research tools, writes a structured brief</p></div>
+      <div class="flow-step agent"><span class="fn">04</span><h4>Implementation agent</h4><p>Turns the brief into a sequenced, owner-assigned 90-day plan</p></div>
+      <div class="flow-step"><span class="fn">05</span><h4>Report delivered</h4><p>Emailed to the client, live on a private link</p></div>
+    </div>
+
+    <div class="callout">
+      <span class="eyebrow">Engineering note</span>
+      <p><strong style="color:var(--paper)">Zero-cost by default.</strong> Without an Anthropic API key
+      set, the exact same pipeline runs on a free rule-based engine instead of calling Claude — same
+      real audit data, same report structure, clearly labeled as a preview. That meant the entire
+      product could be built, tested, and demoed without spending a dollar on AI, right up until the
+      first real client closes.</p>
+      <p>Both agents' instructions are built from a sourced 2026 SEO operating manual — Core Web
+      Vitals thresholds, E-E-A-T standards, Google Business Profile weighting, GEO/AI-citation
+      tactics, and a hard rule against manipulative link-building — so the output reflects real
+      practice, not generic AI filler.</p>
+    </div>
+  </div>
+</section>
+
+<section id="model">
+  <div class="shell-wide">
+    <p class="eyebrow">Business model</p>
+    <h2>One simple first sale. Four more already scoped.</h2>
+    <p class="lede">
+      Foundation is the only thing being sold right now, deliberately — a single, easy-to-say-yes-to
+      offer to win the first clients. Growth, Domination, and two add-ons are fully priced and ready
+      to switch on the moment there's a retainer book to upsell.
+    </p>
+    <div class="price-table">
+      <div class="price-row">
+        <span class="name">Foundation</span>
+        <span class="price">CAD $4,500/mo</span>
+        <span class="desc">Single-location businesses getting found — GBP, reviews, on-page, monthly reporting.</span>
+        <span class="status-pill live">Live</span>
+      </div>
+      <div class="price-row">
+        <span class="name">Growth</span>
+        <span class="price">CAD $1.5–2.5k/mo</span>
+        <span class="desc">Established businesses ready to scale past the basics — technical fixes, more content, link building.</span>
+        <span class="status-pill soon">Scoped</span>
+      </div>
+      <div class="price-row">
+        <span class="name">Domination</span>
+        <span class="price">CAD $3–5k/mo</span>
+        <span class="desc">Multi-location or competitive niches — aggressive content, digital PR, CRO, GEO monitoring.</span>
+        <span class="status-pill soon">Scoped</span>
+      </div>
+      <div class="price-row">
+        <span class="name">Technical Audit</span>
+        <span class="price">CAD $500–2k</span>
+        <span class="desc">One-time deep audit with a prioritized action plan and walkthrough call.</span>
+        <span class="status-pill soon">Scoped</span>
+      </div>
+      <div class="price-row">
+        <span class="name">GEO add-on</span>
+        <span class="price">CAD $300–1k/mo</span>
+        <span class="desc">AI citation monitoring and answer-engine optimization for existing retainer clients.</span>
+        <span class="status-pill soon">Scoped</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="stack">
+  <div class="shell-wide">
+    <p class="eyebrow">Engineering under the hood</p>
+    <h2>Built to run lean, and to stay legal.</h2>
+    <p class="lede">
+      A modern, fully typed Next.js app with a real automation pipeline behind it — not a landing
+      page bolted onto a form.
+    </p>
+    <div class="chips">
+      <span class="chip"><strong>Next.js 15</strong> + React 19, TypeScript, App Router</span>
+      <span class="chip"><strong>Anthropic Claude</strong> — tool-use agent loop, structured outputs</span>
+      <span class="chip"><strong>Stripe</strong> — subscription checkout + webhooks</span>
+      <span class="chip"><strong>Resend</strong> — transactional email</span>
+      <span class="chip"><strong>Tailwind CSS</strong> — brand design system</span>
+      <span class="chip"><strong>CASL</strong> — signed one-click unsubscribe, mailing address, consent</span>
+      <span class="chip"><strong>PIPEDA</strong> — privacy policy &amp; data handling</span>
+    </div>
+  </div>
+</section>
+
+<section id="status">
+  <div class="shell-wide">
+    <p class="eyebrow">Where things actually stand</p>
+    <h2>Honest status, not a highlight reel.</h2>
+    <div class="status-grid">
+      <div>
+        <h4>Done</h4>
+        <ul>
+          <li><strong>Full site</strong> — every marketing page, tool, and legal page live</li>
+          <li><strong>Backend wired end to end</strong> — audit, leads, checkout, webhook all functional</li>
+          <li><strong>Two-agent engine</strong> — research + implementation, real or mock mode</li>
+          <li><strong>Payment-to-deliverable automation</strong> — a closed deal generates its own first report</li>
+          <li><strong>Canadian compliance</strong> — CASL &amp; PIPEDA handled from day one</li>
+        </ul>
+      </div>
+      <div>
+        <h4>Not done yet</h4>
+        <ul>
+          <li><strong>Zero customers</strong> — nothing has been sold</li>
+          <li><strong>No Anthropic key in production</strong> — real agent runs cost real money, so it's off until launch</li>
+          <li><strong>Stripe in test mode</strong> — no live payments accepted yet</li>
+          <li><strong>Growth/Domination/Audit/GEO</strong> — priced, not yet sellable</li>
+          <li><strong>Real keyword/competitor data</strong> — currently placeholder, pending a paid data source</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="fmark">First Call</div>
+  <p>Calgary, Alberta · Built with Claude Code</p>
+</footer>
+
+</body></html>

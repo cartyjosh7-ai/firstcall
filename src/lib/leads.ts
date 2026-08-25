@@ -88,8 +88,43 @@ function unsubscribeLink(email: string) {
   return `${site.url}/api/unsubscribe?${params.toString()}`;
 }
 
+/**
+ * Best-effort mirror into the CRM's leads table (src/app/crm). Wrapped so a
+ * missing/misconfigured POSTGRES_URL never breaks the existing audit/contact
+ * flow — the CRM is an addition, not a dependency of the public site.
+ */
+async function mirrorToCrm(lead: LeadPayload) {
+  try {
+    const { createLead, markWebsiteLeadWon } = await import("./db/queries");
+    if (lead.kind === "won") {
+      if (lead.business) {
+        await markWebsiteLeadWon({
+          businessName: lead.business,
+          website: lead.website,
+          email: lead.email,
+          trade: lead.trade,
+        });
+      }
+      return;
+    }
+    if (!lead.business && !lead.name && !lead.email) return;
+    await createLead({
+      businessName: lead.business || lead.name || lead.email || "Unnamed lead",
+      email: lead.email,
+      phone: lead.phone,
+      website: lead.website || lead.url,
+      trade: lead.trade,
+      notes: lead.message || (lead.score != null ? `Audit score: ${lead.score}/100` : undefined),
+      source: "website",
+    });
+  } catch {
+    // CRM not configured yet (no POSTGRES_URL) — ignore, the .jsonl/email path above still ran.
+  }
+}
+
 export async function captureLead(lead: LeadPayload) {
   await persist(lead);
+  await mirrorToCrm(lead);
   try {
     return await emailLead(lead);
   } catch (err) {

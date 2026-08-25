@@ -1,0 +1,453 @@
+<title>First Call Readiness</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500&family=Source+Sans+3:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --bg:#fbf8f1; --surface:#f2ecdd; --surface-2:#ece4cf; --ink:#1c1a13; --muted:#6e6656;
+    --line:#ddd3bd; --gold:#8f6c1b; --rust:#a94a1d;
+    --good:#3f6b3f; --good-soft:#e2ebdd; --bad:#a94a1d; --bad-soft:#f3e2d8; --neutral:#8a8272; --neutral-soft:#eee8d9;
+    --gold-soft:#f0e6c9; --shadow:0 1px 2px rgba(28,26,19,.06);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#0c0d0b; --surface:#141510; --surface-2:#1a1b14; --ink:#f4efe4; --muted:#b7b1a4;
+      --line:#2a2b26; --gold:#c9a227; --rust:#c45c26;
+      --good:#8caa5a; --good-soft:#1e2417; --bad:#c45c26; --bad-soft:#241a12; --neutral:#8a8272; --neutral-soft:#1a1a15;
+      --gold-soft:#221d0e; --shadow:0 1px 2px rgba(0,0,0,.4);
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#0c0d0b; --surface:#141510; --surface-2:#1a1b14; --ink:#f4efe4; --muted:#b7b1a4;
+    --line:#2a2b26; --gold:#c9a227; --rust:#c45c26;
+    --good:#8caa5a; --good-soft:#1e2417; --bad:#c45c26; --bad-soft:#241a12; --neutral:#8a8272; --neutral-soft:#1a1a15;
+    --gold-soft:#221d0e; --shadow:0 1px 2px rgba(0,0,0,.4);
+  }
+
+  *{box-sizing:border-box;}
+  body{
+    margin:0; background:var(--bg); color:var(--ink);
+    font-family:"Source Sans 3", ui-sans-serif, system-ui, sans-serif;
+    font-size:16px; line-height:1.55; -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3{ font-family:"Fraunces", ui-serif, Georgia, serif; text-wrap:balance; margin:0; }
+  .mono{ font-family:"IBM Plex Mono", ui-monospace, monospace; }
+  a{ color:var(--gold); }
+  a:focus-visible, button:focus-visible, summary:focus-visible{ outline:2px solid var(--gold); outline-offset:2px; }
+
+  .wrap{ max-width:960px; margin:0 auto; padding:0 24px 96px; }
+
+  /* ---- Nav ---- */
+  nav.top{
+    position:sticky; top:0; z-index:20; background:color-mix(in srgb, var(--bg) 88%, transparent);
+    backdrop-filter:blur(8px); border-bottom:1px solid var(--line);
+  }
+  nav.top .inner{
+    max-width:960px; margin:0 auto; padding:14px 24px; display:flex; align-items:center;
+    justify-content:space-between; gap:16px; flex-wrap:wrap;
+  }
+  nav.top .brand{ font-family:"Fraunces", serif; font-weight:600; font-size:1.05rem; }
+  nav.top .brand span{ color:var(--gold); }
+  nav.top .links{ display:flex; gap:18px; flex-wrap:wrap; }
+  nav.top .links a{ font-size:.85rem; text-decoration:none; color:var(--muted); text-transform:uppercase; letter-spacing:.06em; }
+  nav.top .links a:hover{ color:var(--ink); }
+
+  /* ---- Hero ---- */
+  header.hero{ padding:64px 0 40px; }
+  .eyebrow{ font-size:.78rem; text-transform:uppercase; letter-spacing:.12em; color:var(--gold); font-weight:600; }
+  h1{ font-size:clamp(2.1rem, 4.2vw, 3.1rem); font-weight:600; margin-top:.5rem; max-width:16ch; }
+  .lede{ margin-top:1.1rem; max-width:62ch; color:var(--muted); font-size:1.05rem; }
+  .lede b{ color:var(--ink); font-weight:600; }
+  .stamp{ margin-top:1.4rem; font-size:.82rem; color:var(--muted); }
+
+  /* ---- Stat row ---- */
+  .stats{ display:grid; grid-template-columns:repeat(4,1fr); gap:1px; background:var(--line);
+    border:1px solid var(--line); border-radius:14px; overflow:hidden; margin-top:2.5rem; }
+  .stat{ background:var(--surface); padding:20px 18px; }
+  .stat .n{ font-family:"Fraunces",serif; font-size:2.1rem; font-weight:600; line-height:1; font-variant-numeric:tabular-nums; }
+  .stat .n.bad{ color:var(--bad); }
+  .stat .n.good{ color:var(--good); }
+  .stat .l{ margin-top:.4rem; font-size:.82rem; color:var(--muted); }
+  @media (max-width:720px){ .stats{ grid-template-columns:repeat(2,1fr); } }
+
+  /* ---- Sections ---- */
+  section{ margin-top:64px; }
+  .section-head{ display:flex; align-items:baseline; justify-content:space-between; gap:12px; flex-wrap:wrap;
+    border-bottom:1px solid var(--line); padding-bottom:14px; }
+  .section-head h2{ font-size:1.65rem; font-weight:600; }
+  .section-head .count{ font-size:.85rem; color:var(--muted); }
+  .section-intro{ margin-top:14px; color:var(--muted); max-width:68ch; }
+
+  /* ---- Status pill ---- */
+  .pill{ display:inline-flex; align-items:center; gap:6px; font-size:.72rem; font-weight:600;
+    text-transform:uppercase; letter-spacing:.05em; padding:4px 10px; border-radius:999px; white-space:nowrap; }
+  .pill::before{ content:""; width:6px; height:6px; border-radius:50%; background:currentColor; }
+  .pill.live{ background:var(--good-soft); color:var(--good); }
+  .pill.blocked{ background:var(--bad-soft); color:var(--bad); }
+  .pill.partial{ background:var(--gold-soft); color:var(--gold); }
+  .pill.none{ background:var(--neutral-soft); color:var(--neutral); }
+
+  /* ---- Inventory cards ---- */
+  .cat{ margin-top:36px; }
+  .cat h3{ font-size:1.05rem; font-weight:600; display:flex; align-items:center; gap:10px; }
+  .cat .cat-meta{ font-size:.8rem; color:var(--muted); font-weight:400; font-family:"Source Sans 3",sans-serif; }
+  .items{ margin-top:14px; display:grid; gap:10px; }
+  .item{ background:var(--surface); border:1px solid var(--line); border-radius:12px; padding:14px 16px;
+    display:grid; grid-template-columns:1fr auto; gap:10px 16px; align-items:start; box-shadow:var(--shadow); }
+  .item .name{ font-weight:600; }
+  .item .desc{ margin-top:3px; font-size:.92rem; color:var(--muted); max-width:60ch; }
+  .item .path{ margin-top:6px; font-size:.78rem; color:var(--muted); }
+  .item .path code{ font-family:"IBM Plex Mono",monospace; background:var(--surface-2); padding:1px 6px; border-radius:5px; }
+
+  /* ---- Callout (critical gap) ---- */
+  .callout{ margin-top:20px; border:1px solid color-mix(in srgb, var(--bad) 45%, var(--line)); background:var(--bad-soft);
+    border-radius:14px; padding:22px 24px; }
+  .callout h3{ font-size:1.2rem; font-weight:600; color:var(--bad); display:flex; align-items:center; gap:10px; }
+  .callout p{ margin-top:10px; color:var(--ink); max-width:70ch; }
+  .callout .grid2{ margin-top:16px; display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+  .callout .box{ background:var(--bg); border:1px solid var(--line); border-radius:10px; padding:12px 14px; }
+  .callout .box .k{ font-size:.72rem; text-transform:uppercase; letter-spacing:.06em; color:var(--muted); }
+  .callout .box .v{ margin-top:4px; font-family:"IBM Plex Mono",monospace; font-size:.85rem; }
+  .callout .box .v .code404{ color:var(--bad); font-weight:600; }
+  .callout .box .v .code200{ color:var(--good); font-weight:600; }
+  @media (max-width:640px){ .callout .grid2{ grid-template-columns:1fr; } }
+
+  /* ---- Punch list ---- */
+  ol.punch{ margin:20px 0 0; padding:0; list-style:none; counter-reset:step; display:grid; gap:12px; }
+  ol.punch li{ counter-increment:step; background:var(--surface); border:1px solid var(--line); border-radius:12px;
+    padding:16px 18px 16px 58px; position:relative; }
+  ol.punch li::before{ content:counter(step); position:absolute; left:16px; top:16px; width:26px; height:26px;
+    border-radius:50%; background:var(--gold-soft); color:var(--gold); font-family:"IBM Plex Mono",monospace;
+    font-size:.85rem; font-weight:600; display:flex; align-items:center; justify-content:center; }
+  ol.punch li.crit::before{ background:var(--bad-soft); color:var(--bad); }
+  ol.punch .t{ font-weight:600; }
+  ol.punch .d{ margin-top:5px; font-size:.9rem; color:var(--muted); }
+  ol.punch .tag{ display:inline-block; margin-top:8px; font-size:.7rem; text-transform:uppercase; letter-spacing:.05em;
+    color:var(--muted); border:1px solid var(--line); border-radius:6px; padding:2px 7px; }
+
+  /* ---- Not-built list ---- */
+  .notbuilt{ display:grid; gap:10px; margin-top:14px; }
+  .notbuilt .item2{ background:var(--surface); border:1px dashed var(--line); border-radius:12px; padding:14px 16px; }
+  .notbuilt .item2 .name{ font-weight:600; }
+  .notbuilt .item2 .desc{ margin-top:3px; font-size:.9rem; color:var(--muted); }
+
+  /* ---- Env table ---- */
+  .tablewrap{ overflow-x:auto; margin-top:16px; border:1px solid var(--line); border-radius:12px; }
+  table{ width:100%; border-collapse:collapse; font-size:.88rem; min-width:560px; }
+  th{ text-align:left; font-size:.72rem; text-transform:uppercase; letter-spacing:.06em; color:var(--muted);
+    font-weight:600; padding:10px 14px; background:var(--surface-2); border-bottom:1px solid var(--line); }
+  td{ padding:10px 14px; border-bottom:1px solid var(--line); vertical-align:top; }
+  tr:last-child td{ border-bottom:none; }
+  td.mono{ font-family:"IBM Plex Mono",monospace; font-size:.82rem; }
+
+  footer{ margin-top:80px; padding-top:24px; border-top:1px solid var(--line); color:var(--muted); font-size:.85rem;
+    display:flex; justify-content:space-between; gap:16px; flex-wrap:wrap; }
+  footer a{ color:var(--muted); }
+
+  @media (prefers-reduced-motion:no-preference){
+    .item, .callout, .stat{ transition:border-color .15s ease; }
+  }
+</style>
+
+<nav class="top">
+  <div class="inner">
+    <div class="brand">First <span>Call</span> · Readiness</div>
+    <div class="links">
+      <a href="#inventory">Inventory</a>
+      <a href="#gap">The gap</a>
+      <a href="#punchlist">Punch list</a>
+      <a href="#notbuilt">Not built</a>
+    </div>
+  </div>
+</nav>
+
+<div class="wrap">
+  <header class="hero">
+    <p class="eyebrow">Build inventory &amp; launch status</p>
+    <h1>Where First Call actually stands</h1>
+    <p class="lede">
+      Everything built for First Call so far — code and non-code — checked against the live site at
+      <b>firstcallmarketing.ai</b> just now, not just the source folder. One thing changes the whole picture:
+      <b>the live site cannot currently take a customer's money.</b>
+    </p>
+    <p class="stamp">Snapshot taken 2026-08-25 · commit <span class="mono">57e0ea2</span> on <span class="mono">master</span></p>
+
+    <div class="stats">
+      <div class="stat"><div class="n good">1</div><div class="l">sellable product built &amp; priced (Foundation)</div></div>
+      <div class="stat"><div class="n">18</div><div class="l">route sections built locally</div></div>
+      <div class="stat"><div class="n">0</div><div class="l">real leads captured (1 internal test, excluded)</div></div>
+      <div class="stat"><div class="n bad">404</div><div class="l">what /start returns live, right now</div></div>
+    </div>
+  </header>
+
+  <section id="inventory">
+    <div class="section-head">
+      <h2>Everything built</h2>
+      <span class="count">7 categories</span>
+    </div>
+    <p class="section-intro">
+      Grouped by what each piece does for the business, not by folder. Status reflects reality as of this
+      snapshot — <span class="pill live" style="display:inline-flex;transform:translateY(2px)">live</span> means
+      working in production right now, not just present in the code.
+    </p>
+
+    <div class="cat">
+      <h3>Public website &amp; marketing <span class="cat-meta">firstcallmarketing.ai</span></h3>
+      <div class="items">
+        <div class="item">
+          <div><div class="name">Homepage, about, contact, why-first-call</div>
+            <div class="desc">Brand positioning, value proposition, senior-strategist framing.</div></div>
+          <span class="pill live">Live</span>
+        </div>
+        <div class="item">
+          <div><div class="name">6 industry pages</div>
+            <div class="desc">HVAC, roofing, mold &amp; remediation, cleaning, auto &amp; wraps, trucking — pain points and plan per trade.</div>
+            <div class="path">Local: <code>src/app/industries/[slug]</code></div></div>
+          <span class="pill live">Live</span>
+        </div>
+        <div class="item">
+          <div><div class="name">5 service pages</div>
+            <div class="desc">Local SEO, AEO, GEO, Voice &amp; Near-Me, Conversion Websites.</div>
+            <div class="path">Local: <code>src/app/services/[slug]</code></div></div>
+          <span class="pill live">Live</span>
+        </div>
+        <div class="item">
+          <div><div class="name">4 resource guides</div>
+            <div class="desc">Educational articles (2026 AI-search playbook, ChatGPT/Perplexity citations, AEO vs SEO, map-pack guide).</div>
+            <div class="path">Local: <code>src/app/resources/[slug]</code></div></div>
+          <span class="pill live">Live</span>
+        </div>
+        <div class="item">
+          <div><div class="name">Pricing page</div>
+            <div class="desc">Foundation price + scope, plus "coming soon" Growth/Domination/add-ons.</div>
+            <div class="path"><code>/pricing</code></div></div>
+          <span class="pill blocked">404 live</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="cat">
+      <h3>Lead-generation tools <span class="cat-meta">the free hook</span></h3>
+      <div class="items">
+        <div class="item">
+          <div><div class="name">100-point visibility audit — real scanner</div>
+            <div class="desc">Live-fetches a prospect's homepage + up to 3 interior pages + robots.txt, runs ~25 real checks across Maps, AI Overviews, AI Assistants, Voice, Website/Reviews. Not a mock — this genuinely reads the site.</div>
+            <div class="path"><code>/audit</code> · engine: <code>src/lib/audit.ts</code></div></div>
+          <span class="pill live">Live</span>
+        </div>
+        <div class="item">
+          <div><div class="name">ROI calculator</div>
+            <div class="desc">"Cost of staying invisible" — estimates lost revenue from poor visibility.</div>
+            <div class="path"><code>/tools/roi-calculator</code></div></div>
+          <span class="pill live">Live</span>
+        </div>
+        <div class="item">
+          <div><div class="name">Visibility checker quiz</div>
+            <div class="desc">Short interactive quiz that scores AI-era findability.</div>
+            <div class="path"><code>/tools/visibility-checker</code></div></div>
+          <span class="pill live">Live</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="cat">
+      <h3>Sales &amp; payment infrastructure <span class="cat-meta">turns a visitor into a client</span></h3>
+      <div class="items">
+        <div class="item">
+          <div><div class="name">Checkout form</div>
+            <div class="desc">Collects business, website, trade, email — hands off to Stripe.</div>
+            <div class="path"><code>/start</code></div></div>
+          <span class="pill blocked">404 live</span>
+        </div>
+        <div class="item">
+          <div><div class="name">Stripe Checkout session builder</div>
+            <div class="desc">Combines the one-time setup fee and the monthly retainer into a single subscription checkout. Falls back to an "email us for an invoice" message if Stripe isn't configured.</div>
+            <div class="path"><code>/api/checkout</code></div></div>
+          <span class="pill partial">Built, unverified live</span>
+        </div>
+        <div class="item">
+          <div><div class="name">Payment webhook → auto-fulfillment</div>
+            <div class="desc">On <span class="mono">checkout.session.completed</span>, responds to Stripe instantly, then runs the delivery engine and emails the client in the background.</div>
+            <div class="path"><code>/api/stripe/webhook</code></div></div>
+          <span class="pill partial">Built, unverified live</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="cat">
+      <h3>Delivery engine <span class="cat-meta">what a paying client actually gets</span></h3>
+      <div class="items">
+        <div class="item">
+          <div><div class="name">Research agent</div>
+            <div class="desc">Claude tool-use agent: runs the real audit, pulls keyword/competitor estimates, writes a structured research brief. Encodes First Call's actual SEO/GEO standards in its instructions.</div>
+            <div class="path"><code>src/lib/agents/research-agent.ts</code></div></div>
+          <span class="pill live">Live</span>
+        </div>
+        <div class="item">
+          <div><div class="name">Implementation agent</div>
+            <div class="desc">Turns the brief into a phased 90-day plan (0–30 / 31–60 / 61–90 days), quick wins, and KPIs.</div>
+            <div class="path"><code>src/lib/agents/implementation-agent.ts</code></div></div>
+          <span class="pill live">Live</span>
+        </div>
+        <div class="item">
+          <div><div class="name">Zero-cost mock engine</div>
+            <div class="desc">Rule-based fallback that produces the same shape of brief/plan without calling Claude — runs automatically whenever no Anthropic key is set. This is the mode currently active by default.</div>
+            <div class="path"><code>src/lib/agents/mock-engine.ts</code></div></div>
+          <span class="pill live">Active by default</span>
+        </div>
+        <div class="item">
+          <div><div class="name">Report &amp; proposal pages</div>
+            <div class="desc">Client-facing brief and a printable, client-ready proposal generated from it.</div>
+            <div class="path"><code>/reports/[id]</code>, <code>/reports/[id]/proposal</code></div></div>
+          <span class="pill live">Live</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="cat">
+      <h3>Internal team tools <span class="cat-meta">for you and future hires, not the public</span></h3>
+      <div class="items">
+        <div class="item">
+          <div><div class="name">Admin dashboard</div>
+            <div class="desc">One-click hub to every prospect tool, every generated report, and every published page. Marked no-index.</div>
+            <div class="path"><code>/admin</code></div></div>
+          <span class="pill blocked">404 live</span>
+        </div>
+        <div class="item">
+          <div><div class="name">Live proposal generator</div>
+            <div class="desc">Run the real audit against a real prospect's site on the spot, mid-conversation, and produce a printable brief + proposal.</div>
+            <div class="path"><code>/admin/generate</code></div></div>
+          <span class="pill blocked">404 live</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="cat">
+      <h3>Legal &amp; compliance <span class="cat-meta">CASL / PIPEDA, since this is a Canadian business</span></h3>
+      <div class="items">
+        <div class="item">
+          <div><div class="name">MSA, Foundation SOW, Privacy, Terms</div>
+            <div class="desc">Short-form templates covering term, fees, ownership, liability cap, cancellation. Explicitly marked "have counsel review" — that review hasn't happened yet.</div>
+            <div class="path"><code>/legal/msa</code>, <code>/legal/sow</code>, <code>/privacy</code>, <code>/terms</code></div></div>
+          <span class="pill live">Live, uncounseled</span>
+        </div>
+        <div class="item">
+          <div><div class="name">CASL-compliant email system</div>
+            <div class="desc">Every client-facing email carries a mailing address and a signed one-click unsubscribe link; a suppression list is checked before every send.</div>
+            <div class="path"><code>src/lib/unsubscribe.ts</code>, <code>src/lib/leads.ts</code></div></div>
+          <span class="pill partial">Built, address still a placeholder</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="cat">
+      <h3>Business &amp; reference docs <span class="cat-meta">not code — consolidated in <code class="mono">firstcall/docs/</code></span></h3>
+      <div class="items">
+        <div class="item">
+          <div><div class="name">Pitch deck</div>
+            <div class="desc">Investor/partner-facing deck.</div></div>
+          <span class="pill live">Done</span>
+        </div>
+        <div class="item">
+          <div><div class="name">Sourced SEO/business operating manual (33 pages)</div>
+            <div class="desc">The research the two delivery agents' standards are drawn from.</div>
+            <div class="path"><code>docs/seo-operating-manual-source.pdf</code></div></div>
+          <span class="pill live">Done</span>
+        </div>
+        <div class="item">
+          <div><div class="name">Business context, pricing model, compliance notes</div>
+            <div class="desc">Working notes on jurisdiction, what's sellable today, and CASL/PIPEDA obligations.</div>
+            <div class="path"><code>docs/business/</code></div></div>
+          <span class="pill live">Done</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="gap">
+    <div class="section-head"><h2>The one thing that matters most</h2></div>
+    <div class="callout">
+      <h3>⚠ Production is not running current code</h3>
+      <p>
+        <b>firstcallmarketing.ai is live</b> and looks fully finished when you browse it — but it's serving a
+        build that predates a lot of what's in the repository today. Checked directly against the live domain
+        just now:
+      </p>
+      <div class="grid2">
+        <div class="box"><div class="k">Should exist, returns 404 live</div>
+          <div class="v"><span class="code404">/pricing</span> · <span class="code404">/start</span> · <span class="code404">/admin</span></div></div>
+        <div class="box"><div class="k">Live (200), but not in the current repo at all</div>
+          <div class="v"><span class="code200">/why-first-call</span> · <span class="code200">/local-marketing-campaign-services</span></div></div>
+      </div>
+      <p style="margin-top:16px">
+        In plain terms: <b>Vercel has probably never redeployed from GitHub since an early snapshot.</b> Local
+        git is fully up to date with <span class="mono">origin/master</span>, so the code itself isn't the
+        problem — the deployment is. Nobody can currently reach the pricing page, submit payment, or hit the
+        internal dashboard. This is the single highest-priority fix before anything else on this page matters.
+      </p>
+    </div>
+  </section>
+
+  <section id="punchlist">
+    <div class="section-head"><h2>What's left before the first sale</h2></div>
+    <p class="section-intro">In order — each step mostly unblocks the next.</p>
+    <ol class="punch">
+      <li class="crit">
+        <div class="t">Redeploy production from current <span class="mono">master</span></div>
+        <div class="d">In the Vercel dashboard, connect (or reconnect) the <span class="mono">firstcall</span> project's GitHub integration, or trigger a manual production deploy, so <span class="mono">/pricing</span>, <span class="mono">/start</span>, and <span class="mono">/admin</span> go live. Nothing else on this list matters until this is done.</div>
+        <span class="tag">Blocks checkout entirely</span>
+      </li>
+      <li class="crit">
+        <div class="t">Set real production environment variables</div>
+        <div class="d">None are set locally, and production is unverified from here — check the Vercel project's Environment Variables directly. At minimum: Stripe secret key + the two Foundation price IDs (create them in the Stripe dashboard first) + webhook secret; Resend API key + a domain-verified sender; <span class="mono">LEAD_INBOX</span>; a real <span class="mono">NEXT_PUBLIC_MAILING_ADDRESS</span> (CASL requires this on every commercial email — do not send real marketing email without it); <span class="mono">UNSUBSCRIBE_SECRET</span> and <span class="mono">ADMIN_API_SECRET</span> (both currently fall back to insecure defaults).</div>
+        <span class="tag">No real payment or email works without this</span>
+      </li>
+      <li>
+        <div class="t">Fix the domain mismatch</div>
+        <div class="d"><span class="mono">NEXT_PUBLIC_SITE_URL</span> and the contact-email fallback in the code both default to <span class="mono">firstcallconsulting.ai</span> — a domain that doesn't resolve. The real, live domain is <span class="mono">firstcallmarketing.ai</span>. Confirm the Vercel env var overrides this; if not, every internal link, OG tag, and outbound email footer is pointing at the wrong address.</div>
+      </li>
+      <li>
+        <div class="t">Fix the leftover "US" references</div>
+        <div class="d">The homepage's structured data (<span class="mono">areaServed: "US"</span>) and the <span class="mono">/markets</span> page headline ("...across the US") still assume a US jurisdiction from before the business was confirmed as Calgary, Alberta, Canada-based. Small fix, real credibility/SEO issue.</div>
+      </li>
+      <li>
+        <div class="t">Decide: real AI agents, or stay on the free mock engine for now</div>
+        <div class="d">Without an <span class="mono">ANTHROPIC_API_KEY</span>, every research brief and 90-day plan is rule-based, not written by Claude. The system already protects you here — it won't auto-email a mock report to a paying client, it flags it internally instead — but someone has to notice the flag and manually regenerate the real one. Decide which mode you're launching in and make sure whoever answers the "won" lead notification knows what to do with a mock-flagged report.</div>
+      </li>
+      <li class="crit">
+        <div class="t">Confirm the business side, not just the code</div>
+        <div class="d">Not visible from this repository, and not something to guess at: a confirmed registered legal business name/entity, a business bank account, an activated (not test-mode) Stripe account in the right country, GST/HST registration if applicable, and — since the MSA says so itself — actual legal counsel review of the MSA/SOW before the first client signs one.</div>
+        <span class="tag">Off-code, your call</span>
+      </li>
+      <li>
+        <div class="t">Run one real end-to-end test</div>
+        <div class="d">Once deployed and configured: submit the <span class="mono">/start</span> form yourself in Stripe test mode, confirm the webhook fires, a report generates, and the right email lands — before the first real customer's card gets charged.</div>
+      </li>
+    </ol>
+  </section>
+
+  <section id="notbuilt">
+    <div class="section-head"><h2>What doesn't exist yet</h2></div>
+    <p class="section-intro">Not on the punch list because they're not required for a first sale — but worth knowing they're not there before you promise them to a client.</p>
+    <div class="notbuilt">
+      <div class="item2">
+        <div class="name">A website-building tool</div>
+        <div class="desc">There is no software that builds or generates a client website. Foundation's own scope explicitly excludes "custom software builds." If a prospect needs a new site rather than an optimized existing one, that's manual, separately-scoped work today — see the Field Manual for how to handle that conversation.</div>
+      </div>
+      <div class="item2">
+        <div class="name">Real keyword &amp; competitor data</div>
+        <div class="desc">The Research agent's keyword and competitor-gap numbers are explicitly labeled illustrative placeholders — no Ahrefs/Semrush/Google Search Console connection exists. Only the live site audit score is real, measured data.</div>
+      </div>
+      <div class="item2">
+        <div class="name">A real CRM / lead pipeline</div>
+        <div class="desc">Leads currently land in a flat local file plus an email notification — no stages, no follow-up reminders, no dashboard beyond the internal admin hub's raw table.</div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <span>First Call — internal document, not for client distribution.</span>
+    <span>Paired with the <a href="https://claude.ai/code/artifact/2de5a1b9-001b-4cd9-926d-1d6b18dfcc24" target="_blank" rel="noopener">First Call Field Manual</a></span>
+  </footer>
+</div>

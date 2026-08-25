@@ -1,0 +1,584 @@
+<title>First Call Field Manual</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500&family=Source+Sans+3:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --bg:#fbf8f1; --surface:#f2ecdd; --surface-2:#ece4cf; --ink:#1c1a13; --muted:#6e6656;
+    --line:#ddd3bd; --gold:#8f6c1b; --rust:#a94a1d;
+    --good:#3f6b3f; --good-soft:#e2ebdd; --bad:#a94a1d; --bad-soft:#f3e2d8; --neutral:#8a8272; --neutral-soft:#eee8d9;
+    --gold-soft:#f0e6c9; --shadow:0 1px 2px rgba(28,26,19,.06);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#0c0d0b; --surface:#141510; --surface-2:#1a1b14; --ink:#f4efe4; --muted:#b7b1a4;
+      --line:#2a2b26; --gold:#c9a227; --rust:#c45c26;
+      --good:#8caa5a; --good-soft:#1e2417; --bad:#c45c26; --bad-soft:#241a12; --neutral:#8a8272; --neutral-soft:#1a1a15;
+      --gold-soft:#221d0e; --shadow:0 1px 2px rgba(0,0,0,.4);
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#0c0d0b; --surface:#141510; --surface-2:#1a1b14; --ink:#f4efe4; --muted:#b7b1a4;
+    --line:#2a2b26; --gold:#c9a227; --rust:#c45c26;
+    --good:#8caa5a; --good-soft:#1e2417; --bad:#c45c26; --bad-soft:#241a12; --neutral:#8a8272; --neutral-soft:#1a1a15;
+    --gold-soft:#221d0e; --shadow:0 1px 2px rgba(0,0,0,.4);
+  }
+
+  *{box-sizing:border-box;}
+  html{ scroll-behavior:smooth; }
+  body{
+    margin:0; background:var(--bg); color:var(--ink);
+    font-family:"Source Sans 3", ui-sans-serif, system-ui, sans-serif;
+    font-size:16px; line-height:1.6; -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,h4{ font-family:"Fraunces", ui-serif, Georgia, serif; text-wrap:balance; margin:0 0 .5em; font-weight:600;}
+  .mono{ font-family:"IBM Plex Mono", ui-monospace, monospace; }
+  code{ font-family:"IBM Plex Mono",monospace; background:var(--surface-2); padding:1px 6px; border-radius:5px; font-size:.88em; }
+  a{ color:var(--gold); }
+  a:focus-visible, button:focus-visible, summary:focus-visible{ outline:2px solid var(--gold); outline-offset:2px; }
+  p{ color:var(--ink); }
+  .muted{ color:var(--muted); }
+
+  /* ---- Shell ---- */
+  .shell{ display:flex; min-height:100vh; }
+  .side{ width:270px; flex:none; border-right:1px solid var(--line); padding:28px 22px; position:sticky; top:0;
+    align-self:flex-start; height:100vh; overflow-y:auto; }
+  .brand{ font-family:"Fraunces",serif; font-weight:600; font-size:1.15rem; }
+  .brand span{ color:var(--gold); }
+  .brand-sub{ margin-top:4px; font-size:.78rem; color:var(--muted); text-transform:uppercase; letter-spacing:.08em; }
+  .side nav{ margin-top:28px; display:flex; flex-direction:column; gap:2px; }
+  .side nav a{ display:block; padding:7px 10px; border-radius:8px; text-decoration:none; font-size:.9rem;
+    color:var(--muted); }
+  .side nav a:hover{ background:var(--surface); color:var(--ink); }
+  .side nav a.active{ background:var(--gold-soft); color:var(--gold); font-weight:600; }
+  .side .grp{ margin-top:18px; font-size:.68rem; text-transform:uppercase; letter-spacing:.08em; color:var(--muted); padding:0 10px; }
+  .side .grp:first-of-type{ margin-top:0; }
+  .side .ext{ margin-top:24px; padding-top:16px; border-top:1px solid var(--line); }
+  .side .ext a{ font-size:.82rem; color:var(--gold); }
+
+  .main{ flex:1; min-width:0; }
+  .doc{ max-width:760px; margin:0 auto; padding:56px 32px 140px; }
+
+  header.hero{ margin-bottom:56px; }
+  .eyebrow{ font-size:.78rem; text-transform:uppercase; letter-spacing:.12em; color:var(--gold); font-weight:600; }
+  h1.title{ font-size:clamp(2rem,4vw,2.8rem); margin-top:.4rem; }
+  .lede{ margin-top:1rem; max-width:62ch; color:var(--muted); font-size:1.05rem; }
+
+  section.doc-section{ margin-top:64px; padding-top:8px; scroll-margin-top:24px; }
+  section.doc-section > .kicker{ font-size:.78rem; text-transform:uppercase; letter-spacing:.1em; color:var(--gold); font-weight:600; }
+  section.doc-section > h2{ font-size:1.9rem; margin-top:.3rem; }
+  section.doc-section > .dek{ margin-top:.6rem; color:var(--muted); max-width:64ch; }
+  section.doc-section h3{ font-size:1.25rem; margin-top:2.2rem; }
+  section.doc-section p{ max-width:66ch; margin:.9em 0; }
+  section.doc-section ul, section.doc-section ol.plain{ max-width:66ch; padding-left:1.3em; margin:.9em 0; }
+  section.doc-section li{ margin:.35em 0; }
+
+  /* card / tool block */
+  .tool{ margin-top:20px; border:1px solid var(--line); background:var(--surface); border-radius:14px; padding:20px 22px; box-shadow:var(--shadow); }
+  .tool h4{ font-size:1.05rem; display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+  .tool h4 a.linkout{ font-size:.75rem; font-family:"IBM Plex Mono",monospace; text-decoration:none; border:1px solid var(--line);
+    border-radius:6px; padding:2px 8px; color:var(--muted); }
+  .tool h4 a.linkout:hover{ color:var(--gold); border-color:var(--gold); }
+  .tool p{ margin:.6em 0 0; font-size:.95rem; }
+  .tool .warn{ margin-top:10px; font-size:.85rem; background:var(--bad-soft); color:var(--bad); border-radius:8px; padding:8px 12px; }
+  .tool .ok{ margin-top:10px; font-size:.85rem; background:var(--good-soft); color:var(--good); border-radius:8px; padding:8px 12px; }
+
+  /* numbered process */
+  ol.process{ list-style:none; padding:0; margin:24px 0 0; counter-reset:step; display:grid; gap:0; }
+  ol.process li{ counter-increment:step; position:relative; padding:0 0 28px 46px; border-left:1px solid var(--line); margin-left:14px; }
+  ol.process li:last-child{ border-left-color:transparent; padding-bottom:2px; }
+  ol.process li::before{ content:counter(step); position:absolute; left:-14px; top:0; width:28px; height:28px; border-radius:50%;
+    background:var(--gold-soft); color:var(--gold); font-family:"IBM Plex Mono",monospace; font-size:.85rem; font-weight:600;
+    display:flex; align-items:center; justify-content:center; border:1px solid var(--bg); }
+  ol.process .t{ font-family:"Fraunces",serif; font-weight:600; font-size:1.1rem; }
+  ol.process .d{ margin-top:6px; max-width:62ch; color:var(--ink); font-size:.95rem; }
+  ol.process .d .muted{ display:block; margin-top:4px; }
+
+  /* leads table */
+  .tablewrap{ overflow-x:auto; margin-top:18px; border:1px solid var(--line); border-radius:12px; }
+  table{ width:100%; border-collapse:collapse; font-size:.88rem; min-width:640px; }
+  th{ text-align:left; font-size:.72rem; text-transform:uppercase; letter-spacing:.06em; color:var(--muted);
+    font-weight:600; padding:10px 14px; background:var(--surface-2); border-bottom:1px solid var(--line); }
+  td{ padding:12px 14px; border-bottom:1px solid var(--line); vertical-align:top; color:var(--muted); }
+  tr:last-child td{ border-bottom:none; }
+  .empty-row td{ text-align:center; padding:26px 14px; font-style:italic; }
+
+  /* glossary */
+  dl.gloss{ margin-top:20px; display:grid; gap:16px; }
+  dl.gloss div{ display:grid; grid-template-columns:140px 1fr; gap:16px; padding-bottom:14px; border-bottom:1px solid var(--line); }
+  dl.gloss dt{ font-family:"IBM Plex Mono",monospace; font-weight:600; font-size:.85rem; color:var(--gold); }
+  dl.gloss dd{ margin:0; font-size:.92rem; color:var(--ink); }
+  @media (max-width:560px){ dl.gloss div{ grid-template-columns:1fr; } }
+
+  /* quote / script box */
+  .script{ margin-top:16px; border-left:3px solid var(--gold); background:var(--surface); border-radius:0 10px 10px 0;
+    padding:14px 18px; font-size:.95rem; }
+  .script .who{ font-size:.72rem; text-transform:uppercase; letter-spacing:.06em; color:var(--muted); margin-bottom:4px; }
+
+  .checklist{ margin-top:14px; display:grid; gap:8px; }
+  .checklist label{ display:flex; gap:10px; align-items:flex-start; font-size:.93rem; padding:9px 12px; border:1px solid var(--line);
+    border-radius:9px; background:var(--surface); cursor:pointer; }
+  .checklist input{ margin-top:3px; accent-color:var(--gold); }
+
+  .todo-card{ border:1px dashed var(--line); border-radius:12px; padding:14px 16px; margin-top:12px; background:var(--surface); }
+  .todo-card .name{ font-weight:600; }
+  .todo-card .desc{ margin-top:4px; font-size:.9rem; color:var(--muted); }
+
+  footer.doc-footer{ margin-top:80px; padding-top:24px; border-top:1px solid var(--line); color:var(--muted); font-size:.85rem; }
+
+  /* mobile */
+  .side-toggle{ display:none; }
+  @media (max-width:920px){
+    .shell{ display:block; }
+    .side{ position:sticky; top:0; height:auto; width:auto; z-index:30; background:color-mix(in srgb, var(--bg) 92%, transparent);
+      backdrop-filter:blur(8px); padding:14px 18px; }
+    .side nav{ display:none; margin-top:14px; }
+    .side.open nav{ display:flex; max-height:70vh; overflow-y:auto; }
+    .side-toggle{ display:flex; width:100%; justify-content:space-between; align-items:center; background:none; border:1px solid var(--line);
+      border-radius:9px; padding:9px 12px; color:var(--ink); font-family:"Source Sans 3",sans-serif; font-size:.85rem; }
+    .doc{ padding:36px 20px 100px; }
+  }
+</style>
+
+<div class="shell">
+  <aside class="side" id="side">
+    <div class="brand">First <span>Call</span></div>
+    <div class="brand-sub">Field Manual</div>
+
+    <button class="side-toggle" id="sideToggle" aria-expanded="false">
+      <span>Contents</span><span aria-hidden="true">▾</span>
+    </button>
+
+    <nav id="sideNav">
+      <div class="grp">Orientation</div>
+      <a href="#start">Start here</a>
+      <a href="#software">The software stack</a>
+      <a href="#leads">Leads</a>
+
+      <div class="grp">Running a deal</div>
+      <a href="#process">The full process</a>
+      <a href="#closing">How to close</a>
+      <a href="#payment">Collecting payment</a>
+
+      <div class="grp">Reference</div>
+      <a href="#tools">Internal tools</a>
+      <a href="#compliance">Compliance &amp; legal</a>
+      <a href="#glossary">Glossary</a>
+      <a href="#open">Open questions</a>
+    </nav>
+
+    <div class="ext">
+      <a href="https://firstcallmarketing.ai" target="_blank" rel="noopener">↗ firstcallmarketing.ai</a><br><br>
+      <a href="https://claude.ai/code/artifact/3b3447ad-cb89-4352-85a6-9e3570909e40" target="_blank" rel="noopener">↗ Readiness report</a>
+    </div>
+  </aside>
+
+  <main class="main">
+    <div class="doc">
+      <header class="hero">
+        <p class="eyebrow">Internal · train new hires with this</p>
+        <h1 class="title">Run First Call end to end</h1>
+        <p class="lede">
+          Everything needed to sell, deliver, and support a First Call client — written so someone with zero
+          SEO background can pick this up and work their part of the business. Built 2026-08-25, alongside the
+          <a href="https://claude.ai/code/artifact/3b3447ad-cb89-4352-85a6-9e3570909e40" target="_blank" rel="noopener">Readiness report</a>,
+          which has the exact list of what's still broken before any of this can run for real.
+        </p>
+      </header>
+
+      <!-- START HERE -->
+      <section class="doc-section" id="start">
+        <p class="kicker">01</p>
+        <h2>Start here</h2>
+        <p class="dek">The five-minute version of the whole business, before anything else.</p>
+
+        <p><b>What First Call is:</b> a local SEO / AI-visibility agency based in Calgary, Alberta, serving
+        local and regional Canadian home-service businesses — HVAC, roofing, mold &amp; remediation, cleaning,
+        auto &amp; wraps, trucking, and similar owner-led trades. The pitch: most of these businesses lose jobs
+        not because they do worse work, but because a competitor is easier to find on Google Maps, in AI
+        answers, and by voice. First Call fixes the findability.</p>
+
+        <p><b>What you actually sell right now:</b> one product, called <b>Foundation</b> — CAD $2,799 one-time
+        setup, then CAD $139.99/month, month-to-month. That's it. Growth and Domination tiers exist on paper
+        (see <a href="#process">the process</a>) but aren't for sale yet — don't offer them.</p>
+
+        <p><b>The one link:</b> <span class="mono">firstcallmarketing.ai</span>. Right now the live site's
+        pricing and checkout pages are down (404) — see the Readiness report linked in the sidebar before you
+        try to sell anything. Everything in this manual describes how the business is supposed to run once
+        that's fixed.</p>
+
+        <p><b>Read this before you talk to a prospect:</b> some of what's "built" runs on placeholder data
+        until real API keys are configured — the live audit score is always real, but keyword volumes and
+        competitor numbers are illustrative until a paid data source is connected, and research briefs are
+        rule-based (not written by Claude) until an Anthropic key is set. Never present a placeholder number as
+        verified. The site itself already enforces this honesty in its own copy — match that tone with
+        prospects.</p>
+      </section>
+
+      <!-- SOFTWARE STACK -->
+      <section class="doc-section" id="software">
+        <p class="kicker">02</p>
+        <h2>The software stack</h2>
+        <p class="dek">Four systems. What each one actually does, and — just as important — what it doesn't.</p>
+
+        <div class="tool">
+          <h4>1. The website <a class="linkout" href="https://firstcallmarketing.ai" target="_blank" rel="noopener">firstcallmarketing.ai ↗</a></h4>
+          <p>The public marketing site: homepage, six industry pages, five service pages, four resource guides,
+          pricing, and legal pages. Its job is to get a trades business owner to run the free audit or talk to
+          a strategist. It is also the checkout — <span class="mono">/start</span> is where a visitor becomes
+          a paying client.</p>
+        </div>
+
+        <div class="tool">
+          <h4>2. The audit scanner <a class="linkout" href="https://firstcallmarketing.ai/audit" target="_blank" rel="noopener">/audit ↗</a></h4>
+          <p><b>This is real.</b> It fetches the prospect's actual homepage plus up to three interior pages and
+          their robots.txt, then runs about 25 checks across five surfaces — Google &amp; Maps, AI Overviews, AI
+          Assistants, Voice, and Website &amp; Reviews — and returns a score out of 100. No AI, no cost, no
+          placeholder data. This is your diagnostic tool and your lead magnet at the same time.</p>
+          <p>For an in-person or live-call pitch, use <span class="mono">/admin/generate</span> instead of the
+          public form — it runs the same real scan plus the full research + proposal pipeline against a named
+          prospect, on the spot, and gives you something printable to hand them.</p>
+        </div>
+
+        <div class="tool">
+          <h4>3. SEO delivery software — the two agents</h4>
+          <p>Once someone pays, two AI agents run automatically: a <b>Research agent</b> that uses the real
+          audit plus keyword/competitor tools to write a structured brief, and an <b>Implementation agent</b>
+          that turns that brief into a 90-day plan (0–30 / 31–60 / 61–90 days) with quick wins and KPIs. The
+          output becomes the client's report and proposal.</p>
+          <p><b>Two modes:</b> with a real <span class="mono">ANTHROPIC_API_KEY</span> configured, both agents
+          are genuinely written by Claude. Without one — the default — a free rule-based engine produces the
+          same shape of output instantly, at zero cost, clearly marked as such internally. The system will
+          never auto-send a mock report to a paying client as if it were the real thing; it flags it for you to
+          regenerate. Whoever handles the "deal closed" notification needs to know to check for that flag.</p>
+        </div>
+
+        <div class="tool">
+          <h4>4. "Website creation" — read this one carefully</h4>
+          <p class="warn">There is no software that builds or generates a client's website. This does not
+          exist yet, and it isn't part of Foundation.</p>
+          <p>Foundation optimizes a client's <i>existing</i> web presence — Business Profile, on-page content,
+          schema, reviews. It explicitly does not include building a new site from scratch. If a prospect's
+          site is so broken it needs to be rebuilt, or they don't have one at all, that is not something to
+          promise as part of the standard offer.</p>
+          <p><b>What to do instead:</b> treat it as custom, separately-scoped work. Pass it to Josh directly —
+          don't quote a price or timeline for it yourself until there's a real process for it. It's fine to
+          tell a prospect "we can scope that separately" and move the conversation back to Foundation.</p>
+        </div>
+      </section>
+
+      <!-- LEADS -->
+      <section class="doc-section" id="leads">
+        <p class="kicker">03</p>
+        <h2>Leads</h2>
+        <p class="dek">Empty on purpose — this fills in once real lead sourcing starts.</p>
+
+        <p>Right now there is no lead list to work. Every audit submission, contact-form fill, and closed deal
+        gets appended to a plain local file (<span class="mono">data/leads.jsonl</span>) and, once the email
+        integration is configured, emailed to the inbox on file. There is no CRM, no pipeline stages, no
+        reminders — just a raw log. That's a known gap, not an oversight; it's on the Readiness report as a
+        "not built yet."</p>
+
+        <p>The table below is the format leads will be tracked in once real sourcing (scraping, outreach lists,
+        paid lists) starts. Use these exact columns so early data is usable later.</p>
+
+        <div class="tablewrap">
+          <table>
+            <thead>
+              <tr><th>Date</th><th>Business</th><th>Trade</th><th>Contact</th><th>Source</th><th>Status</th><th>Notes</th></tr>
+            </thead>
+            <tbody>
+              <tr class="empty-row"><td colspan="7">No leads loaded yet.</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="muted" style="margin-top:10px;font-size:.85rem">
+          Status values to standardize on: <span class="mono">new</span> → <span class="mono">contacted</span> →
+          <span class="mono">audited</span> → <span class="mono">proposal sent</span> → <span class="mono">won</span> /
+          <span class="mono">lost</span>.
+        </p>
+      </section>
+
+      <!-- FULL PROCESS -->
+      <section class="doc-section" id="process">
+        <p class="kicker">04</p>
+        <h2>The full process, start to finish</h2>
+        <p class="dek">Every step from "never heard of us" to "active, reported-on client." This is the sequence — follow it in order.</p>
+
+        <ol class="process">
+          <li>
+            <div class="t">Find or receive the prospect</div>
+            <div class="d">From the leads list once it exists, from outreach, or organically — someone runs the
+            free audit or fills the contact form themselves.
+            <span class="muted">Log them in the leads table the moment you know they exist, even before you've spoken to them.</span></div>
+          </li>
+          <li>
+            <div class="t">Run the real audit</div>
+            <div class="d">Either they've already run <span class="mono">/audit</span> themselves, or you run it
+            for them live via <span class="mono">/admin/generate</span> during a call or in person. Either way,
+            you now have a real, defensible score out of 100 to talk from.</div>
+          </li>
+          <li>
+            <div class="t">Walk them through the score</div>
+            <div class="d">Use it as a diagnostic, not a scare tactic. Show what's failing across Maps, AI
+            Overviews, AI Assistants, Voice, and Website/Reviews, and connect each failure to a real
+            consequence: a missed emergency call, a competitor named instead of them in an AI answer.
+            <span class="muted">Never claim a specific ranking or traffic outcome — the audit measures signals, not guarantees.</span></div>
+          </li>
+          <li>
+            <div class="t">Present Foundation</div>
+            <div class="d">CAD $2,799 one-time setup + CAD $139.99/month. What's included: Business Profile +
+            local optimization, a review acquisition system, core on-page + LocalBusiness schema, foundational
+            content, plain-English monthly reporting, and a senior strategist owning the account. What's not
+            included: paid ad spend, full multi-location AEO/GEO, digital PR, or custom website builds.</div>
+          </li>
+          <li>
+            <div class="t">Handle objections honestly</div>
+            <div class="d">See <a href="#closing">How to close</a> for specific language. The short version:
+            don't oversell. The MSA itself says no guaranteed rank, call volume, or revenue — sell the system
+            and the ownership, not a promise.</div>
+          </li>
+          <li>
+            <div class="t">Send them to checkout</div>
+            <div class="d"><span class="mono">firstcallmarketing.ai/start</span> — they enter business name,
+            website, trade, and email, then continue to Stripe. Paying is how they agree to the MSA and
+            Foundation SOW (linked right on that page). If Stripe isn't configured yet, the page instead shows
+            an "email us for an invoice" fallback — see <a href="#payment">Collecting payment</a>.</div>
+          </li>
+          <li>
+            <div class="t">Payment clears</div>
+            <div class="d">Stripe confirms the checkout, First Call's system responds instantly, then
+            automatically — in the background — runs both delivery agents and saves a report tied to that
+            client.
+            <span class="muted">This step needs zero manual action from you unless the mock-report flag comes up (see below).</span></div>
+          </li>
+          <li>
+            <div class="t">First deliverable is generated</div>
+            <div class="d">The research brief and 90-day plan are built and saved automatically. If it was
+            built by the real Claude agents, the client gets emailed their report link directly. If it ran on
+            the free mock engine (no API key configured), the client is <b>not</b> emailed — you get an
+            internal note flagged "MOCK DATA," meaning someone needs to regenerate it for real before the
+            client ever sees it.</div>
+          </li>
+          <li>
+            <div class="t">Onboard the client</div>
+            <div class="d">Request access: Google Business Profile, analytics, and CMS/website login, plus one
+            point of contact. This is asked for directly in the "deal closed" email template already built into
+            the system — you're just following up on it.</div>
+          </li>
+          <li>
+            <div class="t">Assign a senior strategist and start month one</div>
+            <div class="d">Foundation is explicitly senior-strategist-owned, not junior/outsourced. Use the
+            client-facing Month-1 playbook (<span class="mono">/playbook</span>) as the execution checklist —
+            it's already written and public.</div>
+          </li>
+          <li>
+            <div class="t">Report monthly, in plain English</div>
+            <div class="d">Calls, jobs, and visibility — not vanity metrics. This is a stated commitment in
+            Foundation's included scope; build the habit of a monthly touchpoint from client zero.</div>
+          </li>
+          <li>
+            <div class="t">Renewal / cancellation</div>
+            <div class="d">Month-to-month. Either side can cancel with 30 days' written notice to First Call's
+            contact email. No annual lock-in, no early-termination fee. Already-paid fees for the current month
+            aren't refunded except where required by law.</div>
+          </li>
+        </ol>
+      </section>
+
+      <!-- HOW TO CLOSE -->
+      <section class="doc-section" id="closing">
+        <p class="kicker">05</p>
+        <h2>How to close</h2>
+        <p class="dek">The tone that's already built into the brand — use it, don't invent a different one.</p>
+
+        <p>First Call's own voice, straight from the site: <i>"Be the first call."</i> Confident, plain-spoken,
+        allergic to hype. Sell the system and the ownership — not a guaranteed outcome. That restraint is
+        itself part of the pitch: most agencies overpromise, and a trades business owner has heard every one of
+        those pitches before.</p>
+
+        <h3>A working script</h3>
+        <div class="script">
+          <div class="who">Opening, after showing the audit score</div>
+          "Here's exactly where you're losing calls right now — not opinions, this is what's actually on your
+          site and profile today. Most of what's broken here is fixable. Foundation is $2,799 to set up, then
+          $139.99 a month, month-to-month — no contract lock-in. You get a senior strategist, not a junior
+          account manager, and a plain-English report every month on calls, jobs, and visibility, not vanity
+          metrics."
+        </div>
+        <div class="script">
+          <div class="who">If they ask "will I rank #1?"</div>
+          "I won't promise a specific rank or call volume — nobody honest can, and our contract says so in
+          writing. What I can tell you is exactly what we're fixing and why it moves the signals that decide
+          who gets the call."
+        </div>
+        <div class="script">
+          <div class="who">If they ask for a new website</div>
+          "Foundation optimizes what you've already got — it doesn't include building a new site from scratch.
+          If yours genuinely needs a rebuild, that's a separate, custom conversation — let's start with
+          Foundation and scope that piece separately."
+        </div>
+
+        <h3>Objection: "I want to think about it"</h3>
+        <p>Don't discount. Offer the standalone Technical SEO Audit (CAD $497–$997) as a lower-commitment
+        entry point if Foundation genuinely feels too big a first step — it exists precisely for this, though
+        it isn't wired up for self-serve checkout yet, so it's a manual invoice today.</p>
+      </section>
+
+      <!-- PAYMENT -->
+      <section class="doc-section" id="payment">
+        <p class="kicker">06</p>
+        <h2>Collecting payment</h2>
+        <p class="dek">Two paths, depending on whether Stripe is configured. Know both.</p>
+
+        <h3>Path A — Stripe Checkout (normal path)</h3>
+        <ol class="plain">
+          <li>Client fills the form at <span class="mono">/start</span>: business name, website, trade, email.</li>
+          <li>The system creates one Stripe Checkout session containing <i>both</i> prices — the one-time
+          $2,799 setup fee and the $139.99/month retainer — billed together as a single subscription. The
+          setup fee charges once, on the first invoice; the retainer continues monthly.</li>
+          <li>Client pays on Stripe's hosted page (First Call never touches card details directly).</li>
+          <li>Stripe redirects them to a "payment received" confirmation page.</li>
+          <li>Stripe notifies First Call's system in the background, which kicks off report generation and the
+          onboarding email automatically — see <a href="#process">step 7</a> of the process.</li>
+        </ol>
+        <p class="muted" style="font-size:.9rem">Requires the two Stripe prices to already exist in the Stripe
+        dashboard, plus the secret key and webhook secret configured — see the Readiness report's punch list.</p>
+
+        <h3>Path B — manual invoice (fallback)</h3>
+        <p>If Stripe isn't configured, <span class="mono">/start</span> and <span class="mono">/pricing</span>
+        both show the same message instead of a checkout button: email the contact address with business,
+        website, and trade, and First Call sends a Stripe invoice or payment link directly. Use this path
+        knowingly — don't let a prospect hit a dead end wondering if the form is broken.</p>
+      </section>
+
+      <!-- TOOLS REFERENCE -->
+      <section class="doc-section" id="tools">
+        <p class="kicker">07</p>
+        <h2>Internal tools, quick reference</h2>
+        <p class="dek">Bookmark this section.</p>
+        <div class="tablewrap">
+          <table>
+            <thead><tr><th>Link</th><th>What it's for</th><th>Who uses it</th></tr></thead>
+            <tbody>
+              <tr><td class="mono">/audit</td><td>Public free 100-point visibility scan</td><td>Prospects, or you demoing live</td></tr>
+              <tr><td class="mono">/admin/generate</td><td>Run a real audit + brief + proposal against a named prospect, on the spot</td><td>Anyone selling</td></tr>
+              <tr><td class="mono">/admin</td><td>Hub linking every tool, every generated report, every page on the site</td><td>Team, internal only</td></tr>
+              <tr><td class="mono">/reports/[id]</td><td>A client's research brief</td><td>Team + client</td></tr>
+              <tr><td class="mono">/reports/[id]/proposal</td><td>Client-ready, printable proposal built from the brief</td><td>Team + client</td></tr>
+              <tr><td class="mono">/start</td><td>Checkout — where a prospect becomes a paying client</td><td>Prospects</td></tr>
+              <tr><td class="mono">/playbook</td><td>Public Month-1 execution playbook</td><td>Team + client, as the delivery checklist</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- COMPLIANCE -->
+      <section class="doc-section" id="compliance">
+        <p class="kicker">08</p>
+        <h2>Compliance &amp; legal</h2>
+        <p class="dek">This is a Canadian business — Canadian rules apply, not US ones.</p>
+
+        <h3>CASL (Canada's Anti-Spam Legislation)</h3>
+        <ul>
+          <li>Every commercial email needs consent — express, or clearly implied through an existing business
+          relationship. Never a purchased or scraped list.</li>
+          <li>Every commercial email must identify the sender and include a real mailing address.</li>
+          <li>Every commercial email needs a working, immediate unsubscribe. This is already built —
+          one-click, signed so nobody can unsubscribe someone else's address by guessing a link.</li>
+          <li>Penalties run up to CAD $10M per violation for a business. This is not a formality.</li>
+        </ul>
+
+        <h3>PIPEDA</h3>
+        <p>Collect only the personal data you need, say what it's for, protect it, and let people access,
+        correct, or delete their own data on request.</p>
+
+        <h3>The contracts</h3>
+        <p>The MSA and Foundation SOW cover term (month-to-month, 30 days' notice to cancel), fees, ownership
+        of deliverables, client responsibilities (timely access, honest information, no fake or gated reviews),
+        confidentiality, and a liability cap set to fees paid in the prior three months. <b>Neither has been
+        reviewed by a lawyer yet</b> — the documents say so themselves. Don't treat them as final until that
+        review happens.</p>
+      </section>
+
+      <!-- GLOSSARY -->
+      <section class="doc-section" id="glossary">
+        <p class="kicker">09</p>
+        <h2>Glossary</h2>
+        <p class="dek">For a new hire with no SEO background. Plain English, no jargon left unexplained.</p>
+        <dl class="gloss">
+          <div><dt>Map Pack</dt><dd>The top three local business results Google shows above regular search results, with a map. Most local clicks go here.</dd></div>
+          <div><dt>GBP</dt><dd>Google Business Profile — the free listing that controls what shows in the Map Pack (hours, reviews, category, photos).</dd></div>
+          <div><dt>NAP</dt><dd>Name, Address, Phone — must match exactly everywhere it appears online, or search engines trust the listing less.</dd></div>
+          <div><dt>Local SEO</dt><dd>The work of ranking well for "near me" and city-specific searches — mostly GBP optimization, reviews, and citations.</dd></div>
+          <div><dt>AEO</dt><dd>Answer Engine Optimization — structuring content so Google's AI Overviews can quote it directly instead of just linking to a competitor.</dd></div>
+          <div><dt>GEO</dt><dd>Generative Engine Optimization — the same idea, but for being cited inside ChatGPT, Perplexity, and Gemini answers.</dd></div>
+          <div><dt>Schema</dt><dd>Hidden code on a page that tells search engines and AI exactly what a business is, where it is, and what it offers — machine-readable, not something a visitor sees.</dd></div>
+          <div><dt>E-E-A-T</dt><dd>Experience, Expertise, Authoritativeness, Trustworthiness — Google's quality framework. Real photos, named credentialed people, and accurate facts score higher than generic template copy.</dd></div>
+          <div><dt>Core Web Vitals</dt><dd>Google's page-speed/stability metrics. A slow or janky site ranks worse, independent of content quality.</dd></div>
+          <div><dt>Retainer</dt><dd>The recurring monthly fee for ongoing work, as opposed to the one-time setup fee.</dd></div>
+          <div><dt>Churn</dt><dd>A client canceling. Foundation has no lock-in, so retention depends entirely on visible results and the monthly report.</dd></div>
+        </dl>
+      </section>
+
+      <!-- OPEN QUESTIONS -->
+      <section class="doc-section" id="open">
+        <p class="kicker">10</p>
+        <h2>Open questions — your call, not the code's</h2>
+        <p class="dek">Nothing here is guessed. These need a real answer before First Call is fully operational, and none of them live in this repository.</p>
+
+        <div class="todo-card">
+          <div class="name">Registered legal business entity</div>
+          <div class="desc">Confirm the exact legal name the contracts and invoices should use — the code currently defaults to "First Call" as a placeholder, not a confirmed registration.</div>
+        </div>
+        <div class="todo-card">
+          <div class="name">Business bank account + activated Stripe account</div>
+          <div class="desc">Stripe needs to be out of test mode, verified, and connected to a real business bank account before a real client can pay.</div>
+        </div>
+        <div class="todo-card">
+          <div class="name">GST/HST registration</div>
+          <div class="desc">Check whether First Call needs to register once revenue crosses the relevant Canadian threshold.</div>
+        </div>
+        <div class="todo-card">
+          <div class="name">Legal counsel review of the MSA and SOW</div>
+          <div class="desc">Both documents explicitly ask for this and haven't gotten it yet.</div>
+        </div>
+        <div class="todo-card">
+          <div class="name">Production deployment + environment variables</div>
+          <div class="desc">The full technical punch list lives in the <a href="https://claude.ai/code/artifact/3b3447ad-cb89-4352-85a6-9e3570909e40" target="_blank" rel="noopener">Readiness report</a> — this manual assumes it's been worked through.</div>
+        </div>
+      </section>
+
+      <footer class="doc-footer">
+        First Call Field Manual — internal training document. Not for client distribution. Built 2026-08-25.
+      </footer>
+    </div>
+  </main>
+</div>
+
+<script>
+(function(){
+  var toggle = document.getElementById('sideToggle');
+  var side = document.getElementById('side');
+  if (toggle) {
+    toggle.addEventListener('click', function(){
+      var open = side.classList.toggle('open');
+      toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+  }
+  var links = Array.prototype.slice.call(document.querySelectorAll('#sideNav a'));
+  var sections = links.map(function(l){ return document.querySelector(l.getAttribute('href')); }).filter(Boolean);
+  if ('IntersectionObserver' in window && sections.length) {
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(entry){
+        if (entry.isIntersecting) {
+          var id = '#' + entry.target.id;
+          links.forEach(function(l){ l.classList.toggle('active', l.getAttribute('href') === id); });
+        }
+      });
+    }, { rootMargin: '-20% 0px -70% 0px', threshold: 0 });
+    sections.forEach(function(s){ io.observe(s); });
+  }
+})();
+</script>
