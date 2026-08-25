@@ -27,7 +27,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     url: site.url,
     email: site.email,
     description: site.description,
-    areaServed: "US",
+    areaServed: "CA",
     slogan: site.tagline,
   };
 
