@@ -1,0 +1,364 @@
+<title>First Call Command Center</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500&family=Source+Sans+3:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --bg:#fbf8f1; --surface:#f2ecdd; --surface-2:#ece4cf; --ink:#1c1a13; --muted:#6e6656;
+    --line:#ddd3bd; --gold:#8f6c1b; --rust:#a94a1d;
+    --good:#3f6b3f; --good-soft:#e2ebdd; --bad:#a94a1d; --bad-soft:#f3e2d8; --neutral:#8a8272; --neutral-soft:#eee8d9;
+    --gold-soft:#f0e6c9; --shadow:0 1px 2px rgba(28,26,19,.06);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#0c0d0b; --surface:#141510; --surface-2:#1a1b14; --ink:#f4efe4; --muted:#b7b1a4;
+      --line:#2a2b26; --gold:#c9a227; --rust:#c45c26;
+      --good:#8caa5a; --good-soft:#1e2417; --bad:#c45c26; --bad-soft:#241a12; --neutral:#8a8272; --neutral-soft:#1a1a15;
+      --gold-soft:#221d0e; --shadow:0 1px 2px rgba(0,0,0,.4);
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#0c0d0b; --surface:#141510; --surface-2:#1a1b14; --ink:#f4efe4; --muted:#b7b1a4;
+    --line:#2a2b26; --gold:#c9a227; --rust:#c45c26;
+    --good:#8caa5a; --good-soft:#1e2417; --bad:#c45c26; --bad-soft:#241a12; --neutral:#8a8272; --neutral-soft:#1a1a15;
+    --gold-soft:#221d0e; --shadow:0 1px 2px rgba(0,0,0,.4);
+  }
+
+  *{box-sizing:border-box;}
+  body{ margin:0; background:var(--bg); color:var(--ink); font-family:"Source Sans 3",ui-sans-serif,system-ui,sans-serif;
+    font-size:16px; line-height:1.5; -webkit-font-smoothing:antialiased; }
+  h1,h2,h3{ font-family:"Fraunces",ui-serif,Georgia,serif; text-wrap:balance; margin:0; font-weight:600; }
+  .mono{ font-family:"IBM Plex Mono",ui-monospace,monospace; }
+  code{ font-family:"IBM Plex Mono",monospace; background:var(--surface-2); padding:1px 6px; border-radius:5px; font-size:.85em; }
+  a{ color:var(--gold); }
+  a:focus-visible, button:focus-visible{ outline:2px solid var(--gold); outline-offset:2px; }
+
+  .wrap{ max-width:1120px; margin:0 auto; padding:0 24px 100px; }
+
+  header.hero{ padding:48px 0 8px; }
+  .eyebrow{ font-size:.78rem; text-transform:uppercase; letter-spacing:.12em; color:var(--gold); font-weight:600; }
+  h1{ font-size:clamp(1.9rem,4vw,2.7rem); margin-top:.4rem; }
+  .lede{ margin-top:.8rem; max-width:70ch; color:var(--muted); }
+
+  .statusbar{ margin-top:22px; display:flex; flex-wrap:wrap; gap:10px; }
+  .status{ display:inline-flex; align-items:center; gap:7px; font-size:.8rem; background:var(--surface);
+    border:1px solid var(--line); border-radius:999px; padding:6px 12px; }
+  .status .dot{ width:7px; height:7px; border-radius:50%; }
+  .status.good .dot{ background:var(--good); } .status.bad .dot{ background:var(--bad); } .status.warn .dot{ background:var(--gold); }
+
+  nav.jump{ position:sticky; top:0; z-index:30; margin-top:28px; background:color-mix(in srgb, var(--bg) 90%, transparent);
+    backdrop-filter:blur(8px); border-bottom:1px solid var(--line); border-top:1px solid var(--line); }
+  nav.jump .inner{ max-width:1120px; margin:0 auto; padding:12px 24px; display:flex; gap:20px; flex-wrap:wrap; }
+  nav.jump a{ font-size:.82rem; text-decoration:none; color:var(--muted); text-transform:uppercase; letter-spacing:.05em; }
+  nav.jump a:hover{ color:var(--ink); }
+
+  section{ margin-top:52px; scroll-margin-top:60px; }
+  .section-head{ display:flex; align-items:baseline; justify-content:space-between; gap:12px; flex-wrap:wrap;
+    border-bottom:1px solid var(--line); padding-bottom:12px; }
+  .section-head h2{ font-size:1.5rem; }
+  .section-head .meta{ font-size:.82rem; color:var(--muted); }
+  .section-intro{ margin-top:12px; color:var(--muted); max-width:74ch; font-size:.95rem; }
+
+  /* ---- Launch tiles ---- */
+  .launch-grid{ margin-top:18px; display:grid; grid-template-columns:repeat(auto-fill,minmax(190px,1fr)); gap:10px; }
+  .tile{ display:flex; flex-direction:column; gap:6px; background:var(--surface); border:1px solid var(--line);
+    border-radius:14px; padding:16px; text-decoration:none; color:var(--ink); box-shadow:var(--shadow);
+    transition:border-color .15s ease, transform .15s ease; }
+  .tile:hover{ border-color:var(--gold); transform:translateY(-1px); }
+  .tile .icon{ font-size:1.3rem; }
+  .tile .name{ font-weight:600; font-size:.95rem; }
+  .tile .sub{ font-size:.76rem; color:var(--muted); }
+  .tile.dim{ opacity:.55; }
+  .tile.dim:hover{ opacity:.85; }
+
+  .subgroup{ margin-top:28px; }
+  .subgroup h3{ font-size:.95rem; font-weight:600; color:var(--muted); text-transform:uppercase; letter-spacing:.05em; }
+
+  /* ---- File browser ---- */
+  .filecat{ margin-top:26px; }
+  .filecat h3{ font-size:1.02rem; font-weight:600; display:flex; align-items:center; gap:8px; }
+  .filecat .filecat-meta{ font-weight:400; font-size:.8rem; color:var(--muted); font-family:"Source Sans 3",sans-serif; }
+  .filerows{ margin-top:10px; border:1px solid var(--line); border-radius:12px; overflow:hidden; }
+  a.filerow{ display:flex; align-items:center; gap:12px; padding:11px 16px; text-decoration:none; color:var(--ink);
+    border-bottom:1px solid var(--line); background:var(--surface); }
+  a.filerow:last-child{ border-bottom:none; }
+  a.filerow:hover{ background:var(--surface-2); }
+  a.filerow .ficon{ color:var(--muted); font-size:.85rem; width:16px; text-align:center; flex:none; }
+  a.filerow .fname{ font-family:"IBM Plex Mono",monospace; font-size:.86rem; flex:none; }
+  a.filerow .fdesc{ font-size:.84rem; color:var(--muted); flex:1; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  a.filerow .farrow{ color:var(--muted); font-size:.8rem; flex:none; }
+  a.filerow.local{ cursor:default; }
+  a.filerow.local .farrow{ visibility:hidden; }
+
+  /* ---- Task tracker ---- */
+  .tasklist{ margin-top:16px; display:grid; gap:8px; }
+  .task{ display:flex; align-items:flex-start; gap:12px; background:var(--surface); border:1px solid var(--line);
+    border-radius:12px; padding:13px 16px; cursor:pointer; }
+  .task:hover{ border-color:var(--gold); }
+  .task input{ margin-top:3px; width:17px; height:17px; accent-color:var(--gold); flex:none; cursor:pointer; }
+  .task .tt{ font-weight:600; font-size:.92rem; }
+  .task .td{ margin-top:3px; font-size:.84rem; color:var(--muted); }
+  .task.done .tt{ text-decoration:line-through; color:var(--muted); }
+  .task .tag{ display:inline-block; margin-top:6px; font-size:.68rem; text-transform:uppercase; letter-spacing:.05em;
+    border:1px solid var(--line); border-radius:6px; padding:2px 7px; color:var(--muted); }
+  .task .tag.cost{ border-color:color-mix(in srgb, var(--bad) 50%, var(--line)); color:var(--bad); }
+  .tasklist-progress{ margin-top:14px; font-size:.85rem; color:var(--muted); display:flex; align-items:center; gap:10px; }
+  .bar{ flex:1; max-width:240px; height:6px; border-radius:999px; background:var(--surface-2); overflow:hidden; }
+  .bar > div{ height:100%; background:var(--gold); border-radius:999px; transition:width .2s ease; }
+
+  /* ---- Facts strip ---- */
+  .facts{ margin-top:18px; display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:1px;
+    background:var(--line); border:1px solid var(--line); border-radius:14px; overflow:hidden; }
+  .fact{ background:var(--surface); padding:16px 18px; }
+  .fact .k{ font-size:.72rem; text-transform:uppercase; letter-spacing:.06em; color:var(--muted); }
+  .fact .v{ margin-top:5px; font-size:.95rem; }
+
+  footer{ margin-top:70px; padding-top:22px; border-top:1px solid var(--line); color:var(--muted); font-size:.85rem;
+    display:flex; justify-content:space-between; gap:16px; flex-wrap:wrap; }
+  footer a{ color:var(--muted); }
+
+  @media (max-width:640px){
+    .filerows a.filerow{ flex-wrap:wrap; }
+    .filerow .fname{ width:100%; }
+  }
+</style>
+
+<header class="hero">
+  <p class="eyebrow">Your command center</p>
+  <h1>Run First Call from here</h1>
+  <p class="lede">
+    Every tool, every file, and everything left to do — in one place, all of it clickable. Built 2026-08-25.
+    For the full story behind any of this, the <a href="https://claude.ai/code/artifact/3b3447ad-cb89-4352-85a6-9e3570909e40" target="_blank" rel="noopener">Readiness report</a>
+    and the <a href="https://claude.ai/code/artifact/2de5a1b9-001b-4cd9-926d-1d6b18dfcc24" target="_blank" rel="noopener">Field Manual</a> go deep — this page is the launcher.
+  </p>
+  <div class="statusbar">
+    <span class="status good"><span class="dot"></span>Working site: firstcall-teal.vercel.app</span>
+    <span class="status bad"><span class="dot"></span>firstcallmarketing.ai unrecoverable — buy firstcallconsulting.ai ($160/2yr)</span>
+    <span class="status warn"><span class="dot"></span>CRM built, database not created yet</span>
+    <span class="status warn"><span class="dot"></span>Stripe / Resend not connected — mock mode active</span>
+  </div>
+</header>
+
+<nav class="jump">
+  <div class="inner">
+    <a href="#launch">Launch</a>
+    <a href="#files">Every file</a>
+    <a href="#todo">What's left</a>
+    <a href="#facts">Quick facts</a>
+  </div>
+</nav>
+
+<div class="wrap">
+
+  <section id="launch">
+    <div class="section-head"><h2>Launch</h2><span class="meta">Opens in a new tab</span></div>
+    <p class="section-intro">
+      <b>firstcall-teal.vercel.app</b> is the real, working deployment — pricing, checkout, the admin
+      dashboard, and the audit tool all work there right now. <span class="mono">firstcallmarketing.ai</span>
+      is not — see the status bar above.
+    </p>
+
+    <div class="subgroup">
+      <h3>The business, live</h3>
+      <div class="launch-grid">
+        <a class="tile" href="https://firstcall-teal.vercel.app" target="_blank" rel="noopener">
+          <span class="icon">🌐</span><span class="name">Site home</span><span class="sub">firstcall-teal.vercel.app</span></a>
+        <a class="tile" href="https://firstcall-teal.vercel.app/pricing" target="_blank" rel="noopener">
+          <span class="icon">💲</span><span class="name">Pricing</span><span class="sub">/pricing</span></a>
+        <a class="tile" href="https://firstcall-teal.vercel.app/start" target="_blank" rel="noopener">
+          <span class="icon">🧾</span><span class="name">Checkout</span><span class="sub">/start</span></a>
+        <a class="tile" href="https://firstcall-teal.vercel.app/audit" target="_blank" rel="noopener">
+          <span class="icon">🔍</span><span class="name">Free audit tool</span><span class="sub">/audit</span></a>
+      </div>
+    </div>
+
+    <div class="subgroup">
+      <h3>Internal tools</h3>
+      <div class="launch-grid">
+        <a class="tile" href="https://firstcall-teal.vercel.app/admin" target="_blank" rel="noopener">
+          <span class="icon">🗂️</span><span class="name">Admin dashboard</span><span class="sub">/admin</span></a>
+        <a class="tile" href="https://firstcall-teal.vercel.app/admin/generate" target="_blank" rel="noopener">
+          <span class="icon">✨</span><span class="name">Generate live proposal</span><span class="sub">/admin/generate</span></a>
+        <a class="tile" href="https://firstcall-teal.vercel.app/crm" target="_blank" rel="noopener">
+          <span class="icon">📇</span><span class="name">CRM</span><span class="sub">/crm</span></a>
+        <a class="tile" href="https://firstcall-teal.vercel.app/crm/leads/new" target="_blank" rel="noopener">
+          <span class="icon">➕</span><span class="name">Add a lead</span><span class="sub">/crm/leads/new</span></a>
+      </div>
+    </div>
+
+    <div class="subgroup">
+      <h3>Docs &amp; reports</h3>
+      <div class="launch-grid">
+        <a class="tile" href="https://claude.ai/code/artifact/3b3447ad-cb89-4352-85a6-9e3570909e40" target="_blank" rel="noopener">
+          <span class="icon">🚦</span><span class="name">Readiness report</span><span class="sub">full audit + punch list</span></a>
+        <a class="tile" href="https://claude.ai/code/artifact/2de5a1b9-001b-4cd9-926d-1d6b18dfcc24" target="_blank" rel="noopener">
+          <span class="icon">🧭</span><span class="name">Field Manual</span><span class="sub">how to run everything</span></a>
+        <a class="tile" href="https://claude.ai/code/artifact/35144ded-d92a-4b07-a1ec-1a12562fd7a0" target="_blank" rel="noopener">
+          <span class="icon">🎤</span><span class="name">Pitch deck</span><span class="sub">investor / partner facing</span></a>
+      </div>
+    </div>
+
+    <div class="subgroup">
+      <h3>External accounts</h3>
+      <div class="launch-grid">
+        <a class="tile" href="https://github.com/cartyjosh7-ai/firstcall" target="_blank" rel="noopener">
+          <span class="icon">🐙</span><span class="name">GitHub repo</span><span class="sub">source of truth</span></a>
+        <a class="tile" href="https://vercel.com/fc-consulting/firstcall" target="_blank" rel="noopener">
+          <span class="icon">▲</span><span class="name">Vercel project</span><span class="sub">deploys, env vars, domains</span></a>
+        <a class="tile dim" href="https://dashboard.stripe.com/register" target="_blank" rel="noopener">
+          <span class="icon">💳</span><span class="name">Stripe</span><span class="sub">not created yet</span></a>
+        <a class="tile dim" href="https://resend.com/signup" target="_blank" rel="noopener">
+          <span class="icon">✉️</span><span class="name">Resend</span><span class="sub">not created yet</span></a>
+      </div>
+    </div>
+  </section>
+
+  <section id="files">
+    <div class="section-head"><h2>Every file, clickable</h2><span class="meta">Opens on GitHub — no Explorer needed</span></div>
+    <p class="section-intro">
+      Everything below lives in the <span class="mono">firstcall</span> repo and opens straight from GitHub in
+      a new tab. This works because the repo is pushed and current as of this page's build — if something
+      looks missing, the newest work may still be local-only.
+    </p>
+
+    <div class="filecat">
+      <h3>Start here</h3>
+      <div class="filerows">
+        <a class="filerow" href="https://github.com/cartyjosh7-ai/firstcall/blob/master/CLAUDE.md" target="_blank" rel="noopener">
+          <span class="ficon">📄</span><span class="fname">CLAUDE.md</span><span class="fdesc">Full architecture + the working log of every decision made</span><span class="farrow">↗</span></a>
+        <a class="filerow" href="https://github.com/cartyjosh7-ai/firstcall/blob/master/docs/README.md" target="_blank" rel="noopener">
+          <span class="ficon">📄</span><span class="fname">docs/README.md</span><span class="fdesc">Index of every non-code deliverable</span><span class="farrow">↗</span></a>
+        <a class="filerow" href="https://github.com/cartyjosh7-ai/firstcall/blob/master/.env.example" target="_blank" rel="noopener">
+          <span class="ficon">📄</span><span class="fname">.env.example</span><span class="fdesc">Every environment variable this app uses, documented</span><span class="farrow">↗</span></a>
+      </div>
+    </div>
+
+    <div class="filecat">
+      <h3>Business &amp; reference <span class="filecat-meta">docs/</span></h3>
+      <div class="filerows">
+        <a class="filerow" href="https://github.com/cartyjosh7-ai/firstcall/blob/master/docs/business/business-context.md" target="_blank" rel="noopener">
+          <span class="ficon">📄</span><span class="fname">business-context.md</span><span class="fdesc">Who First Call is, market, jurisdiction</span><span class="farrow">↗</span></a>
+        <a class="filerow" href="https://github.com/cartyjosh7-ai/firstcall/blob/master/docs/business/pricing-model.md" target="_blank" rel="noopener">
+          <span class="ficon">📄</span><span class="fname">pricing-model.md</span><span class="fdesc">What's live vs. scoped-but-dormant</span><span class="farrow">↗</span></a>
+        <a class="filerow" href="https://github.com/cartyjosh7-ai/firstcall/blob/master/docs/business/compliance-rules.md" target="_blank" rel="noopener">
+          <span class="ficon">📄</span><span class="fname">compliance-rules.md</span><span class="fdesc">CASL / PIPEDA rules for any email or lead code</span><span class="farrow">↗</span></a>
+        <a class="filerow" href="https://github.com/cartyjosh7-ai/firstcall/blob/master/docs/seo-operating-manual-source.pdf" target="_blank" rel="noopener">
+          <span class="ficon">📕</span><span class="fname">seo-operating-manual-source.pdf</span><span class="fdesc">The sourced 33-page operating manual (PDF)</span><span class="farrow">↗</span></a>
+      </div>
+    </div>
+
+    <div class="filecat">
+      <h3>App source <span class="filecat-meta">src/</span></h3>
+      <div class="filerows">
+        <a class="filerow" href="https://github.com/cartyjosh7-ai/firstcall/tree/master/src/app" target="_blank" rel="noopener">
+          <span class="ficon">📁</span><span class="fname">src/app/</span><span class="fdesc">Every page — marketing, legal, tools, reports</span><span class="farrow">↗</span></a>
+        <a class="filerow" href="https://github.com/cartyjosh7-ai/firstcall/tree/master/src/app/crm" target="_blank" rel="noopener">
+          <span class="ficon">📁</span><span class="fname">src/app/crm/</span><span class="fdesc">The CRM — leads, contacts, employees, auth</span><span class="farrow">↗</span></a>
+        <a class="filerow" href="https://github.com/cartyjosh7-ai/firstcall/tree/master/src/lib/agents" target="_blank" rel="noopener">
+          <span class="ficon">📁</span><span class="fname">src/lib/agents/</span><span class="fdesc">Research + Implementation SEO agents</span><span class="farrow">↗</span></a>
+        <a class="filerow" href="https://github.com/cartyjosh7-ai/firstcall/blob/master/src/lib/audit.ts" target="_blank" rel="noopener">
+          <span class="ficon">📄</span><span class="fname">src/lib/audit.ts</span><span class="fdesc">The real, live-fetch visibility scanner</span><span class="farrow">↗</span></a>
+        <a class="filerow" href="https://github.com/cartyjosh7-ai/firstcall/blob/master/src/lib/content.ts" target="_blank" rel="noopener">
+          <span class="ficon">📄</span><span class="fname">src/lib/content.ts</span><span class="fdesc">All site copy, pricing, and industry content in one file</span><span class="farrow">↗</span></a>
+        <a class="filerow" href="https://github.com/cartyjosh7-ai/firstcall/tree/master/src/app/legal" target="_blank" rel="noopener">
+          <span class="ficon">📁</span><span class="fname">src/app/legal/</span><span class="fdesc">MSA and Foundation SOW</span><span class="farrow">↗</span></a>
+      </div>
+    </div>
+
+    <div class="filecat">
+      <h3>Local only <span class="filecat-meta">never on GitHub — by design, these hold secrets</span></h3>
+      <div class="filerows">
+        <span class="filerow local"><span class="ficon">🔒</span><span class="fname">.env.local</span><span class="fdesc">C:\Users\carty\firstcall\.env.local — your generated secrets + keys as you add them</span></span>
+      </div>
+    </div>
+  </section>
+
+  <section id="todo">
+    <div class="section-head"><h2>What's left to fully operate</h2><span class="meta" id="progressLabel"></span></div>
+    <p class="section-intro">Check items off as you do them — this is saved in this browser, so it's still checked next time you open this page here.</p>
+
+    <div class="tasklist-progress">
+      <span id="progressText">0 of 0 done</span>
+      <div class="bar"><div id="progressBar" style="width:0%"></div></div>
+    </div>
+
+    <div class="tasklist" id="tasklist">
+      <!-- populated by JS from TASKS below, with localStorage persistence -->
+    </div>
+  </section>
+
+  <section id="facts">
+    <div class="section-head"><h2>Quick facts</h2></div>
+    <div class="facts">
+      <div class="fact"><div class="k">Sells today</div><div class="v">Foundation — CAD $2,799 + $139.99/mo</div></div>
+      <div class="fact"><div class="k">Based in</div><div class="v">Calgary, Alberta, Canada</div></div>
+      <div class="fact"><div class="k">Serves</div><div class="v">Canadian home-service SMBs</div></div>
+      <div class="fact"><div class="k">Trades covered</div><div class="v">HVAC, Roofing, Remediation, Cleaning, Auto, Trucking</div></div>
+      <div class="fact"><div class="k">Legal entity</div><div class="v">Not yet confirmed (placeholder: "First Call")</div></div>
+      <div class="fact"><div class="k">Working URL</div><div class="v mono">firstcall-teal.vercel.app</div></div>
+    </div>
+  </section>
+
+  <footer>
+    <span>First Call — internal, not for client distribution.</span>
+    <span>Readiness report and Field Manual linked above have the full depth behind everything here.</span>
+  </footer>
+</div>
+
+<script>
+(function(){
+  var TASKS = [
+    {id:"push", t:"Push local commits to GitHub", d:"Done as of this build \u2014 keep doing this after future local work so this dashboard's file links stay current.", tag:"free", done:true},
+    {id:"crm-build", t:"Build the CRM", d:"Leads, contacts, employee accounts, KPIs.", tag:"free", done:true},
+    {id:"jurisdiction", t:"Fix US-jurisdiction copy + MSA governing law", d:"Schema, /markets page, and MSA \u00a710 now correctly say Canada / Alberta.", tag:"free", done:true},
+    {id:"reset", t:"CRM self-serve password reset", d:"Built \u2014 needs Resend configured to actually send.", tag:"free", done:true},
+    {id:"domain", t:"Buy firstcallconsulting.ai", d:"Confirmed available, $160 for 2 years, via Vercel \u2014 auto-configures DNS.", tag:"cost $160", done:false},
+    {id:"stripe", t:"Create a free Stripe account + test-mode prices", d:"Unlocks building and testing checkout end to end before it's ever real money.", tag:"free", done:false},
+    {id:"resend", t:"Create a free Resend account", d:"100 emails/day free \u2014 turns on lead notifications, client emails, CRM password reset.", tag:"free", done:false},
+    {id:"postgres", t:"Create the free Vercel Postgres database", d:"Turns on the CRM. Vercel dashboard \u2192 Storage \u2192 Create Database \u2192 Postgres.", tag:"free", done:false},
+    {id:"secrets", t:"Paste the generated secrets into Vercel", d:"AUTH_SECRET, UNSUBSCRIBE_SECRET, ADMIN_API_SECRET, CRM_IMPORT_SECRET \u2014 already generated, sitting in .env.local.", tag:"free", done:false},
+    {id:"address", t:"Confirm your real mailing address", d:"Required by CASL on every commercial email.", tag:"free", done:false},
+    {id:"legalname", t:"Confirm the exact legal business name", d:"Used across contracts and invoices.", tag:"free", done:false},
+    {id:"gbp", t:"Create a Google Business Profile for First Call itself", d:"You're selling GBP optimization \u2014 worth having your own.", tag:"free", done:false},
+    {id:"counsel", t:"Legal counsel review of the MSA and SOW", d:"Both documents ask for this explicitly \u2014 hasn't happened yet.", tag:"cost varies", done:false},
+    {id:"worktree", t:"Clean up the stale git worktree branch", d:"Safety-blocked pending your explicit go-ahead \u2014 tell Claude to retry.", tag:"free", done:false},
+    {id:"e2e", t:"Run one real end-to-end test", d:"Submit /start in Stripe test mode, confirm the webhook + report + email all fire, before the first real customer.", tag:"free", done:false}
+  ];
+
+  var STORE_KEY = "fc-command-center-tasks-v1";
+  var saved = {};
+  try { saved = JSON.parse(localStorage.getItem(STORE_KEY) || "{}"); } catch(e) { saved = {}; }
+
+  var list = document.getElementById("tasklist");
+  TASKS.forEach(function(task){
+    var isDone = saved.hasOwnProperty(task.id) ? saved[task.id] : task.done;
+    var row = document.createElement("label");
+    row.className = "task" + (isDone ? " done" : "");
+    row.innerHTML =
+      '<input type="checkbox" ' + (isDone ? "checked" : "") + '>' +
+      '<div><div class="tt"></div><div class="td"></div><span class="tag' + (task.tag.indexOf("cost")===0 ? " cost" : "") + '"></span></div>';
+    row.querySelector(".tt").textContent = task.t;
+    row.querySelector(".td").textContent = task.d;
+    row.querySelector(".tag").textContent = task.tag;
+    var checkbox = row.querySelector("input");
+    checkbox.addEventListener("change", function(){
+      row.classList.toggle("done", checkbox.checked);
+      saved[task.id] = checkbox.checked;
+      try { localStorage.setItem(STORE_KEY, JSON.stringify(saved)); } catch(e) {}
+      updateProgress();
+    });
+    list.appendChild(row);
+  });
+
+  function updateProgress(){
+    var boxes = list.querySelectorAll("input[type=checkbox]");
+    var done = 0;
+    boxes.forEach(function(b){ if (b.checked) done++; });
+    document.getElementById("progressText").textContent = done + " of " + boxes.length + " done";
+    document.getElementById("progressBar").style.width = (boxes.length ? (done/boxes.length*100) : 0) + "%";
+    document.getElementById("progressLabel").textContent = done + "/" + boxes.length;
+  }
+  updateProgress();
+})();
+</script>

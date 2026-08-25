@@ -1,7 +1,10 @@
 # First Call — everything in one place
 
-Index of everything built for First Call (`firstcallmarketing.ai`), consolidated here so it's all
-visible from inside the project folder instead of scattered across Claude Code's internal storage.
+Index of everything built for First Call, consolidated here so it's all visible from inside the
+project folder instead of scattered across Claude Code's internal storage. **Start with the
+[Command Center](https://claude.ai/code/artifact/86ae4a6e-6a0c-4a37-804e-d90e2b939c97)** — a clickable
+dashboard that links to every tool, every file below, and the live task list, instead of reading this
+file top to bottom.
 
 ## 1. The application (this repo)
 
@@ -22,8 +25,9 @@ Next.js 15 site, live at the repo root (`..`). Full architecture writeup: [`../C
 | CRM — leads, contact logs, employee accounts & KPIs (login-gated, needs one-time DB setup — see `../CLAUDE.md`) | `../src/app/crm/` |
 | Env config reference | `../.env.example` |
 
-Also active: a locked git worktree on branch `worktree-seo-agents-backend` at
-`../.claude/worktrees/seo-agents-backend/` — in-progress parallel work, not stale.
+Also present: a **stale, already-merged** git worktree on branch `worktree-seo-agents-backend` at
+`../.claude/worktrees/seo-agents-backend/` — safe to remove, just needs an explicit go-ahead (a safety
+check blocked the automatic cleanup attempt on 2026-08-25).
 
 ## 2. Business & compliance knowledge (`docs/business/`)
 
@@ -53,8 +57,11 @@ say so and both should be updated.
 - [`pitch-deck.html`](pitch-deck.html) — static copy of the pitch deck. The live, sharable version
   is the published Artifact: https://claude.ai/code/artifact/35144ded-d92a-4b07-a1ec-1a12562fd7a0
 
-## 5. Readiness report & Field Manual (2026-08-25)
+## 5. Command Center, Readiness report & Field Manual (2026-08-25)
 
+- [`command-center.html`](command-center.html) — the clickable dashboard: every live tool, every file
+  in this repo (linked to GitHub), and a checkable task list of what's left, saved per-browser. Live
+  version: https://claude.ai/code/artifact/86ae4a6e-6a0c-4a37-804e-d90e2b939c97
 - [`readiness-report.html`](readiness-report.html) — full inventory of everything built, checked live
   against production, plus the exact punch list before the first sale. Live version:
   https://claude.ai/code/artifact/3b3447ad-cb89-4352-85a6-9e3570909e40
@@ -62,9 +69,10 @@ say so and both should be updated.
   sales-to-delivery process, closing scripts, payment collection, compliance, and a glossary for new
   hires. Live version: https://claude.ai/code/artifact/2de5a1b9-001b-4cd9-926d-1d6b18dfcc24
 
-These two are a snapshot as of 2026-08-25 — re-generate rather than hand-edit once the production
-deployment gap (see `../CLAUDE.md`) is fixed, since a lot of their content is "here's what's broken
-right now."
+All three are a snapshot as of 2026-08-25 — re-generate rather than hand-edit once the domain is
+bought and the remaining setup is done (see `../CLAUDE.md`), since a lot of their content is "here's
+what's still missing right now." The working, current deployment today is
+`https://firstcall-teal.vercel.app`, not `firstcallmarketing.ai`.
 
 ## Not included here
 
