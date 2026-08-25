@@ -89,16 +89,15 @@ logins, JWT sessions, two roles (`manager` / `employee`). `middleware.ts` gates 
 (`logContact` in `src/lib/db/queries.ts`), it flips to `hot` and stays there until a human marks it
 `won` or `lost`. Don't add a way to set cold/warm/hot directly — that state machine is the point.
 
-**Not yet done — required before this is usable:**
-1. Create the Postgres DB: Vercel dashboard → the `firstcall` project → Storage → Create Database →
-   Postgres (Neon) → Connect to Project. This auto-injects `POSTGRES_URL` into Vercel's env vars.
-2. Set `AUTH_SECRET` (any random 32+ byte string, or `npx auth secret`) in Vercel's env vars too.
-3. Locally: copy the same `POSTGRES_URL`/`AUTH_SECRET` into `.env.local`, then run `npm run db:migrate`
-   once to create the tables (migration already generated at `drizzle/0000_blushing_the_anarchist.sql`).
-4. Redeploy, then visit `/crm/setup` **once** — it only works while zero accounts exist, and creates
-   the one manager account. After that it permanently redirects to `/crm/login`.
-5. From `/crm/employees` (manager-only), create employee accounts — you set their initial password,
-   they should change it after first login (no self-serve password reset exists yet).
+**Status as of 2026-08-25: fully wired up and live.** Postgres (`neon-lime-fence`, free tier, connected
+to Production + Preview), `AUTH_SECRET`/`CRM_IMPORT_SECRET` set in Vercel, migration applied, production
+redeployed — `firstcall-teal.vercel.app/crm/setup` returns 200. The connection string is saved in the
+gitignored `.env.local`; don't regenerate it, it's real.
+
+**The one remaining step is not mine to do:** visit `/crm/setup` yourself, once — it only works while
+zero accounts exist and creates the one manager account. Don't create it on the user's behalf even if
+asked to "finish" the CRM; that's their login. After that, `/crm/employees` (manager-only) creates
+employee accounts — self-serve password reset exists (needs Resend to actually send).
 
 Website-sourced leads (audit/contact/proposal submissions, and Stripe `checkout.session.completed`)
 already mirror into this CRM automatically via `mirrorToCrm()` in `src/lib/leads.ts` — best-effort, so

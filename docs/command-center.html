@@ -135,7 +135,7 @@
   <div class="statusbar">
     <span class="status good"><span class="dot"></span>Working site: firstcall-teal.vercel.app</span>
     <span class="status bad"><span class="dot"></span>firstcallmarketing.ai unrecoverable — buy firstcallconsulting.ai ($160/2yr)</span>
-    <span class="status warn"><span class="dot"></span>CRM built, database not created yet</span>
+    <span class="status good"><span class="dot"></span>CRM live — database connected, migrated. Create your manager account at /crm/setup</span>
     <span class="status warn"><span class="dot"></span>Stripe / Resend not connected — mock mode active</span>
   </div>
 </header>
@@ -316,10 +316,11 @@
     {id:"domain", t:"Buy firstcallconsulting.ai", d:"Confirmed available, $160 for 2 years, via Vercel \u2014 auto-configures DNS.", tag:"cost $160", done:false},
     {id:"stripe", t:"Create a free Stripe account + test-mode prices", d:"Unlocks building and testing checkout end to end before it's ever real money.", tag:"free", done:false},
     {id:"resend", t:"Create a free Resend account", d:"100 emails/day free \u2014 turns on lead notifications, client emails, CRM password reset.", tag:"free", done:false},
-    {id:"postgres", t:"Create the free Vercel Postgres database", d:"Turns on the CRM. Vercel dashboard \u2192 Storage \u2192 Create Database \u2192 Postgres.", tag:"free", done:false},
-    {id:"secrets", t:"Paste the generated secrets into Vercel", d:"AUTH_SECRET, UNSUBSCRIBE_SECRET, ADMIN_API_SECRET, CRM_IMPORT_SECRET \u2014 already generated, sitting in .env.local.", tag:"free", done:false},
-    {id:"address", t:"Confirm your real mailing address", d:"Required by CASL on every commercial email.", tag:"free", done:false},
-    {id:"legalname", t:"Confirm the exact legal business name", d:"Used across contracts and invoices.", tag:"free", done:false},
+    {id:"postgres", t:"Create the free Vercel Postgres database", d:"Done 2026-08-25 \u2014 neon-lime-fence, connected, migrated. CRM is live at /crm.", tag:"free", done:true},
+    {id:"secrets", t:"Paste the generated secrets into Vercel", d:"Done 2026-08-25 \u2014 AUTH_SECRET and CRM_IMPORT_SECRET added and redeployed. (UNSUBSCRIBE_SECRET / ADMIN_API_SECRET turned out to already be set by an earlier session.)", tag:"free", done:true},
+    {id:"managersetup", t:"Create your manager account", d:"Visit firstcall-teal.vercel.app/crm/setup yourself \u2014 only works once, while the CRM has zero accounts. Claude can't do this step; it's your login.", tag:"free", done:false},
+    {id:"address", t:"Verify your real mailing address is actually set", d:"NEXT_PUBLIC_MAILING_ADDRESS already exists in Vercel from an earlier session \u2014 unconfirmed whether it's a real address or still the placeholder. Required by CASL.", tag:"free", done:false},
+    {id:"legalname", t:"Verify the legal business name value", d:"LEGAL_ENTITY_NAME already exists in Vercel from an earlier session \u2014 confirm it's actually correct.", tag:"free", done:false},
     {id:"gbp", t:"Create a Google Business Profile for First Call itself", d:"You're selling GBP optimization \u2014 worth having your own.", tag:"free", done:false},
     {id:"counsel", t:"Legal counsel review of the MSA and SOW", d:"Both documents ask for this explicitly \u2014 hasn't happened yet.", tag:"cost varies", done:false},
     {id:"worktree", t:"Clean up the stale git worktree branch", d:"Safety-blocked pending your explicit go-ahead \u2014 tell Claude to retry.", tag:"free", done:false},
