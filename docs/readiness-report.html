@@ -356,6 +356,12 @@
             <div class="path"><code>src/lib/leads.ts</code>, <code>/api/crm/import</code></div></div>
           <span class="pill partial">Built, needs DB setup</span>
         </div>
+        <div class="item">
+          <div><div class="name">Self-serve password reset</div>
+            <div class="desc">Added 2026-08-25. Signed, self-expiring reset links (1 hour) — no separate token table, invalidated automatically the moment a password actually changes. Needs Resend configured to actually send; safe no-op until then.</div>
+            <div class="path"><code>/crm/forgot-password</code>, <code>src/lib/reset-token.ts</code></div></div>
+          <span class="pill partial">Built, needs DB + email setup</span>
+        </div>
       </div>
     </div>
 
@@ -364,7 +370,7 @@
       <div class="items">
         <div class="item">
           <div><div class="name">MSA, Foundation SOW, Privacy, Terms</div>
-            <div class="desc">Short-form templates covering term, fees, ownership, liability cap, cancellation. Explicitly marked "have counsel review" — that review hasn't happened yet.</div>
+            <div class="desc">Short-form templates covering term, fees, ownership, liability cap, cancellation. Explicitly marked "have counsel review" — that review hasn't happened yet. Fixed 2026-08-25: §10 of the MSA still said "the state of your principal place of business" (US-style boilerplate) — now specifies Alberta law and Calgary courts.</div>
             <div class="path"><code>/legal/msa</code>, <code>/legal/sow</code>, <code>/privacy</code>, <code>/terms</code></div></div>
           <span class="pill live">Live, uncounseled</span>
         </div>
@@ -492,10 +498,6 @@
       <div class="item2">
         <div class="name">A lead scraper</div>
         <div class="desc">The CRM (see above) has a ready-to-use import endpoint for cold leads, but nothing scrapes or sources those leads yet — that pipeline itself doesn't exist.</div>
-      </div>
-      <div class="item2">
-        <div class="name">Self-serve password reset for CRM accounts</div>
-        <div class="desc">The manager sets each employee's initial password by hand. There's no "forgot password" flow yet — resetting one today means the manager creating a new login.</div>
       </div>
     </div>
   </section>

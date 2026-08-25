@@ -11,7 +11,7 @@ export const dynamic = "force-dynamic";
 export default async function CrmLoginPage({
   searchParams,
 }: {
-  searchParams: Promise<{ error?: string }>;
+  searchParams: Promise<{ error?: string; reset?: string }>;
 }) {
   const session = await auth();
   if (session?.user) redirect("/crm");
@@ -19,12 +19,14 @@ export default async function CrmLoginPage({
   const count = await userCount();
   if (count === 0) redirect("/crm/setup");
 
-  const { error } = await searchParams;
+  const { error, reset } = await searchParams;
 
   return (
     <div className="mx-auto flex min-h-screen max-w-sm flex-col justify-center px-5 py-16">
       <p className="text-xs uppercase tracking-widest text-gold">First Call</p>
       <h1 className="mt-2 font-serif text-3xl">Sign in to the CRM</h1>
+
+      {reset ? <p className="mt-4 text-sm text-gold">Password set — sign in with your new password.</p> : null}
 
       <form action={loginAction} className="mt-8 grid gap-3">
         <label className="text-sm">
@@ -51,8 +53,11 @@ export default async function CrmLoginPage({
         </button>
       </form>
 
-      <p className="mt-8 text-xs text-muted">
-        <Link href="/">← Back to firstcallmarketing.ai</Link>
+      <p className="mt-4 text-xs text-muted">
+        <Link href="/crm/forgot-password">Forgot password?</Link>
+      </p>
+      <p className="mt-4 text-xs text-muted">
+        <Link href="/">← Back to the site</Link>
       </p>
     </div>
   );

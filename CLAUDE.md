@@ -171,3 +171,13 @@ last handful of entries; prune older ones once they're no longer load-bearing.
   Conclusion: buy `firstcallconsulting.ai` ($160/2yr, available, checked live in Vercel) rather than keep
   chasing `firstcallmarketing.ai`. User deferred the actual purchase to later — **next session, check
   whether it's been bought yet before assuming it hasn't.**
+- **2026-08-25 (zero-cost pass)** — User asked for everything gettable-done without payment or their
+  involvement. Shipped: CRM self-serve password reset (`/crm/forgot-password`, `src/lib/reset-token.ts`,
+  signed self-expiring links, no token table); fixed the MSA's governing-law clause (was generic
+  "state of your principal place of business" US boilerplate, now Alberta/Calgary). Worktree cleanup is
+  still blocked (classifier blocked the force-remove, needs explicit user sign-off, see "Git worktree"
+  above — don't retry without asking). Generated the four secret env vars
+  (`AUTH_SECRET`/`UNSUBSCRIBE_SECRET`/`ADMIN_API_SECRET`/`CRM_IMPORT_SECRET`) into a new **gitignored**
+  `.env.local` — same values just need copying into Vercel when ready, don't regenerate them. Added a
+  free/organic lead-sourcing section to the Field Manual (directories, manual Maps research, referrals —
+  explicitly not scraping Google Maps, that breaks their ToS).

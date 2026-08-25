@@ -57,8 +57,9 @@ export default function MsaPage() {
       <p>We are not your employee. We may use subcontractors we supervise.</p>
       <h2>10. Law</h2>
       <p>
-        Governing law and venue: the state of your principal place of business unless we agree
-        otherwise in the SOW. This is not legal advice.
+        Governing law and venue: the laws of the Province of Alberta and the federal laws of Canada
+        applicable in it, with the courts of Calgary, Alberta having exclusive jurisdiction, unless we
+        agree otherwise in the SOW. This is not legal advice.
       </p>
       <p>
         Paying Foundation or signing the SOW constitutes acceptance of this MSA.

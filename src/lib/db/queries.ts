@@ -36,6 +36,11 @@ export async function verifyPassword(email: string, password: string) {
   return ok ? user : null;
 }
 
+export async function setUserPassword(userId: string, newPassword: string) {
+  const passwordHash = await bcrypt.hash(newPassword, 12);
+  await getDb().update(users).set({ passwordHash }).where(eq(users.id, userId));
+}
+
 export async function listEmployees() {
   return getDb().select().from(users).where(eq(users.role, "employee")).orderBy(users.name);
 }

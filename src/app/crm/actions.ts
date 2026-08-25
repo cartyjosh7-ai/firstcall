@@ -7,11 +7,16 @@ import {
   assignLead,
   createLead,
   createUser,
+  findUserByEmail,
+  findUserById,
   logContact,
   setLeadStatus,
+  setUserPassword,
   updateLeadNotes,
   userCount,
 } from "@/lib/db/queries";
+import { createResetToken, peekResetTokenUserId, verifyResetToken } from "@/lib/reset-token";
+import { site } from "@/lib/content";
 
 async function requireSession() {
   const session = await auth();
@@ -136,4 +141,48 @@ export async function updateNotesAction(formData: FormData) {
   const notes = String(formData.get("notes") || "");
   await updateLeadNotes(leadId, notes);
   revalidatePath(`/crm/leads/${leadId}`);
+}
+
+// ---------- Password reset ----------
+
+async function sendResetEmail(to: string, name: string, link: string) {
+  const key = process.env.RESEND_API_KEY;
+  if (!key) return; // No-op until Resend is configured, same pattern as src/lib/leads.ts.
+  const { Resend } = await import("resend");
+  const resend = new Resend(key);
+  const from = process.env.RESEND_FROM || `First Call <${site.email}>`;
+  await resend.emails.send({
+    from,
+    to: [to],
+    subject: "Reset your First Call CRM password",
+    text: `Hi ${name},\n\nReset your CRM password here (expires in 1 hour):\n${link}\n\nIf you didn't request this, ignore this email — your password won't change.\n\n— First Call`,
+  });
+}
+
+/** Always redirects to the same "check your email" page, whether or not the address exists — avoids leaking which emails have accounts. */
+export async function requestPasswordResetAction(formData: FormData) {
+  const email = String(formData.get("email") || "").trim();
+  const user = email ? await findUserByEmail(email) : null;
+  if (user) {
+    const token = createResetToken(user.id, user.passwordHash);
+    const link = `${site.url}/crm/reset-password?token=${token}`;
+    await sendResetEmail(user.email, user.name, link).catch(() => {});
+  }
+  redirect("/crm/forgot-password?sent=1");
+}
+
+export async function resetPasswordAction(formData: FormData) {
+  const token = String(formData.get("token") || "");
+  const password = String(formData.get("password") || "");
+
+  const userId = peekResetTokenUserId(token);
+  const user = userId ? await findUserById(userId) : null;
+  const verifiedId = user ? verifyResetToken(token, user.passwordHash) : null;
+
+  if (!user || !verifiedId || verifiedId !== user.id || password.length < 8) {
+    redirect(`/crm/reset-password?token=${token}&error=1`);
+  }
+
+  await setUserPassword(user.id, password);
+  redirect("/crm/login?reset=1");
 }
