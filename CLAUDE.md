@@ -180,3 +180,13 @@ last handful of entries; prune older ones once they're no longer load-bearing.
   `.env.local` — same values just need copying into Vercel when ready, don't regenerate them. Added a
   free/organic lead-sourcing section to the Field Manual (directories, manual Maps research, referrals —
   explicitly not scraping Google Maps, that breaks their ToS).
+- **2026-09-04** — Refreshed the Command Center (`docs/command-center.html`, same published Artifact
+  URL) at the user's request for one hub covering everything First Call. Verified live: the CRM manager
+  account now exists (`/crm/setup` redirects to sign-in — flip this to "done" if you see it undone
+  anywhere else), and `firstcallconsulting.ai` still doesn't resolve — not purchased yet. Added a History
+  section to the hub with a day-by-day build timeline, since raw session transcripts stay out of it by
+  design (point people at `claude --resume` instead). Found unrelated uncommitted work already sitting in
+  the tree (`src/app/crm/leads/*`, `src/lib/leads.ts`, `src/lib/unsubscribe.ts`, new
+  `src/lib/agents/outreach-agent.ts` / `src/lib/outreach.ts`, edited `docs/business/*.md`) — left it alone,
+  didn't commit or inspect it beyond `git status`; next session should check what that is before assuming
+  it's stale.
