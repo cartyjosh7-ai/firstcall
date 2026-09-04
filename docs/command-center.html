@@ -128,14 +128,15 @@
   <p class="eyebrow">Your command center</p>
   <h1>Run First Call from here</h1>
   <p class="lede">
-    Every tool, every file, and everything left to do — in one place, all of it clickable. Built 2026-08-25.
+    Every tool, every file, and everything left to do — in one place, all of it clickable. Built 2026-08-25,
+    refreshed 2026-09-04.
     For the full story behind any of this, the <a href="https://claude.ai/code/artifact/3b3447ad-cb89-4352-85a6-9e3570909e40" target="_blank" rel="noopener">Readiness report</a>
     and the <a href="https://claude.ai/code/artifact/2de5a1b9-001b-4cd9-926d-1d6b18dfcc24" target="_blank" rel="noopener">Field Manual</a> go deep — this page is the launcher.
   </p>
   <div class="statusbar">
     <span class="status good"><span class="dot"></span>Working site: firstcall-teal.vercel.app</span>
     <span class="status bad"><span class="dot"></span>firstcallmarketing.ai unrecoverable — buy firstcallconsulting.ai ($160/2yr)</span>
-    <span class="status good"><span class="dot"></span>CRM live — database connected, migrated. Create your manager account at /crm/setup</span>
+    <span class="status good"><span class="dot"></span>CRM live — manager account created, sign in at /crm</span>
     <span class="status warn"><span class="dot"></span>Stripe / Resend not connected — mock mode active</span>
   </div>
 </header>
@@ -145,6 +146,7 @@
     <a href="#launch">Launch</a>
     <a href="#files">Every file</a>
     <a href="#todo">What's left</a>
+    <a href="#history">History</a>
     <a href="#facts">Quick facts</a>
   </div>
 </nav>
@@ -288,6 +290,46 @@
     </div>
   </section>
 
+  <section id="history">
+    <div class="section-head"><h2>History — what happened, and when</h2><span class="meta">Full back-and-forth is in Claude Code, not here</span></div>
+    <p class="section-intro">
+      A day-by-day timeline of everything built, drawn from the git log. For the actual conversations
+      that produced this (10+ sessions), run <code>claude --resume</code> from
+      <span class="mono">C:\Users\carty\firstcall</span> to pick any of them back up — full transcripts
+      aren't reproduced here since they're logs, not deliverables (largest is 762KB). Planning that
+      happened before this repo existed (business research, the pitch deck) is resumable the same way
+      from <span class="mono">C:\Users\carty\.claude</span> instead.
+    </p>
+
+    <div class="filecat">
+      <h3>2026-08-23 <span class="filecat-meta">day one — repo created, core product built</span></h3>
+      <div class="filerows">
+        <span class="filerow local"><span class="ficon">🏗️</span><span class="fname">Backend + agents</span><span class="fdesc">Initial commit; wired core backend; SEO Research + Implementation agents; zero-cost mock mode so nothing costs money by default</span></span>
+        <span class="filerow local"><span class="ficon">🇨🇦</span><span class="fname">Jurisdiction</span><span class="fdesc">Adopted Calgary/Canada operating context from the sourced SEO business manual</span></span>
+        <span class="filerow local"><span class="ficon">📝</span><span class="fname">Proposals</span><span class="fdesc">Client-ready proposal generator plus a browser UI to generate a real prospect's proposal</span></span>
+        <span class="filerow local"><span class="ficon">🗂️</span><span class="fname">Admin + pricing</span><span class="fdesc">Internal dashboard hub at /admin; repriced Foundation to $2,799 one-time + $139.99/mo; domain fallback rebranded to firstcallconsulting.ai</span></span>
+      </div>
+    </div>
+
+    <div class="filecat">
+      <h3>2026-08-25 <span class="filecat-meta">compliance, the domain root-cause, and the CRM</span></h3>
+      <div class="filerows">
+        <span class="filerow local"><span class="ficon">⚖️</span><span class="fname">Compliance sweep</span><span class="fdesc">Fixed remaining US-jurisdiction copy; MSA governing-law clause corrected to Alberta/Calgary</span></span>
+        <span class="filerow local"><span class="ficon">🌐</span><span class="fname">Domain root-caused</span><span class="fdesc">firstcallmarketing.ai confirmed unrecoverable (registered under an inaccessible Vercel account) — not a deployment bug. Decision: buy firstcallconsulting.ai instead</span></span>
+        <span class="filerow local"><span class="ficon">📇</span><span class="fname">CRM built &amp; shipped</span><span class="fdesc">Login-gated CRM (leads, contact logging, employee accounts, KPIs), self-serve password reset, database created + migrated, secrets set, redeployed — went live same day</span></span>
+        <span class="filerow local"><span class="ficon">🎛️</span><span class="fname">This dashboard</span><span class="fdesc">Command Center published, cross-linking the readiness report, field manual, and pitch deck</span></span>
+      </div>
+    </div>
+
+    <div class="filecat">
+      <h3>2026-09-04 <span class="filecat-meta">today — refresh</span></h3>
+      <div class="filerows">
+        <span class="filerow local"><span class="ficon">✅</span><span class="fname">Verified live</span><span class="fdesc">Manager account exists (/crm/setup now redirects to sign-in) — punch-list updated. firstcallconsulting.ai still not purchased (doesn't resolve)</span></span>
+        <span class="filerow local"><span class="ficon">🧭</span><span class="fname">This History section added</span><span class="fdesc">Closes the one gap from the original hub — a timeline of everything, without dumping raw session logs here</span></span>
+      </div>
+    </div>
+  </section>
+
   <section id="facts">
     <div class="section-head"><h2>Quick facts</h2></div>
     <div class="facts">
@@ -318,7 +360,7 @@
     {id:"resend", t:"Create a free Resend account", d:"100 emails/day free \u2014 turns on lead notifications, client emails, CRM password reset.", tag:"free", done:false},
     {id:"postgres", t:"Create the free Vercel Postgres database", d:"Done 2026-08-25 \u2014 neon-lime-fence, connected, migrated. CRM is live at /crm.", tag:"free", done:true},
     {id:"secrets", t:"Paste the generated secrets into Vercel", d:"Done 2026-08-25 \u2014 AUTH_SECRET and CRM_IMPORT_SECRET added and redeployed. (UNSUBSCRIBE_SECRET / ADMIN_API_SECRET turned out to already be set by an earlier session.)", tag:"free", done:true},
-    {id:"managersetup", t:"Create your manager account", d:"Visit firstcall-teal.vercel.app/crm/setup yourself \u2014 only works once, while the CRM has zero accounts. Claude can't do this step; it's your login.", tag:"free", done:false},
+    {id:"managersetup", t:"Create your manager account", d:"Verified live 2026-09-04 \u2014 /crm/setup now redirects to the sign-in page, confirming the account exists.", tag:"free", done:true},
     {id:"address", t:"Verify your real mailing address is actually set", d:"NEXT_PUBLIC_MAILING_ADDRESS already exists in Vercel from an earlier session \u2014 unconfirmed whether it's a real address or still the placeholder. Required by CASL.", tag:"free", done:false},
     {id:"legalname", t:"Verify the legal business name value", d:"LEGAL_ENTITY_NAME already exists in Vercel from an earlier session \u2014 confirm it's actually correct.", tag:"free", done:false},
     {id:"gbp", t:"Create a Google Business Profile for First Call itself", d:"You're selling GBP optimization \u2014 worth having your own.", tag:"free", done:false},
