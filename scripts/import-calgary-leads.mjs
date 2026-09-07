@@ -24,10 +24,17 @@
  *   node scripts/import-calgary-leads.mjs --trade=all --import            # actually import
  *   node scripts/import-calgary-leads.mjs --trade=hvac --limit=100 --import
  *
+ *   node scripts/import-calgary-leads.mjs --delete-all
+ *       Deletes every scraper-sourced lead still untouched (cold — no
+ *       contact logged, not assigned, not won/lost). Use this if you switch
+ *       to a better prospecting process later. Anything already worked is
+ *       never touched, even if it came from this same import.
+ *
  * Flags:
  *   --trade=<list>   Comma-separated: hvac, roofing, remediation, cleaning, auto, trucking, all (default: all)
  *   --limit=<n>       Max rows fetched per trade before local filtering (default: 500)
  *   --import          Actually POST to the CRM. Without this flag, only prints a summary — nothing is sent.
+ *   --delete-all      Deletes all untouched scraper leads from the CRM (see above). Ignores --trade/--limit/--import.
  *   --target=<url>    API base URL (default: https://firstcall-teal.vercel.app)
  *
  * Requires CRM_IMPORT_SECRET in .env.local (same file the app itself uses).
@@ -170,7 +177,27 @@ function toLead(row, tradeLabel) {
   };
 }
 
+async function deleteAll() {
+  const secret = readEnvVar("CRM_IMPORT_SECRET");
+  if (!secret) throw new Error("CRM_IMPORT_SECRET not found in .env.local");
+
+  const res = await fetch(`${target}/api/crm/import`, {
+    method: "DELETE",
+    headers: { "x-import-secret": secret },
+  });
+  const body = await res.json();
+  if (!res.ok) throw new Error(`Delete failed: ${res.status} ${JSON.stringify(body)}`);
+
+  console.log(`Deleted ${body.deleted} untouched scraper leads.`);
+  if (fs.existsSync(SEEN_CACHE_PATH)) fs.unlinkSync(SEEN_CACHE_PATH);
+}
+
 async function main() {
+  if (args["delete-all"]) {
+    await deleteAll();
+    return;
+  }
+
   let contractorBucket = null;
   const allLeads = [];
   const perTradeCounts = {};

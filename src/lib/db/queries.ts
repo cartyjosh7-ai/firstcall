@@ -95,6 +95,19 @@ export async function bulkCreateScraperLeads(
     .returning();
 }
 
+/**
+ * Deletes every scraper-sourced lead that hasn't been touched yet (still
+ * "cold" — no contact logged, not assigned, not won/lost). Never touches a
+ * lead a human has already worked, even if it originally came from a
+ * scraper import. Cascades to contact logs via the FK's onDelete: "cascade".
+ */
+export async function deleteUntouchedScraperLeads() {
+  return getDb()
+    .delete(leads)
+    .where(and(eq(leads.source, "scraper"), eq(leads.status, "cold")))
+    .returning({ id: leads.id });
+}
+
 /** Finds the most recent open (non-won/lost) website lead for this business, or creates one as `won`. */
 export async function markWebsiteLeadWon(input: {
   businessName: string;

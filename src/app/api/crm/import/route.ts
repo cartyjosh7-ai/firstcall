@@ -1,7 +1,28 @@
 import { NextRequest, NextResponse } from "next/server";
-import { bulkCreateScraperLeads } from "@/lib/db/queries";
+import { bulkCreateScraperLeads, deleteUntouchedScraperLeads } from "@/lib/db/queries";
 
 export const runtime = "nodejs";
+
+function checkSecret(req: NextRequest) {
+  const secret = process.env.CRM_IMPORT_SECRET;
+  if (!secret) return NextResponse.json({ error: "CRM_IMPORT_SECRET is not configured." }, { status: 500 });
+  if (req.headers.get("x-import-secret") !== secret) return NextResponse.json({ error: "Unauthorized." }, { status: 401 });
+  return null;
+}
+
+/**
+ * Bulk-undo for an import: deletes every scraper-sourced lead still
+ * untouched ("cold" — no contact logged, not assigned, not won/lost yet).
+ * A lead someone has already worked is never removed by this, even if it
+ * came from the same import.
+ */
+export async function DELETE(req: NextRequest) {
+  const unauthorized = checkSecret(req);
+  if (unauthorized) return unauthorized;
+
+  const deleted = await deleteUntouchedScraperLeads();
+  return NextResponse.json({ ok: true, deleted: deleted.length });
+}
 
 /**
  * Bulk-ingest endpoint for the Calgary open-data lead importer
@@ -11,13 +32,8 @@ export const runtime = "nodejs";
  * not from any scraped third-party site.
  */
 export async function POST(req: NextRequest) {
-  const secret = process.env.CRM_IMPORT_SECRET;
-  if (!secret) {
-    return NextResponse.json({ error: "CRM_IMPORT_SECRET is not configured." }, { status: 500 });
-  }
-  if (req.headers.get("x-import-secret") !== secret) {
-    return NextResponse.json({ error: "Unauthorized." }, { status: 401 });
-  }
+  const unauthorized = checkSecret(req);
+  if (unauthorized) return unauthorized;
 
   let body: unknown;
   try {
