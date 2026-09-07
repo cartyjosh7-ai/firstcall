@@ -9,6 +9,8 @@ import {
   createUser,
   findUserByEmail,
   findUserById,
+  getLead,
+  listLeads,
   logContact,
   setLeadStatus,
   setUserPassword,
@@ -17,6 +19,7 @@ import {
 } from "@/lib/db/queries";
 import { createResetToken, peekResetTokenUserId, verifyResetToken } from "@/lib/reset-token";
 import { site } from "@/lib/content";
+import { runOutreachBatch, sendOutreachEmail } from "@/lib/outreach";
 
 async function requireSession() {
   const session = await auth();
@@ -141,6 +144,32 @@ export async function updateNotesAction(formData: FormData) {
   const notes = String(formData.get("notes") || "");
   await updateLeadNotes(leadId, notes);
   revalidatePath(`/crm/leads/${leadId}`);
+}
+
+// ---------- Outreach (manager only — sends real email) ----------
+
+export async function runOutreachBatchAction(formData: FormData) {
+  const session = await requireManager();
+  const requested = Number(formData.get("count") || 10);
+  const count = Math.max(1, Math.min(25, Number.isFinite(requested) ? requested : 10));
+
+  const cold = await listLeads({ status: "cold" });
+  const batch = cold.slice(0, count);
+  const { sent, skipped } = await runOutreachBatch(batch, session.user.id);
+
+  revalidatePath("/crm/leads");
+  redirect(`/crm/leads?outreachSent=${sent}&outreachSkipped=${skipped}`);
+}
+
+export async function sendOutreachAction(formData: FormData) {
+  const session = await requireManager();
+  const leadId = String(formData.get("leadId") || "");
+  const lead = await getLead(leadId);
+  if (!lead) redirect("/crm/leads");
+
+  const result = await sendOutreachEmail(lead, session.user.id);
+  revalidatePath(`/crm/leads/${leadId}`);
+  redirect(`/crm/leads/${leadId}${result.sent ? "" : "?outreachError=1"}`);
 }
 
 // ---------- Password reset ----------

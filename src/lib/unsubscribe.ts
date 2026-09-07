@@ -1,6 +1,7 @@
 import { mkdir, readFile, appendFile } from "node:fs/promises";
 import path from "node:path";
 import crypto from "node:crypto";
+import { site } from "./content";
 
 function file() {
   return path.join(process.cwd(), "data", "unsubscribed.jsonl");
@@ -51,4 +52,10 @@ export async function addUnsubscribe(email: string): Promise<void> {
   set.add(normalized);
   await mkdir(path.dirname(file()), { recursive: true });
   await appendFile(file(), JSON.stringify({ email: normalized, at: new Date().toISOString() }) + "\n", "utf8");
+}
+
+/** Shared CASL one-click unsubscribe link — every commercial send (lead replies, outreach) must use this, not roll its own. */
+export function unsubscribeLink(email: string): string {
+  const params = new URLSearchParams({ email, token: unsubscribeToken(email) });
+  return `${site.url}/api/unsubscribe?${params.toString()}`;
 }

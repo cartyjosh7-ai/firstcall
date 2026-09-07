@@ -5,6 +5,7 @@ import { auth } from "@/lib/auth";
 import { listLeads } from "@/lib/db/queries";
 import type { Lead } from "@/lib/db/schema";
 import { StatusPill, SourceTag } from "../status-pill";
+import { runOutreachBatchAction } from "../actions";
 
 export const metadata: Metadata = { title: "Leads" };
 export const dynamic = "force-dynamic";
@@ -15,12 +16,12 @@ const SOURCES: Lead["source"][] = ["scraper", "website", "employee", "manager"];
 export default async function CrmLeadsPage({
   searchParams,
 }: {
-  searchParams: Promise<{ status?: string; source?: string }>;
+  searchParams: Promise<{ status?: string; source?: string; outreachSent?: string; outreachSkipped?: string }>;
 }) {
   const session = await auth();
   if (!session?.user) redirect("/crm/login");
 
-  const { status, source } = await searchParams;
+  const { status, source, outreachSent, outreachSkipped } = await searchParams;
   const isManager = session.user.role === "manager";
 
   const leads = await listLeads({
@@ -50,6 +51,38 @@ export default async function CrmLeadsPage({
           + Add a lead
         </Link>
       </div>
+
+      {isManager ? (
+        <div className="mt-6 rounded-2xl border border-line bg-[#12130f] p-5">
+          <h2 className="font-serif text-lg">Send outreach</h2>
+          <p className="mt-1 text-xs text-muted">
+            Drafts a CASL-compliant email for each cold lead and sends it via Resend. Each lead is sent to at most once —
+            a send flips it to <b>hot</b>.
+          </p>
+          {outreachSent != null ? (
+            <p className="mt-3 text-sm text-gold">
+              Sent {outreachSent}, skipped {outreachSkipped ?? 0}.
+            </p>
+          ) : null}
+          <form action={runOutreachBatchAction} className="mt-4 flex flex-wrap items-center gap-3">
+            <label className="flex items-center gap-2 text-sm">
+              Send outreach to next
+              <input
+                type="number"
+                name="count"
+                defaultValue={10}
+                min={1}
+                max={25}
+                className="w-16 rounded-lg border border-line bg-ink px-2 py-1 text-sm"
+              />
+              cold leads
+            </label>
+            <button type="submit" className="rounded-full bg-gold px-4 py-1.5 text-sm font-medium text-ink hover:opacity-90">
+              Send
+            </button>
+          </form>
+        </div>
+      ) : null}
 
       <div className="mt-6 flex flex-wrap gap-2">
         <FilterChip href={filterHref({ status: undefined })} active={!status}>

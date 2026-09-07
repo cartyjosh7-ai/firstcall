@@ -1,7 +1,7 @@
 import { mkdir, appendFile } from "node:fs/promises";
 import path from "node:path";
 import { foundation, site } from "./content";
-import { isUnsubscribed, unsubscribeToken } from "./unsubscribe";
+import { isUnsubscribed, unsubscribeLink } from "./unsubscribe";
 
 export type LeadPayload = {
   kind: "audit" | "contact" | "proposal" | "won";
@@ -81,11 +81,6 @@ async function emailLead(lead: LeadPayload) {
   }
 
   return { emailed: true as const };
-}
-
-function unsubscribeLink(email: string) {
-  const params = new URLSearchParams({ email, token: unsubscribeToken(email) });
-  return `${site.url}/api/unsubscribe?${params.toString()}`;
 }
 
 /**

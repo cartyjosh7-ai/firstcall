@@ -3,7 +3,13 @@ import { notFound, redirect } from "next/navigation";
 import { auth } from "@/lib/auth";
 import { getLead, listContactLogs, listEmployees } from "@/lib/db/queries";
 import { StatusPill, SourceTag } from "../../status-pill";
-import { assignLeadAction, logContactAction, setLeadStatusAction, updateNotesAction } from "../../actions";
+import {
+  assignLeadAction,
+  logContactAction,
+  sendOutreachAction,
+  setLeadStatusAction,
+  updateNotesAction,
+} from "../../actions";
 
 export const dynamic = "force-dynamic";
 
@@ -20,13 +26,13 @@ export default async function LeadProfilePage({
   searchParams,
 }: {
   params: Promise<{ id: string }>;
-  searchParams: Promise<{ error?: string }>;
+  searchParams: Promise<{ error?: string; outreachError?: string }>;
 }) {
   const session = await auth();
   if (!session?.user) redirect("/crm/login");
 
   const { id } = await params;
-  const { error } = await searchParams;
+  const { error, outreachError } = await searchParams;
   const lead = await getLead(id);
   if (!lead) notFound();
 
@@ -56,7 +62,7 @@ export default async function LeadProfilePage({
         </dl>
 
         {lead.status !== "won" && lead.status !== "lost" ? (
-          <div className="mt-4 flex gap-3">
+          <div className="mt-4 flex flex-wrap gap-3">
             <form action={setLeadStatusAction}>
               <input type="hidden" name="leadId" value={lead.id} />
               <input type="hidden" name="status" value="won" />
@@ -71,7 +77,18 @@ export default async function LeadProfilePage({
                 Mark lost
               </button>
             </form>
+            {isManager && lead.status === "cold" && lead.email ? (
+              <form action={sendOutreachAction}>
+                <input type="hidden" name="leadId" value={lead.id} />
+                <button type="submit" className="rounded-full border border-gold px-4 py-1.5 text-xs font-medium text-gold hover:bg-gold hover:text-ink">
+                  Send outreach email
+                </button>
+              </form>
+            ) : null}
           </div>
+        ) : null}
+        {outreachError ? (
+          <p className="mt-3 text-sm text-rust">Outreach was not sent — check server logs (no Resend key, unsubscribed, or already contacted).</p>
         ) : null}
 
         <section className="mt-10">
