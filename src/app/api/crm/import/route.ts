@@ -4,9 +4,11 @@ import { bulkCreateScraperLeads } from "@/lib/db/queries";
 export const runtime = "nodejs";
 
 /**
- * Bulk-ingest endpoint for a future lead scraper — always lands as
- * source="scraper", status="cold" (the cold-call list). Not wired to any
- * scraper yet; this is just the receiving end.
+ * Bulk-ingest endpoint for the Calgary open-data lead importer
+ * (scripts/import-calgary-leads.mjs) — always lands as source="scraper",
+ * status="cold" (the cold-call list). Not a web scraper: the importer pulls
+ * from the City of Calgary's licensed open-data business-licence dataset,
+ * not from any scraped third-party site.
  */
 export async function POST(req: NextRequest) {
   const secret = process.env.CRM_IMPORT_SECRET;
@@ -37,6 +39,7 @@ export async function POST(req: NextRequest) {
       phone: typeof r.phone === "string" ? r.phone : undefined,
       email: typeof r.email === "string" ? r.email : undefined,
       trade: typeof r.trade === "string" ? r.trade : undefined,
+      notes: typeof r.notes === "string" ? r.notes : undefined,
     }))
     .filter((r) => r.businessName);
 

@@ -86,7 +86,7 @@ export async function createLead(input: {
 
 /** Bulk insert for the scraper pipeline — always lands as cold/scraper. */
 export async function bulkCreateScraperLeads(
-  rows: { businessName: string; website?: string; phone?: string; email?: string; trade?: string }[],
+  rows: { businessName: string; website?: string; phone?: string; email?: string; trade?: string; notes?: string }[],
 ) {
   if (rows.length === 0) return [];
   return getDb()

@@ -6,6 +6,7 @@ out
 data/leads.jsonl
 data/reports/
 data/unsubscribed.jsonl
+data/calgary-import-seen.json
 *.log
 .DS_Store
 *.tsbuildinfo
