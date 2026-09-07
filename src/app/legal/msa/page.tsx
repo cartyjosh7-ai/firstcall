@@ -18,9 +18,11 @@ export default function MsaPage() {
       </p>
       <h2>2. Services</h2>
       <p>
-        We provide the services described in each SOW. The current productized offer is Foundation
-        ({foundation.priceOneTimeLabel} setup, then {foundation.priceMonthlyLabel}). Work is performed
-        by a senior strategist. We do not guarantee map pack rank, call volume, or revenue.
+        We provide the services described in each SOW. Our productized offers are Foundation
+        ({foundation.priceOneTimeLabel} setup, then {foundation.priceMonthlyLabel}), Growth, Domination,
+        and a standalone Technical SEO Audit — exact scope for the offer you purchased is in your SOW.
+        Work is performed by a senior strategist. We do not guarantee map pack rank, call volume, or
+        revenue.
       </p>
       <h2>3. Term and cancellation</h2>
       <p>

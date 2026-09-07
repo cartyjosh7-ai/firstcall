@@ -38,6 +38,7 @@ export async function POST(req: NextRequest) {
     const business = metadata.business || "";
     const website = metadata.website || "";
     const trade = metadata.trade || "";
+    const pkg = metadata.package || undefined;
     const email = session.customer_details?.email || session.customer_email || undefined;
 
     if (business && website && trade) {
@@ -57,10 +58,11 @@ export async function POST(req: NextRequest) {
             business,
             website,
             trade,
+            package: pkg,
             reportUrl: report.mock ? `${reportUrl} (MOCK DATA — regenerate before contacting the client)` : reportUrl,
           });
         } catch {
-          await captureLead({ kind: "won", email, business, website, trade }).catch(() => {});
+          await captureLead({ kind: "won", email, business, website, trade, package: pkg }).catch(() => {});
         }
       });
     } else {
@@ -70,6 +72,7 @@ export async function POST(req: NextRequest) {
         business: business || undefined,
         website: website || undefined,
         trade: trade || undefined,
+        package: pkg,
       }).catch(() => {});
     }
   }

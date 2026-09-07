@@ -96,7 +96,13 @@ export async function bulkCreateScraperLeads(
 }
 
 /** Finds the most recent open (non-won/lost) website lead for this business, or creates one as `won`. */
-export async function markWebsiteLeadWon(input: { businessName: string; website?: string; email?: string; trade?: string }) {
+export async function markWebsiteLeadWon(input: {
+  businessName: string;
+  website?: string;
+  email?: string;
+  trade?: string;
+  packageName?: string;
+}) {
   const db = getDb();
   const candidates = await db
     .select()
@@ -105,8 +111,14 @@ export async function markWebsiteLeadWon(input: { businessName: string; website?
     .orderBy(desc(leads.createdAt))
     .limit(1);
 
+  const purchaseNote = input.packageName ? `Purchased: ${input.packageName}` : undefined;
+
   if (candidates[0]) {
-    await db.update(leads).set({ status: "won", updatedAt: new Date() }).where(eq(leads.id, candidates[0].id));
+    const notes = [candidates[0].notes, purchaseNote].filter(Boolean).join("\n") || undefined;
+    await db
+      .update(leads)
+      .set({ status: "won", notes, updatedAt: new Date() })
+      .where(eq(leads.id, candidates[0].id));
     return candidates[0].id;
   }
 
@@ -115,6 +127,7 @@ export async function markWebsiteLeadWon(input: { businessName: string; website?
     website: input.website,
     email: input.email,
     trade: input.trade,
+    notes: purchaseNote,
     source: "website",
     status: "won",
   });

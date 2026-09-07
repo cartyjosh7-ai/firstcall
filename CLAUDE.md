@@ -16,13 +16,17 @@ No test suite exists yet.
 ## Architecture
 
 Next.js 15 (App Router) SaaS/marketing site for **First Call**, a local SEO / AI-visibility agency
-(Calgary, AB) selling a single productized offer — **Foundation** — to Canadian home-service SMBs
-(HVAC, roofing, remediation, cleaning, auto, trucking, etc.).
+(Calgary, AB) selling four productized offers — **Foundation, Growth, Domination, and a standalone
+Technical SEO Audit** (see `salesPackages` in `src/lib/content.ts`) — to Canadian home-service SMBs
+(HVAC, roofing, remediation, cleaning, auto, trucking, etc.). A fifth, the GEO/AI-visibility add-on,
+is scoped but dormant — see `docs/business/pricing-model.md`.
 
 ### End-to-end flow
 
-`/start` (lead form) → `POST /api/checkout` creates a Stripe Checkout **subscription** session
-(one-time setup price + recurring monthly price, both attached to one subscription — see
+`/start?package=<id>` (lead form, defaults to `foundation`) → `POST /api/checkout` looks up that
+package's Stripe price env vars and creates a Checkout session — **subscription** mode for
+Foundation/Growth/Domination (one-time setup price + recurring monthly price, both attached to one
+subscription, **payment** mode for the Audit (one-time only, no recurring price) — see
 `src/lib/stripe.ts`, `src/app/api/checkout/route.ts`) → Stripe redirects to `/start/success` →
 Stripe fires `checkout.session.completed` at `POST /api/stripe/webhook`, which responds to Stripe
 immediately and then (via Next's `after()`) runs the agent engine and emails the client.
@@ -190,3 +194,20 @@ last handful of entries; prune older ones once they're no longer load-bearing.
   `src/lib/agents/outreach-agent.ts` / `src/lib/outreach.ts`, edited `docs/business/*.md`) — left it alone,
   didn't commit or inspect it beyond `git status`; next session should check what that is before assuming
   it's stale.
+- **2026-09-06** — Reviewed and committed the outreach-agent work found sitting uncommitted above
+  (commit `a5436fb`, pushed; live in production per `vercel ls` right after). Then, at the user's
+  request, activated Growth/Domination/Audit for real self-serve checkout — previously scoped-but-dormant
+  "coming soon" cards. Since these three were priced as *ranges* (scope varies per client), asked the
+  user how to resolve that for instant checkout: chose the low end of each range as a fixed price
+  (Growth $3,800+$249/mo, Domination $5,500+$449/mo, Audit $497 one-time), and chose to leave the GEO
+  add-on dormant (it only makes sense attached to an existing client's subscription, and that CRM flow
+  doesn't exist yet). Generalized `/api/checkout` and `/start` to take a `?package=` id instead of being
+  Foundation-only, made `/legal/sow` package-aware (`?package=`), updated the MSA's offer list, and
+  threaded the purchased package through the webhook into the lead-won email/CRM notes so "Deal closed"
+  doesn't always say Foundation. Full pricing rationale (including the "fixed at low end" tradeoff — a
+  client whose real scope is bigger is a manual upsell, not enforced by checkout) is in
+  `docs/business/pricing-model.md`. **Still needs, before any of these four can take real money:** Stripe
+  account + all 7 prices created (`STRIPE_PRICE_{FOUNDATION,GROWTH,DOMINATION}_{SETUP,MONTHLY}` +
+  `STRIPE_PRICE_AUDIT`, see `.env.example`) and a Resend account — user was about to create both when this
+  session ended; check whether they exist before assuming they don't. The Command Center dashboard and
+  `docs/command-center.html` still describe the old Foundation-only pricing — refresh those next session.

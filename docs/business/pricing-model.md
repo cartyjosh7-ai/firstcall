@@ -1,17 +1,41 @@
 ---
 name: firstcall-pricing-model
-description: "What's actually live vs. pre-scoped-but-unpublished in First Call's pricing/package structure"
+description: "What's live vs. dormant in First Call's pricing/package structure"
 metadata: 
   node_type: memory
   type: project
   originSessionId: 3c9e8418-9912-4187-ae76-f91f185d848c
-  modified: 2026-08-29T19:45:00.000Z
+  modified: 2026-09-06T00:00:00.000Z
 ---
 
-Only **Foundation** (CAD $2,799 one-time setup + $139.99/month retainer, month-to-month) is a live, purchasable product — wired to Stripe Checkout via `/start` and `/api/checkout`.
+**Foundation** (CAD $2,799 one-time setup + $139.99/month retainer), **Growth** (CAD $3,800 one-time +
+$249/month), **Domination** (CAD $5,500 one-time + $449/month), and a standalone **Technical SEO
+Audit** (CAD $497 one-time) are all live, purchasable products — wired to Stripe Checkout via
+`/start?package=<id>` and `/api/checkout`. All four live in `src/lib/content.ts` as `salesPackages`.
 
-**Growth** (~CAD $3,800 one-time + $249–$349/mo), **Domination** (~CAD $5,500 one-time + $449–$649/mo), a standalone **Technical SEO Audit** (~CAD $497–$997 one-time), and a **GEO/AI-Visibility add-on** (~CAD $99–$199/mo) are fully scoped — descriptions and prices live in `src/lib/content.ts` as `upcomingPackages` and `oneOffAndAddOns`, and render on `/pricing` under "Beyond Foundation" as "coming soon" — but none of them have a Stripe price or checkout flow.
+Only the **GEO/AI-Visibility add-on** (~CAD $99–$199/mo) remains dormant — `dormantAddOns` in
+`content.ts` — because it only makes sense attached to an *existing* retainer client's subscription,
+and that CRM flow ("add this to a current client") isn't built yet. Not a pricing decision, an
+unbuilt-feature gap.
 
-**Why:** 2026-08-23 decision — the user wanted to see the tradeoff before committing, and the call made was to keep the *first sale* simple (matches the site's existing "first-sale offer" positioning and the sourced operating manual's own advice to niche down and avoid decision paralysis on a prospect's first purchase), while having Growth/Domination ready to switch on the moment there are Foundation clients to upsell. **Superseding repricing decision, same evening** (commit `b7ec368`, 2026-08-23 21:39): Foundation was repriced from a flat CAD $4,500/month down to a CAD $2,799 one-time setup + $139.99/month retainer, specifically to undercut market rate and lower the barrier to entry for the first sale — Growth/Domination/Audit/GEO-addon were rescaled off this new baseline, and checkout, proposal, legal (MSA/SOW), and lead-email copy were all updated to match. This doc previously still showed the pre-reprice $4,500/month figure, out of sync with the code — corrected 2026-08-29 after the mismatch was caught while grounding a sales/outreach agent task. Live code is the source of truth for price; treat this doc as a restatement of it, not an independent number.
+**Why:** 2026-08-23 decision was Foundation-only for the first sale (see the superseded reasoning
+below, kept for history). **Superseding decision, 2026-09-06:** the user asked to activate all of
+Growth/Domination/Audit for checkout immediately, not gated behind landing a first Foundation client.
+Growth/Domination/Audit were originally scoped as *ranges* (e.g. Domination $449–$649/mo) because real
+scope varies per client (location count, competitiveness) — asked to resolve that ambiguity, the user
+chose to fix each at the **low end of its range** as the self-serve checkout price, rather than gating
+these three behind a sales conversation. That means a client whose actual scope justifies the higher
+end of the old range is a manual upsell after the sale, not something checkout enforces — don't
+"correct" this by raising the fixed price without asking, that was the explicit tradeoff made.
 
-**How to apply:** Don't build Stripe products/checkout for Growth/Domination/Audit/GEO-addon unless the user explicitly asks to start selling them — the content is intentionally pre-scoped-but-dormant. When that time comes, the numbers and scope are already written in `content.ts`; no need to re-derive them. Any agent or document quoting a Foundation price should say **CAD $2,799 one-time + $139.99/month** — if you see $4,500/month anywhere (including in past outputs), it's the stale pre-reprice number.
+*(Prior reasoning, superseded but kept for context: 2026-08-23 — keep the first sale simple, matches
+the site's "first-sale offer" positioning and the sourced operating manual's advice to niche down on a
+prospect's first purchase, while having Growth/Domination ready to switch on later. Same evening,
+commit `b7ec368`, Foundation was repriced from flat CAD $4,500/month down to $2,799 one-time +
+$139.99/month to undercut market rate and lower the barrier to entry — Growth/Domination/Audit/GEO-addon
+were rescaled off that new baseline.)*
+
+**How to apply:** Live code (`content.ts`) is the source of truth for price — treat this doc as a
+restatement of it, not an independent number. Each package's SOW (`/legal/sow?package=<id>`) and the
+MSA already reflect all four live offers. If the GEO add-on's CRM attach-flow ever gets built, update
+this doc to mark it live too.

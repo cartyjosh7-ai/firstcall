@@ -1,10 +1,19 @@
 "use client";
 
-import { useState } from "react";
+import { Suspense, useState } from "react";
 import Link from "next/link";
-import { foundation, trades } from "@/lib/content";
+import { useSearchParams } from "next/navigation";
+import { salesPackages, trades, type PackageId } from "@/lib/content";
 
-export default function StartPage() {
+function isPackageId(value: string | null): value is PackageId {
+  return value != null && value in salesPackages;
+}
+
+function StartForm() {
+  const searchParams = useSearchParams();
+  const pkgId: PackageId = isPackageId(searchParams.get("package")) ? (searchParams.get("package") as PackageId) : "foundation";
+  const pkg = salesPackages[pkgId];
+
   const [business, setBusiness] = useState("");
   const [website, setWebsite] = useState("");
   const [trade, setTrade] = useState("");
@@ -20,7 +29,7 @@ export default function StartPage() {
       const res = await fetch("/api/checkout", {
         method: "POST",
         headers: { "content-type": "application/json" },
-        body: JSON.stringify({ business, website, trade, email }),
+        body: JSON.stringify({ business, website, trade, email, package: pkgId }),
       });
       const data = await res.json();
       if (data.url) {
@@ -43,15 +52,16 @@ export default function StartPage() {
 
   return (
     <div className="mx-auto max-w-xl px-5 py-16">
-      <p className="text-xs uppercase tracking-widest text-gold">Start Foundation</p>
+      <p className="text-xs uppercase tracking-widest text-gold">Start {pkg.name}</p>
       <h1 className="mt-3 font-serif text-4xl">
-        Pay {foundation.priceOneTimeLabel} today, then {foundation.priceMonthlyLabel}, and we start
-        month one.
+        {pkg.priceMonthly
+          ? `Pay ${pkg.priceOneTimeLabel} today, then ${pkg.priceMonthlyLabel}, and we start month one.`
+          : `Pay ${pkg.priceOneTimeLabel} today and we start.`}
       </h1>
       <p className="mt-4 text-muted">
-        One-time setup, then month-to-month. 30 days&apos; notice to cancel the retainer. By paying you
-        agree to the{" "}
-        <Link href="/legal/msa">MSA</Link> and <Link href="/legal/sow">Foundation SOW</Link>.
+        {pkg.cadence} By paying you agree to the{" "}
+        <Link href="/legal/msa">MSA</Link> and{" "}
+        <Link href={`/legal/sow?package=${pkg.id}`}>{pkg.name} SOW</Link>.
       </p>
 
       <div className="mt-8 grid gap-3 rounded-2xl border border-line bg-[#12130f] p-6">
@@ -118,5 +128,13 @@ export default function StartPage() {
         <Link href="/pricing">the pricing page</Link>.
       </p>
     </div>
+  );
+}
+
+export default function StartPage() {
+  return (
+    <Suspense fallback={null}>
+      <StartForm />
+    </Suspense>
   );
 }

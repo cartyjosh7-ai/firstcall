@@ -1,6 +1,11 @@
 import { mkdir, appendFile } from "node:fs/promises";
 import path from "node:path";
-import { foundation, site } from "./content";
+import { foundation, salesPackages, site, type PackageId } from "./content";
+
+function packageName(id?: string): string {
+  if (id && id in salesPackages) return salesPackages[id as PackageId].name;
+  return foundation.name;
+}
 import { isUnsubscribed, unsubscribeLink } from "./unsubscribe";
 
 export type LeadPayload = {
@@ -15,6 +20,8 @@ export type LeadPayload = {
   score?: number;
   url?: string;
   reportUrl?: string;
+  /** Which productized offer was purchased ("won" leads only) — e.g. "foundation", "growth". */
+  package?: string;
 };
 
 function inbox() {
@@ -41,7 +48,7 @@ async function emailLead(lead: LeadPayload) {
       : lead.kind === "proposal"
         ? `Proposal / Foundation request · ${lead.business || lead.email}`
         : lead.kind === "won"
-          ? `Deal closed · ${lead.business || lead.email} · Foundation`
+          ? `Deal closed · ${lead.business || lead.email} · ${packageName(lead.package)}`
           : `Contact · ${lead.business || lead.name || lead.email}`;
 
   const text = Object.entries(lead)
@@ -64,7 +71,7 @@ async function emailLead(lead: LeadPayload) {
             lead.score != null ? ` and scored it ${lead.score}/100` : ""
           }.\n\nA senior strategist reviews every scan by hand and will follow up within one business day with what the scanner cannot see (Business Profile, rivals, who is getting the calls) and a clear next step.\n\nIf you already know you want Foundation (${foundation.priceOneTimeLabel} + ${foundation.priceMonthlyLabel}), start here: ${site.url}/start`
         : lead.kind === "won"
-          ? `Payment received. Your first research and 90-day implementation plan is ready:\n\n${lead.reportUrl || `${site.url}/start/success`}\n\nReply with GBP, analytics, and CMS access and we'll start month one.`
+          ? `Payment received for ${packageName(lead.package)}. Your first research and 90-day implementation plan is ready:\n\n${lead.reportUrl || `${site.url}/start/success`}\n\nReply with GBP, analytics, and CMS access and we'll start month one.`
           : `Thanks. A senior strategist will get back to you within one business day.`;
 
     await resend.emails.send({
@@ -98,6 +105,7 @@ async function mirrorToCrm(lead: LeadPayload) {
           website: lead.website,
           email: lead.email,
           trade: lead.trade,
+          packageName: packageName(lead.package),
         });
       }
       return;

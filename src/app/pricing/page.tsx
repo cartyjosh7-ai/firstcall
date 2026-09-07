@@ -1,9 +1,11 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ContactForm } from "@/components/forms";
-import { foundation, oneOffAndAddOns, site, upcomingPackages } from "@/lib/content";
+import { foundation, growth, domination, audit, dormantAddOns, site } from "@/lib/content";
 
-export const metadata: Metadata = { title: "Foundation pricing" };
+export const metadata: Metadata = { title: "Pricing" };
+
+const upsellPackages = [growth, domination] as const;
 
 export default function PricingPage() {
   return (
@@ -14,7 +16,7 @@ export default function PricingPage() {
       <p className="mt-1 text-lg text-gold">then {foundation.priceMonthlyLabel}</p>
       <p className="mt-3 text-muted">
         {foundation.forWho} {foundation.cadence} Legal agreement:{" "}
-        <Link href="/legal/msa">MSA</Link> + <Link href="/legal/sow">Foundation SOW</Link>.
+        <Link href="/legal/msa">MSA</Link> + <Link href="/legal/sow?package=foundation">Foundation SOW</Link>.
       </p>
       <h2 className="mt-12 font-serif text-2xl">Included</h2>
       <ul className="mt-4 space-y-2 text-muted">
@@ -46,13 +48,12 @@ export default function PricingPage() {
       <div className="mt-16">
         <h2 className="font-serif text-2xl">Beyond Foundation</h2>
         <p className="mt-2 text-sm text-muted">
-          Scoped and ready when you outgrow Foundation. Not sold standalone yet — ask a strategist.
+          Ready to scale past the basics, or want a standalone audit first? These are live too.
         </p>
         <div className="mt-6 grid gap-6 md:grid-cols-2">
-          {upcomingPackages.map((p) => (
+          {upsellPackages.map((p) => (
             <div key={p.id} className="rounded-2xl border border-line p-6">
-              <p className="text-xs uppercase tracking-widest text-gold">Coming soon</p>
-              <h3 className="mt-2 font-serif text-2xl">{p.name}</h3>
+              <h3 className="font-serif text-2xl">{p.name}</h3>
               <p className="mt-1 text-gold">{p.priceLabel}</p>
               <p className="mt-2 text-sm text-muted">{p.forWho}</p>
               <ul className="mt-4 space-y-1 text-sm text-muted">
@@ -60,13 +61,31 @@ export default function PricingPage() {
                   <li key={i}>— {i}</li>
                 ))}
               </ul>
+              <Link
+                href={`/start?package=${p.id}`}
+                className="mt-5 inline-block rounded-full bg-gold px-5 py-2.5 text-sm text-ink no-underline hover:opacity-90"
+              >
+                Pay and start
+              </Link>
             </div>
           ))}
         </div>
         <div className="mt-6 grid gap-6 md:grid-cols-2">
-          {oneOffAndAddOns.map((a) => (
+          <div className="rounded-2xl border border-line p-6">
+            <h3 className="font-serif text-xl">{audit.name}</h3>
+            <p className="mt-1 text-gold">{audit.priceLabel}</p>
+            <p className="mt-2 text-sm text-muted">{audit.forWho} The free live scan at /audit is the entry-level version of this.</p>
+            <Link
+              href={`/start?package=${audit.id}`}
+              className="mt-5 inline-block rounded-full bg-gold px-5 py-2.5 text-sm text-ink no-underline hover:opacity-90"
+            >
+              Pay and start
+            </Link>
+          </div>
+          {dormantAddOns.map((a) => (
             <div key={a.id} className="rounded-2xl border border-line p-6">
-              <h3 className="font-serif text-xl">{a.name}</h3>
+              <p className="text-xs uppercase tracking-widest text-gold">Existing clients only</p>
+              <h3 className="mt-2 font-serif text-xl">{a.name}</h3>
               <p className="mt-1 text-gold">{a.priceLabel}</p>
               <p className="mt-2 text-sm text-muted">{a.description}</p>
             </div>
@@ -77,8 +96,8 @@ export default function PricingPage() {
       <div className="mt-16">
         <h2 className="font-serif text-2xl">Prefer an invoice?</h2>
         <p className="mt-2 text-sm text-muted">
-          Request Foundation and we will send a Stripe invoice or Checkout link to {site.email}{" "}
-          correspondence. Same MSA/SOW.
+          Request any package and we will send a Stripe invoice or Checkout link to {site.email}{" "}
+          correspondence. Same MSA, matching SOW.
         </p>
         <div className="mt-6">
           <ContactForm kind="proposal" />

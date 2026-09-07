@@ -346,6 +346,7 @@ export const guides = [
 ] as const;
 
 export const foundation = {
+  id: "foundation",
   name: "Foundation",
   priceOneTime: 2799,
   priceOneTimeLabel: "CAD $2,799 one-time",
@@ -371,53 +372,88 @@ export const foundation = {
 };
 
 /**
- * Scoped ahead of when we sell them, per the agency's own playbook: keep the
- * first sale (Foundation) simple, and have Growth/Domination fully scoped
- * and ready to publish once there are Foundation clients to upsell.
+ * Activated 2026-09-06 (was previously scoped-but-dormant, Foundation-only
+ * first-sale strategy). Growth/Domination/Audit were priced as ranges
+ * because real scope varies per client (e.g. Domination scales with location
+ * count) — the user chose the low end of each range as a fixed, self-serve
+ * checkout price rather than gating these behind a sales conversation. If a
+ * client's real scope is bigger than the low end, that's a manual upsell
+ * after the fact, not something checkout enforces.
  */
-export const upcomingPackages = [
-  {
-    id: "growth",
-    name: "Growth",
-    priceLabel: "CAD $3,800 one-time + $249–$349/month",
-    forWho: "Established local/regional businesses ready to scale past the basics.",
-    included: [
-      "Everything in Foundation",
-      "Technical SEO audit + fixes",
-      "4–8 optimized content pages/month",
-      "Internal linking strategy + basic link building",
-      "GA4 + rank tracking",
-    ],
-  },
-  {
-    id: "domination",
-    name: "Domination",
-    priceLabel: "CAD $5,500 one-time + $449–$649/month",
-    forWho: "Multi-location businesses and competitive niches that need to win outright.",
-    included: [
-      "Everything in Growth",
-      "Aggressive content production (8–12 pages/month)",
-      "Digital PR and link building",
-      "Conversion rate optimization",
-      "Google Map Pack monitoring across every location",
-      "Quarterly strategy review",
-    ],
-  },
-] as const;
+export const growth = {
+  id: "growth",
+  name: "Growth",
+  priceOneTime: 3800,
+  priceOneTimeLabel: "CAD $3,800 one-time",
+  priceMonthly: 249,
+  priceMonthlyLabel: "CAD $249 / month",
+  priceLabel: "Starting at CAD $3,800 one-time + $249/month",
+  cadence: "One-time setup, then month-to-month. Cancel the monthly retainer anytime with 30 days' notice.",
+  forWho: "Established local/regional businesses ready to scale past the basics.",
+  included: [
+    "Everything in Foundation",
+    "Technical SEO audit + fixes",
+    "4–8 optimized content pages/month",
+    "Internal linking strategy + basic link building",
+    "GA4 + rank tracking",
+  ],
+  notIncluded: ["Digital PR and expansion markets (Domination)", "Custom software builds"],
+} as const;
 
-export const oneOffAndAddOns = [
-  {
-    id: "audit",
-    name: "Technical SEO Audit",
-    priceLabel: "CAD $497–$997 one-time",
-    description:
-      "Full technical, on-page, local, and backlink audit with a prioritized action plan and a walkthrough call. (The free live scan at /audit is the entry-level version of this.)",
-  },
+export const domination = {
+  id: "domination",
+  name: "Domination",
+  priceOneTime: 5500,
+  priceOneTimeLabel: "CAD $5,500 one-time",
+  priceMonthly: 449,
+  priceMonthlyLabel: "CAD $449 / month",
+  priceLabel: "Starting at CAD $5,500 one-time + $449/month",
+  cadence: "One-time setup, then month-to-month. Cancel the monthly retainer anytime with 30 days' notice.",
+  forWho: "Multi-location businesses and competitive niches that need to win outright.",
+  included: [
+    "Everything in Growth",
+    "Aggressive content production (8–12 pages/month)",
+    "Digital PR and link building",
+    "Conversion rate optimization",
+    "Google Map Pack monitoring across every location",
+    "Quarterly strategy review",
+  ],
+  notIncluded: ["Custom software builds"],
+} as const;
+
+export const audit = {
+  id: "audit",
+  name: "Technical SEO Audit",
+  priceOneTime: 497,
+  priceOneTimeLabel: "CAD $497 one-time",
+  priceMonthly: null,
+  priceMonthlyLabel: null,
+  priceLabel: "Starting at CAD $497 one-time",
+  cadence: "One-time engagement — no retainer.",
+  forWho: "Anyone who wants a full technical/on-page/local/backlink audit before committing to a retainer.",
+  included: [
+    "Full technical, on-page, local, and backlink audit",
+    "Prioritized action plan",
+    "Walkthrough call",
+  ],
+  notIncluded: ["Ongoing implementation (see Foundation, Growth, or Domination)"],
+} as const;
+
+/** Every self-serve, checkout-purchasable offer, keyed by id. Used by /api/checkout and /start. */
+export const salesPackages = { foundation, growth, domination, audit } as const;
+export type PackageId = keyof typeof salesPackages;
+
+/**
+ * Not sold via public checkout. The GEO add-on only makes sense for an
+ * existing retainer client (it attaches to their subscription) — per the
+ * 2026-09-06 decision, that flow isn't built yet, so it stays dormant here.
+ */
+export const dormantAddOns = [
   {
     id: "geo",
     name: "AI Search Add-on",
     priceLabel: "CAD $99–$199/month",
     description:
-      "Optional add-on for retainer clients who also want visibility inside ChatGPT, Perplexity, and Gemini answers. Not part of the core Google-first offer, and not a standalone entry point.",
+      "Optional add-on for retainer clients who also want visibility inside ChatGPT, Perplexity, and Gemini answers. Not part of the core Google-first offer, and not a standalone entry point — attach it to an existing client from the CRM once that flow is built, not via public checkout.",
   },
 ] as const;

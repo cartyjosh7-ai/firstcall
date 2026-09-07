@@ -13,7 +13,7 @@ The user supplied a 33-page "SEO & Website Creation Business — Complete Operat
 **Where its content now lives in the codebase** (as of the 2026-08-23 session):
 - `src/lib/agents/research-agent.ts` and `src/lib/agents/implementation-agent.ts` — the manual's core technical/E-E-A-T/local/GEO standards and white-hat-only link-building rule are embedded directly in both agents' system prompts (the manual's own §17 "AI Agent Operating Rules" is written to be pasted as standing agent instructions — this is effectively what was done).
 - `src/lib/agents/mock-engine.ts` — the same standards, condensed, drive the free zero-cost rule-based path (see [[firstcall_pricing_model]] and the mock-mode memory if one exists on the agent engine itself).
-- `src/lib/content.ts` — the manual's package/pricing model (§10.2) informs `upcomingPackages`/`oneOffAndAddOns`.
+- `src/lib/content.ts` — the manual's package/pricing model (§10.2) informs `salesPackages` (Foundation/Growth/Domination/Audit, all live as of 2026-09-06) and `dormantAddOns` (GEO add-on, still unbuilt).
 - Compliance sections (§12) drove [[firstcall_compliance_rules]].
 
 **How to apply:** For any future work that touches SEO methodology, pricing benchmarks, or Canadian compliance, this manual is the source of truth already reflected in the code above — no need to ask the user to re-paste it. If a claim needs re-verification (see 6-month staleness note above), say so rather than treating it as evergreen.
