@@ -129,7 +129,7 @@
   <h1>Run First Call from here</h1>
   <p class="lede">
     Every tool, every file, and everything left to do — in one place, all of it clickable. Built 2026-08-25,
-    refreshed 2026-09-04.
+    last refreshed 2026-09-06.
     For the full story behind any of this, the <a href="https://claude.ai/code/artifact/3b3447ad-cb89-4352-85a6-9e3570909e40" target="_blank" rel="noopener">Readiness report</a>
     and the <a href="https://claude.ai/code/artifact/2de5a1b9-001b-4cd9-926d-1d6b18dfcc24" target="_blank" rel="noopener">Field Manual</a> go deep — this page is the launcher.
   </p>
@@ -137,7 +137,8 @@
     <span class="status good"><span class="dot"></span>Working site: firstcall-teal.vercel.app</span>
     <span class="status bad"><span class="dot"></span>firstcallmarketing.ai unrecoverable — buy firstcallconsulting.ai ($160/2yr)</span>
     <span class="status good"><span class="dot"></span>CRM live — manager account created, sign in at /crm</span>
-    <span class="status warn"><span class="dot"></span>Stripe / Resend not connected — mock mode active</span>
+    <span class="status good"><span class="dot"></span>4 packages live on /pricing: Foundation, Growth, Domination, Audit</span>
+    <span class="status warn"><span class="dot"></span>Stripe / Resend not connected — mock mode active, no package can charge yet</span>
   </div>
 </header>
 
@@ -186,6 +187,8 @@
           <span class="icon">📇</span><span class="name">CRM</span><span class="sub">/crm</span></a>
         <a class="tile" href="https://firstcall-teal.vercel.app/crm/leads/new" target="_blank" rel="noopener">
           <span class="icon">➕</span><span class="name">Add a lead</span><span class="sub">/crm/leads/new</span></a>
+        <a class="tile" href="https://firstcall-teal.vercel.app/crm/leads" target="_blank" rel="noopener">
+          <span class="icon">📤</span><span class="name">Send outreach</span><span class="sub">/crm/leads — cold-lead email agent, needs Resend</span></a>
         <a class="tile" href="https://claude.ai/code/artifact/21f535cd-7b62-4ce7-af29-21ead88cae93" target="_blank" rel="noopener">
           <span class="icon">📞</span><span class="name">Switchboard</span><span class="sub">live call walkthrough — Open→Handoff</span></a>
       </div>
@@ -264,9 +267,11 @@
         <a class="filerow" href="https://github.com/cartyjosh7-ai/firstcall/blob/master/src/lib/audit.ts" target="_blank" rel="noopener">
           <span class="ficon">📄</span><span class="fname">src/lib/audit.ts</span><span class="fdesc">The real, live-fetch visibility scanner</span><span class="farrow">↗</span></a>
         <a class="filerow" href="https://github.com/cartyjosh7-ai/firstcall/blob/master/src/lib/content.ts" target="_blank" rel="noopener">
-          <span class="ficon">📄</span><span class="fname">src/lib/content.ts</span><span class="fdesc">All site copy, pricing, and industry content in one file</span><span class="farrow">↗</span></a>
+          <span class="ficon">📄</span><span class="fname">src/lib/content.ts</span><span class="fdesc">All site copy, pricing (salesPackages), and industry content in one file</span><span class="farrow">↗</span></a>
+        <a class="filerow" href="https://github.com/cartyjosh7-ai/firstcall/blob/master/src/lib/outreach.ts" target="_blank" rel="noopener">
+          <span class="ficon">📄</span><span class="fname">src/lib/outreach.ts</span><span class="fdesc">CASL-compliant cold-outreach agent, manager-triggered from the CRM</span><span class="farrow">↗</span></a>
         <a class="filerow" href="https://github.com/cartyjosh7-ai/firstcall/tree/master/src/app/legal" target="_blank" rel="noopener">
-          <span class="ficon">📁</span><span class="fname">src/app/legal/</span><span class="fdesc">MSA and Foundation SOW</span><span class="farrow">↗</span></a>
+          <span class="ficon">📁</span><span class="fname">src/app/legal/</span><span class="fdesc">MSA and per-package SOW (/legal/sow?package=)</span><span class="farrow">↗</span></a>
       </div>
     </div>
 
@@ -324,10 +329,19 @@
     </div>
 
     <div class="filecat">
-      <h3>2026-09-04 <span class="filecat-meta">today — refresh</span></h3>
+      <h3>2026-09-04 <span class="filecat-meta">refresh</span></h3>
       <div class="filerows">
         <span class="filerow local"><span class="ficon">✅</span><span class="fname">Verified live</span><span class="fdesc">Manager account exists (/crm/setup now redirects to sign-in) — punch-list updated. firstcallconsulting.ai still not purchased (doesn't resolve)</span></span>
         <span class="filerow local"><span class="ficon">🧭</span><span class="fname">This History section added</span><span class="fdesc">Closes the one gap from the original hub — a timeline of everything, without dumping raw session logs here</span></span>
+      </div>
+    </div>
+
+    <div class="filecat">
+      <h3>2026-09-06 <span class="filecat-meta">today — outreach agent shipped, pricing activated</span></h3>
+      <div class="filerows">
+        <span class="filerow local"><span class="ficon">📤</span><span class="fname">Outreach agent</span><span class="fdesc">A third Claude agent drafts CASL-compliant cold-outreach emails for cold CRM leads; sending is manager-only, capped at one send per lead by the existing cold→hot status transition</span></span>
+        <span class="filerow local"><span class="ficon">💲</span><span class="fname">Growth, Domination, and the Audit activated</span><span class="fdesc">All four packages are now real, self-serve Stripe checkout offers on /pricing, not "coming soon" — Growth/Domination/Audit were priced as ranges, fixed at the low end of each for instant checkout. /start and /legal/sow are now package-aware</span></span>
+        <span class="filerow local"><span class="ficon">📇</span><span class="fname">Lead-won records now say which package</span><span class="fdesc">The webhook forwards the purchased package through to the "Deal closed" email and CRM notes instead of always assuming Foundation</span></span>
       </div>
     </div>
   </section>
@@ -335,7 +349,7 @@
   <section id="facts">
     <div class="section-head"><h2>Quick facts</h2></div>
     <div class="facts">
-      <div class="fact"><div class="k">Sells today</div><div class="v">Foundation — CAD $2,799 + $139.99/mo</div></div>
+      <div class="fact"><div class="k">Sells today</div><div class="v">Foundation, Growth, Domination, Audit — see /pricing</div></div>
       <div class="fact"><div class="k">Based in</div><div class="v">Calgary, Alberta, Canada</div></div>
       <div class="fact"><div class="k">Serves</div><div class="v">Canadian home-service SMBs</div></div>
       <div class="fact"><div class="k">Trades covered</div><div class="v">HVAC, Roofing, Remediation, Cleaning, Auto, Trucking</div></div>
@@ -358,7 +372,8 @@
     {id:"jurisdiction", t:"Fix US-jurisdiction copy + MSA governing law", d:"Schema, /markets page, and MSA \u00a710 now correctly say Canada / Alberta.", tag:"free", done:true},
     {id:"reset", t:"CRM self-serve password reset", d:"Built \u2014 needs Resend configured to actually send.", tag:"free", done:true},
     {id:"domain", t:"Buy firstcallconsulting.ai", d:"Confirmed available, $160 for 2 years, via Vercel \u2014 auto-configures DNS.", tag:"cost $160", done:false},
-    {id:"stripe", t:"Create a free Stripe account + test-mode prices", d:"Unlocks building and testing checkout end to end before it's ever real money.", tag:"free", done:false},
+    {id:"pricing-activate", t:"Activate Growth/Domination/Audit for checkout", d:"Done 2026-09-06 — /pricing, /start, and the legal SOW are package-aware now. Just needs the matching Stripe prices below to actually charge.", tag:"free", done:true},
+    {id:"stripe", t:"Create a free Stripe account + prices for all 4 packages", d:"7 prices total: Foundation/Growth/Domination each need a setup + monthly pair, Audit needs one one-time price. Unlocks building and testing checkout end to end before it's ever real money.", tag:"free", done:false},
     {id:"resend", t:"Create a free Resend account", d:"100 emails/day free \u2014 turns on lead notifications, client emails, CRM password reset.", tag:"free", done:false},
     {id:"postgres", t:"Create the free Vercel Postgres database", d:"Done 2026-08-25 \u2014 neon-lime-fence, connected, migrated. CRM is live at /crm.", tag:"free", done:true},
     {id:"secrets", t:"Paste the generated secrets into Vercel", d:"Done 2026-08-25 \u2014 AUTH_SECRET and CRM_IMPORT_SECRET added and redeployed. (UNSUBSCRIBE_SECRET / ADMIN_API_SECRET turned out to already be set by an earlier session.)", tag:"free", done:true},
