@@ -1,12 +1,12 @@
 import { mkdir, appendFile } from "node:fs/promises";
 import path from "node:path";
 import { foundation, salesPackages, site, type PackageId } from "./content";
+import { isUnsubscribed, unsubscribeLink } from "./unsubscribe";
 
 function packageName(id?: string): string {
   if (id && id in salesPackages) return salesPackages[id as PackageId].name;
   return foundation.name;
 }
-import { isUnsubscribed, unsubscribeLink } from "./unsubscribe";
 
 export type LeadPayload = {
   kind: "audit" | "contact" | "proposal" | "won";
@@ -29,10 +29,17 @@ function inbox() {
 }
 
 async function persist(lead: LeadPayload) {
-  const dir = path.join(process.cwd(), "data");
-  await mkdir(dir, { recursive: true });
-  const line = JSON.stringify({ ...lead, at: new Date().toISOString() }) + "\n";
-  await appendFile(path.join(dir, "leads.jsonl"), line, "utf8");
+  try {
+    const dir = path.join(process.cwd(), "data");
+    await mkdir(dir, { recursive: true });
+    const line = JSON.stringify({ ...lead, at: new Date().toISOString() }) + "\n";
+    await appendFile(path.join(dir, "leads.jsonl"), line, "utf8");
+  } catch {
+    // Best-effort local-dev convenience only — Vercel's production filesystem
+    // is read-only outside /tmp, so this always throws there. The CRM
+    // (mirrorToCrm, below) is the real production lead store; a write
+    // failure here must never block CRM mirroring or emailing the lead.
+  }
 }
 
 async function emailLead(lead: LeadPayload) {
