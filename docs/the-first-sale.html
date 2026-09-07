@@ -1,0 +1,435 @@
+<title>The First Sale</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500&family=Source+Sans+3:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --bg:#fbf8f1; --surface:#f2ecdd; --surface-2:#ece4cf; --ink:#1c1a13; --muted:#6e6656;
+    --line:#ddd3bd; --gold:#8f6c1b; --rust:#a94a1d;
+    --good:#3f6b3f; --good-soft:#e2ebdd; --bad:#a94a1d; --bad-soft:#f3e2d8; --neutral:#8a8272; --neutral-soft:#eee8d9;
+    --gold-soft:#f0e6c9; --shadow:0 1px 2px rgba(28,26,19,.06);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#0c0d0b; --surface:#141510; --surface-2:#1a1b14; --ink:#f4efe4; --muted:#b7b1a4;
+      --line:#2a2b26; --gold:#c9a227; --rust:#c45c26;
+      --good:#8caa5a; --good-soft:#1e2417; --bad:#c45c26; --bad-soft:#241a12; --neutral:#8a8272; --neutral-soft:#1a1a15;
+      --gold-soft:#221d0e; --shadow:0 1px 2px rgba(0,0,0,.4);
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#0c0d0b; --surface:#141510; --surface-2:#1a1b14; --ink:#f4efe4; --muted:#b7b1a4;
+    --line:#2a2b26; --gold:#c9a227; --rust:#c45c26;
+    --good:#8caa5a; --good-soft:#1e2417; --bad:#c45c26; --bad-soft:#241a12; --neutral:#8a8272; --neutral-soft:#1a1a15;
+    --gold-soft:#221d0e; --shadow:0 1px 2px rgba(0,0,0,.4);
+  }
+
+  *{box-sizing:border-box;}
+  html{ scroll-behavior:smooth; }
+  body{ margin:0; background:var(--bg); color:var(--ink); font-family:"Source Sans 3",ui-sans-serif,system-ui,sans-serif;
+    font-size:16px; line-height:1.6; -webkit-font-smoothing:antialiased; }
+  h1,h2,h3,h4{ font-family:"Fraunces",ui-serif,Georgia,serif; text-wrap:balance; margin:0; font-weight:600; }
+  .mono{ font-family:"IBM Plex Mono",ui-monospace,monospace; }
+  code{ font-family:"IBM Plex Mono",monospace; background:var(--surface-2); padding:1px 6px; border-radius:5px; font-size:.86em; }
+  a{ color:var(--gold); }
+  a:focus-visible, button:focus-visible{ outline:2px solid var(--gold); outline-offset:2px; }
+  p{ color:var(--ink); }
+
+  .wrap{ max-width:760px; margin:0 auto; padding:0 24px 120px; }
+
+  header.hero{ padding:52px 0 8px; }
+  .eyebrow{ font-size:.78rem; text-transform:uppercase; letter-spacing:.12em; color:var(--gold); font-weight:600; }
+  h1{ font-size:clamp(2.1rem,5vw,3rem); margin-top:.4rem; }
+  .lede{ margin-top:.9rem; max-width:62ch; color:var(--muted); font-size:1.05rem; }
+
+  .callout{ margin-top:26px; border:1px solid color-mix(in srgb, var(--rust) 45%, var(--line)); background:var(--bad-soft);
+    border-radius:12px; padding:16px 18px; }
+  .callout .k{ font-size:.72rem; text-transform:uppercase; letter-spacing:.08em; color:var(--rust); font-weight:700; }
+  .callout p{ margin:6px 0 0; font-size:.92rem; color:var(--ink); max-width:60ch; }
+  .callout code{ background:color-mix(in srgb, var(--bad-soft) 40%, var(--surface)); }
+
+  nav.jump{ position:sticky; top:0; z-index:30; margin-top:30px; background:color-mix(in srgb, var(--bg) 90%, transparent);
+    backdrop-filter:blur(8px); border-bottom:1px solid var(--line); border-top:1px solid var(--line); }
+  nav.jump .inner{ max-width:760px; margin:0 auto; padding:12px 24px; display:flex; gap:18px; flex-wrap:wrap; }
+  nav.jump a{ font-size:.8rem; text-decoration:none; color:var(--muted); text-transform:uppercase; letter-spacing:.05em; }
+  nav.jump a:hover{ color:var(--ink); }
+
+  section{ margin-top:56px; scroll-margin-top:60px; }
+  section > .kicker{ font-size:.78rem; text-transform:uppercase; letter-spacing:.1em; color:var(--gold); font-weight:600; }
+  section > h2{ font-size:1.9rem; margin-top:.3rem; }
+  section > .dek{ margin-top:.6rem; color:var(--muted); max-width:60ch; font-size:1rem; }
+  section h3{ font-size:1.2rem; margin-top:2rem; }
+  section p{ max-width:62ch; margin:.9em 0; }
+  section ul, section ol.plain{ max-width:62ch; padding-left:1.25em; margin:.9em 0; }
+  section li{ margin:.4em 0; }
+
+  /* script / dialogue blocks */
+  .script{ margin-top:14px; border-left:3px solid var(--gold); background:var(--surface); border-radius:0 10px 10px 0;
+    padding:14px 18px; font-size:.96rem; }
+  .script .who{ font-size:.72rem; text-transform:uppercase; letter-spacing:.06em; color:var(--muted); margin-bottom:5px; font-weight:600; }
+  .script.prospect{ border-left-color:var(--muted); }
+  .script.prospect .who{ color:var(--rust); }
+
+  /* numbered process */
+  ol.process{ list-style:none; padding:0; margin:22px 0 0; counter-reset:step; display:grid; gap:0; }
+  ol.process li{ counter-increment:step; position:relative; padding:0 0 26px 44px; border-left:1px solid var(--line); margin-left:13px; }
+  ol.process li:last-child{ border-left-color:transparent; padding-bottom:2px; }
+  ol.process li::before{ content:counter(step); position:absolute; left:-13px; top:0; width:26px; height:26px; border-radius:50%;
+    background:var(--gold-soft); color:var(--gold); font-family:"IBM Plex Mono",monospace; font-size:.8rem; font-weight:600;
+    display:flex; align-items:center; justify-content:center; border:1px solid var(--bg); }
+  ol.process .t{ font-family:"Fraunces",serif; font-weight:600; font-size:1.06rem; }
+  ol.process .d{ margin-top:5px; max-width:60ch; color:var(--ink); font-size:.94rem; }
+
+  /* checklist */
+  .checklist{ margin-top:16px; display:grid; gap:1px; background:var(--line); border:1px solid var(--line); border-radius:12px; overflow:hidden; }
+  .checkitem{ background:var(--surface); padding:12px 16px; display:flex; gap:12px; align-items:flex-start; }
+  .checkitem .box{ flex:none; width:18px; height:18px; margin-top:2px; border:1.5px solid var(--gold); border-radius:5px; }
+  .checkitem .body b{ font-size:.94rem; }
+  .checkitem .body .h{ display:block; margin-top:2px; font-size:.84rem; color:var(--muted); }
+
+  /* objection table */
+  .obj{ margin-top:18px; display:grid; gap:14px; }
+  .obj-row{ border:1px solid var(--line); border-radius:12px; overflow:hidden; background:var(--surface); }
+  .obj-q{ padding:11px 16px; background:var(--surface-2); font-weight:600; font-size:.92rem; display:flex; gap:10px; }
+  .obj-q .tag{ flex:none; font-family:"IBM Plex Mono",monospace; font-size:.68rem; color:var(--rust); text-transform:uppercase;
+    letter-spacing:.05em; background:var(--bad-soft); border-radius:5px; padding:2px 6px; margin-top:2px; }
+  .obj-a{ padding:13px 16px; font-size:.93rem; color:var(--ink); }
+
+  /* package strip */
+  .pkgstrip{ margin-top:16px; display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:1px;
+    background:var(--line); border:1px solid var(--line); border-radius:12px; overflow:hidden; }
+  .pkg{ background:var(--surface); padding:14px 16px; }
+  .pkg.lead{ background:var(--gold-soft); }
+  .pkg .n{ font-weight:600; font-size:.95rem; }
+  .pkg .p{ margin-top:4px; font-family:"IBM Plex Mono",monospace; font-size:.78rem; color:var(--gold); }
+  .pkg .u{ margin-top:3px; font-size:.74rem; color:var(--muted); text-transform:uppercase; letter-spacing:.04em; }
+
+  .tablewrap{ overflow-x:auto; margin-top:16px; border:1px solid var(--line); border-radius:12px; }
+  table{ width:100%; border-collapse:collapse; font-size:.87rem; min-width:520px; }
+  th{ text-align:left; font-size:.7rem; text-transform:uppercase; letter-spacing:.06em; color:var(--muted);
+    font-weight:600; padding:10px 14px; background:var(--surface-2); border-bottom:1px solid var(--line); }
+  td{ padding:11px 14px; border-bottom:1px solid var(--line); vertical-align:top; color:var(--ink); }
+  tr:last-child td{ border-bottom:none; }
+  td.k{ color:var(--muted); white-space:nowrap; font-size:.82rem; }
+
+  .phase{ margin-top:22px; border:1px solid var(--line); border-radius:14px; padding:18px 20px; background:var(--surface); }
+  .phase h4{ font-size:1.05rem; display:flex; align-items:baseline; gap:10px; flex-wrap:wrap; }
+  .phase h4 .range{ font-family:"IBM Plex Mono",monospace; font-size:.72rem; color:var(--gold); font-weight:600;
+    background:var(--gold-soft); padding:2px 8px; border-radius:999px; }
+  .phase ul{ margin-top:10px; }
+
+  footer.doc-footer{ margin-top:80px; padding-top:22px; border-top:1px solid var(--line); color:var(--muted); font-size:.85rem;
+    display:flex; justify-content:space-between; gap:16px; flex-wrap:wrap; }
+  footer a{ color:var(--muted); }
+
+  @media (max-width:640px){
+    .tablewrap table{ min-width:480px; }
+  }
+</style>
+
+<header class="hero">
+  <div class="wrap" style="padding:0;">
+    <p class="eyebrow">First Call &middot; from cold lead to first invoice</p>
+    <h1>The First Sale</h1>
+    <p class="lede">
+      Everything between "never heard of First Call" and "active, paying client, month one underway" —
+      where to find someone to call, exactly what to say, what to collect the moment they say yes, and
+      the actual work you owe them for it.
+    </p>
+    <div class="callout">
+      <p class="k">Before you dial anyone</p>
+      <p>
+        Checkout, the CRM, and the delivery agents all work right now — but Stripe is still in
+        <b>test mode</b>. A real prospect who clicks through to <code>/start</code> today will hit a
+        Stripe page that only accepts test cards, not their real one. Get a verbal yes and everything
+        below still applies — just don't send a live prospect to checkout, or take a card number
+        yourself, until Stripe's business verification is done. Ask in chat for a status check before
+        your first real call.
+      </p>
+    </div>
+  </div>
+</header>
+
+<nav class="jump">
+  <div class="inner">
+    <a href="#find">1 &middot; Find them</a>
+    <a href="#call">2 &middot; The call</a>
+    <a href="#close">3 &middot; Close it</a>
+    <a href="#kickoff">4 &middot; Kickoff</a>
+    <a href="#deliver">5 &middot; Deliver</a>
+  </div>
+</nav>
+
+<div class="wrap">
+
+  <section id="find">
+    <p class="kicker">01</p>
+    <h2>Find someone to call</h2>
+    <p class="dek">No lead scraper exists yet, so today the list is built by hand. Every source below is free and legal.</p>
+
+    <ol class="process">
+      <li>
+        <div class="t">Pick a trade and a city</div>
+        <div class="d">Start narrow — one trade, one city you know. First Call's live trades are
+          <span class="mono">HVAC, Roofing, Mold &amp; Remediation, Cleaning &amp; Janitorial, Auto &amp; Wraps,
+          Trucking &amp; Equipment</span>. A single-location, owner-led business is the best fit for
+          Foundation — that's who the offer (and the pricing) is built for.</div>
+      </li>
+      <li>
+        <div class="t">Search Google Maps as a human, not a scraper</div>
+        <div class="d">Search "<span class="mono">[trade] near [city]</span>" and write down what you see —
+          especially the businesses sitting below the map pack (top 3). They're losing the most calls to
+          competitors and they're the easiest pitch, because the problem is visible to them the moment you
+          say it out loud. This is manual research, not automated scraping — automating this against Google
+          Maps breaks their terms of service and isn't something to build.</div>
+      </li>
+      <li>
+        <div class="t">Pull from directories</div>
+        <div class="d">Yellow Pages Canada, Yelp, the Better Business Bureau, and each trade's own
+          provincial association directory (e.g. a provincial HVAC or roofing contractor association) list
+          name, phone, and website for free. Chamber of Commerce member directories work the same way, and
+          skew toward already-established local operators.</div>
+      </li>
+      <li>
+        <div class="t">Run the real audit on each one before you call</div>
+        <div class="d">Use <a href="https://firstcall-teal.vercel.app/audit" target="_blank" rel="noopener"><code>/audit</code></a>
+          on their actual website. It's a real scan — homepage, up to three interior pages, and robots.txt,
+          scored across five categories — not a guess. Walking into a call with their real number already in
+          hand is a stronger opener than any cold intro.</div>
+      </li>
+      <li>
+        <div class="t">Log it in the CRM the moment you know it exists</div>
+        <div class="d">Add it at <a href="https://firstcall-teal.vercel.app/crm/leads/new" target="_blank" rel="noopener"><code>/crm/leads/new</code></a>
+          — even before the first call. An added-by-hand lead starts <b>warm</b>; it flips to <b>hot</b>
+          automatically the moment you log a contact against it, and stays that way until you mark it won or
+          lost. This is what keeps a name from quietly falling through the cracks.</div>
+      </li>
+    </ol>
+
+    <div class="callout" style="border-color:var(--line); background:var(--surface);">
+      <p class="k" style="color:var(--gold);">One legal note on phone calls</p>
+      <p>
+        Canada's National Do Not Call List covers unsolicited calls to <i>consumers</i> — calling another
+        business, about that business, is exempt. That's what a cold sales call to a trades company is. Still:
+        the moment anyone asks not to be called again, stop and log it — good practice regardless of the
+        exemption, and the contact log already gives you the place to record it.
+      </p>
+    </div>
+  </section>
+
+  <section id="call">
+    <p class="kicker">02</p>
+    <h2>The call</h2>
+    <p class="dek">Confident and plain-spoken, allergic to hype — that's First Call's actual brand voice, not a script gimmick. Use it.</p>
+
+    <h3>Opening — cold, by phone</h3>
+    <div class="script">
+      <div class="who">You</div>
+      "Hi, is this [owner name]? This is [you] with First Call — we help [trade] businesses in [city] show
+      up first when someone searches for [trade] near me, on Google, on the map, and now in AI answers like
+      ChatGPT. Got 60 seconds?"
+    </div>
+    <div class="script prospect">
+      <div class="who">If they say yes</div>
+      "I actually ran a quick scan on your site before calling — you're at [score] out of 100 on visibility
+      right now. Want me to walk you through what that means and where the gap is?"
+    </div>
+    <div class="script">
+      <div class="who">Voicemail</div>
+      "Hi [owner name], [you] with First Call. I ran a quick visibility check on [business] and found a few
+      things costing you calls that are fixable in a day or two. Call me back at [number], or I'll try you
+      again [day]."
+    </div>
+
+    <h3>Walking through the score</h3>
+    <p>Use the score as a diagnostic, not a scare tactic — connect each gap to a real consequence, not a
+    vague warning:</p>
+    <ul>
+      <li><b>Maps</b> — "This is the map with the top three results. Right now a competitor is sitting there
+        instead of you for [search term] — that's a phone that rings for them, not you."</li>
+      <li><b>AI Overviews / AI Assistants</b> — "When someone asks ChatGPT or Google's AI answer who to
+        call, it quotes whoever's content is structured so it can be quoted. Right now that's not you."</li>
+      <li><b>Voice</b> — "More searches start as a spoken question every year. If your listing isn't
+        complete and consistent everywhere, voice assistants skip you."</li>
+      <li><b>Website &amp; Reviews</b> — "This is your site's technical health and review signal — both feed
+        directly into whether Google trusts you enough to rank you."</li>
+    </ul>
+    <p class="dek" style="margin-top:6px;">Never claim a specific rank, call volume, or revenue outcome — the
+    audit measures signals, not guarantees, and the contract says so explicitly. That restraint is itself
+    part of the pitch: every trades owner has already heard the guarantee pitch, and didn't believe it.</p>
+
+    <h3>Presenting the offer</h3>
+    <div class="script">
+      <div class="who">You</div>
+      "Here's exactly what's fixable and how: Foundation is $2,799 to set up, then $139.99 a month,
+      month-to-month — no contract lock-in. You get a senior strategist, not a junior account manager, and a
+      plain-English report every month on calls, jobs, and visibility — not vanity metrics."
+    </div>
+    <p>What's actually included: Business Profile + local optimization, a review acquisition system, core
+    on-page work and LocalBusiness schema, foundational content, monthly reporting, and a named strategist
+    who owns the account. Not included: paid ad spend, multi-location work, digital PR, or a rebuilt website
+    from scratch.</p>
+
+    <p style="margin-top:18px;"><b>If they're a bigger fit than Foundation, or want a smaller first step</b> —
+    all four are real, purchasable offers now, not "coming soon":</p>
+    <div class="pkgstrip">
+      <div class="pkg lead"><div class="n">Foundation</div><div class="p">$2,799 + $139.99/mo</div><div class="u">Lead with this</div></div>
+      <div class="pkg"><div class="n">Growth</div><div class="p">$3,800 + $249/mo</div><div class="u">Established, scaling</div></div>
+      <div class="pkg"><div class="n">Domination</div><div class="p">$5,500 + $449/mo</div><div class="u">Multi-location</div></div>
+      <div class="pkg"><div class="n">Audit only</div><div class="p">$497 one-time</div><div class="u">Lower-commitment step</div></div>
+    </div>
+
+    <h3>Objections</h3>
+    <div class="obj">
+      <div class="obj-row">
+        <div class="obj-q"><span class="tag">Guarantee</span> "Will I actually rank #1?"</div>
+        <div class="obj-a">"I won't promise a specific rank or call volume — nobody honest can, and our
+          contract says so in writing. What I can tell you exactly is what we're fixing and why it moves the
+          signals that decide who gets the call."</div>
+      </div>
+      <div class="obj-row">
+        <div class="obj-q"><span class="tag">Scope</span> "I actually need a new website."</div>
+        <div class="obj-a">"Foundation optimizes what you've already got — it doesn't include building a new
+          site from scratch. If yours genuinely needs a rebuild, that's a separate conversation to scope —
+          let's start with Foundation, and handle that piece on its own."</div>
+      </div>
+      <div class="obj-row">
+        <div class="obj-q"><span class="tag">Price</span> "I already have someone doing my Google stuff."</div>
+        <div class="obj-a">"Fair — can I ask what your Map Pack position is for your main service right now?
+          [Listen.] That's exactly the kind of thing our monthly report tracks in plain numbers, so you can
+          actually see whether what you're paying for is working."</div>
+      </div>
+      <div class="obj-row">
+        <div class="obj-q"><span class="tag">Stall</span> "Let me think about it."</div>
+        <div class="obj-a">Don't discount. If Foundation genuinely feels like too big a first step, offer the
+          standalone Technical SEO Audit ($497 one-time) instead — a real, lower-commitment entry point, not
+          a consolation prize.</div>
+      </div>
+    </div>
+  </section>
+
+  <section id="close">
+    <p class="kicker">03</p>
+    <h2>Close it</h2>
+    <p class="dek">Assume the sale, then make paying the easiest part of the call.</p>
+
+    <div class="script">
+      <div class="who">You</div>
+      "Should I text you the payment link now, or would you rather I email it? Either way it's the same
+      page — business name, website, and trade, then straight to checkout."
+    </div>
+
+    <ol class="process">
+      <li>
+        <div class="t">Send the right package link</div>
+        <div class="d">
+          <code>/start</code> defaults to Foundation. For another package, add
+          <code>?package=growth</code>, <code>domination</code>, or <code>audit</code> to the URL — same
+          form, same flow, correct price on the other end.
+        </div>
+      </li>
+      <li>
+        <div class="t">They pay on Stripe's hosted page</div>
+        <div class="d">First Call never touches a card number directly. The setup fee and the monthly
+          retainer are billed together as one subscription — the setup fee charges once, the retainer
+          continues monthly.</div>
+      </li>
+      <li>
+        <div class="t">Everything past this point is automatic</div>
+        <div class="d">Stripe confirms payment, the system runs the research and 90-day-plan agents in the
+          background, saves the report, and mirrors the client into the CRM as <b>won</b>. Nothing for you to
+          trigger manually — unless the report comes back flagged mock data (see the callout at the top of
+          this page), in which case regenerate it before the client ever sees it.</div>
+      </li>
+      <li>
+        <div class="t">No working checkout yet? Take it manually</div>
+        <div class="d">Note the sale in the CRM as <b>won</b> yourself from
+          <a href="https://firstcall-teal.vercel.app/crm/leads/new" target="_blank" rel="noopener"><code>/crm/leads/new</code></a>,
+          and arrange payment by invoice once Stripe is live. Don't let a real prospect sit on a broken
+          checkout page wondering if it's you or them.</div>
+      </li>
+    </ol>
+  </section>
+
+  <section id="kickoff">
+    <p class="kicker">04</p>
+    <h2>What to collect the moment they say yes</h2>
+    <p class="dek">This is Day 1 of the actual playbook — get all of it before you try to do any real work.</p>
+
+    <div class="checklist">
+      <div class="checkitem"><div class="box"></div><div class="body"><b>Google Business Profile access</b><span class="h">Added as a manager on the listing — this is the single highest-leverage account in local SEO.</span></div></div>
+      <div class="checkitem"><div class="box"></div><div class="body"><b>Google Search Console access</b><span class="h">Shows what's actually being searched and clicked — the baseline for every report going forward.</span></div></div>
+      <div class="checkitem"><div class="box"></div><div class="body"><b>Google Analytics (GA4) access</b><span class="h">If they don't have it installed yet, that's the first thing to set up, not a blocker to starting.</span></div></div>
+      <div class="checkitem"><div class="box"></div><div class="body"><b>Call tracking, or an honest starting number</b><span class="h">If there's no call tracking yet, write down today's real monthly call volume — even "we don't really know" is a documented baseline.</span></div></div>
+      <div class="checkitem"><div class="box"></div><div class="body"><b>Website / CMS login</b><span class="h">WordPress, Wix, Squarespace — whatever it is. Needed for on-page fixes and schema, day one.</span></div></div>
+      <div class="checkitem"><div class="box"></div><div class="body"><b>One single point of contact</b><span class="h">Name, email, phone, and how they actually prefer to be reached — not "whoever picks up."</span></div></div>
+      <div class="checkitem"><div class="box"></div><div class="body"><b>Confirm NAP (Name, Address, Phone)</b><span class="h">The exact spelling/format to use everywhere — inconsistent NAP across the web actively hurts local ranking.</span></div></div>
+      <div class="checkitem"><div class="box"></div><div class="body"><b>Legal name + mailing address for the invoice</b><span class="h">Needed for the contract and for CASL-compliant email — get the real, legal spelling, not the trade name.</span></div></div>
+    </div>
+
+    <p style="margin-top:18px;">The automatic "deal closed" email already asks for the first four items directly
+    — you're following up on it, not starting from scratch. Log everything you collect as notes on the
+    client's CRM lead page so the strategist doing the work isn't chasing you for it later.</p>
+  </section>
+
+  <section id="deliver">
+    <p class="kicker">05</p>
+    <h2>Deliver it</h2>
+    <p class="dek">Foundation is senior-strategist-owned, not junior or outsourced. The day-by-day month-1
+    checklist already exists and is live — this is the plan behind it, plus what comes after.</p>
+
+    <div class="phase">
+      <h4>Month 1 <span class="range">Days 1&ndash;30</span></h4>
+      <p>The full day-by-day is already built and public at
+      <a href="https://firstcall-teal.vercel.app/playbook" target="_blank" rel="noopener"><code>/playbook</code></a>
+      — kickoff and baselines, primary-category research, full GBP completeness, review acquisition live,
+      citation audit, on-page and schema work, one real service+city page, tracking confirmed, and the
+      month-1 report. Follow it in order; it's the actual execution checklist, not a summary of one.</p>
+      <ul>
+        <li><b>Technical bar:</b> Core Web Vitals — LCP under 2.5s, INP under 200ms, CLS under 0.1, all
+          three passing together.</li>
+        <li><b>Content bar (E-E-A-T):</b> real photos, a named credentialed writer, accurate sourced facts —
+          not generic template copy.</li>
+        <li><b>Don't skip:</b> confirm robots.txt isn't blocking AI crawlers (GPTBot, ClaudeBot,
+          PerplexityBot, Google-Extended) — a blocked crawler means invisible to AI answers, full stop.</li>
+      </ul>
+    </div>
+
+    <div class="phase">
+      <h4>Month 2 <span class="range">Days 31&ndash;60</span></h4>
+      <ul>
+        <li>Keep review velocity going — this compounds, it doesn't finish in month 1.</li>
+        <li>Close out any remaining citations from the Day 7&ndash;8 audit.</li>
+        <li>Build out service and location page architecture beyond the single page shipped in month 1.</li>
+        <li>Regular Google Business Profile posts and Q&amp;A activity.</li>
+        <li>Iterate directly off what the month-1 report showed — don't run a generic month 2.</li>
+      </ul>
+    </div>
+
+    <div class="phase">
+      <h4>Month 3 <span class="range">Days 61&ndash;90</span></h4>
+      <ul>
+        <li>This is the typical window local ranking movement starts becoming visible — set that
+          expectation with the client at kickoff, not as a surprise now.</li>
+        <li>Deepen content beyond the single foundational piece.</li>
+        <li>Confirm tracking and attribution are solid enough to trust the numbers in the report.</li>
+        <li>Have the honest conversation: stay on Foundation, or is this a genuine Growth fit now that
+          there's a real baseline to scale from.</li>
+      </ul>
+    </div>
+
+    <h3>Every month, ongoing</h3>
+    <p>The report is plain English: more visible? more calls? what's next? Calls, jobs, and visibility —
+    never vanity metrics, never a fabricated case-study number. This is a stated commitment in Foundation's
+    scope, not a nice-to-have — build the habit starting with client zero.</p>
+  </section>
+
+  <footer class="doc-footer">
+    <span>First Call — internal. Full software reference: the
+      <a href="https://claude.ai/code/artifact/2de5a1b9-001b-4cd9-926d-1d6b18dfcc24" target="_blank" rel="noopener">Field Manual</a>.
+      Everything clickable in one place: the
+      <a href="https://claude.ai/code/artifact/86ae4a6e-6a0c-4a37-804e-d90e2b939c97" target="_blank" rel="noopener">Command Center</a>.
+    </span>
+    <span>Built 2026-09-06.</span>
+  </footer>

@@ -74,6 +74,15 @@ bought and the remaining setup is done (see `../CLAUDE.md`), since a lot of thei
 what's still missing right now." The working, current deployment today is
 `https://firstcall-teal.vercel.app`, not `firstcallmarketing.ai`.
 
+## 6. The First Sale (2026-09-06)
+
+- [`the-first-sale.html`](the-first-sale.html) — the working sales playbook: where to find prospects,
+  the actual cold-call script and objection handling, how to close (with the live `?package=` links),
+  the kickoff checklist to run the moment someone says yes, and the Month 1-3 delivery plan (pointing
+  at the real `/playbook` day-by-day). More tactical and current than the Field Manual's closing
+  section — written after Growth/Domination/Audit went live and Stripe/Resend were wired up. Live
+  version: https://claude.ai/code/artifact/228b1f47-aa5b-4821-869d-661776a110f3
+
 ## Not included here
 
 Session transcripts (the raw back-and-forth that produced all of this) live in
