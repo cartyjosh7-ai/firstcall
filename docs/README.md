@@ -82,6 +82,12 @@ what's still missing right now." The working, current deployment today is
   at the real `/playbook` day-by-day). More tactical and current than the Field Manual's closing
   section — written after Growth/Domination/Audit went live and Stripe/Resend were wired up. Live
   version: https://claude.ai/code/artifact/228b1f47-aa5b-4821-869d-661776a110f3
+- [`the-delivery-manual.html`](the-delivery-manual.html) — click-by-click execution guide for actually
+  doing the SEO work for a Foundation client, written for zero prior SEO experience: exact GBP steps,
+  a review-request template, the citation list, a copy-paste LocalBusiness schema template, an
+  llms.txt template, and the month-1 report structure. Companion to `/playbook` (the terse day-by-day
+  checklist) — this is the "how," not just the "what." Live version:
+  https://claude.ai/code/artifact/3a1b06e4-cc38-4dce-829c-964d7f2ca82a
 
 ## Not included here
 

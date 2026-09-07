@@ -1,0 +1,425 @@
+<title>The Delivery Manual</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500&family=Source+Sans+3:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --bg:#fbf8f1; --surface:#f2ecdd; --surface-2:#ece4cf; --ink:#1c1a13; --muted:#6e6656;
+    --line:#ddd3bd; --gold:#8f6c1b; --rust:#a94a1d;
+    --good:#3f6b3f; --good-soft:#e2ebdd; --bad:#a94a1d; --bad-soft:#f3e2d8; --neutral:#8a8272; --neutral-soft:#eee8d9;
+    --gold-soft:#f0e6c9; --shadow:0 1px 2px rgba(28,26,19,.06);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#0c0d0b; --surface:#141510; --surface-2:#1a1b14; --ink:#f4efe4; --muted:#b7b1a4;
+      --line:#2a2b26; --gold:#c9a227; --rust:#c45c26;
+      --good:#8caa5a; --good-soft:#1e2417; --bad:#c45c26; --bad-soft:#241a12; --neutral:#8a8272; --neutral-soft:#1a1a15;
+      --gold-soft:#221d0e; --shadow:0 1px 2px rgba(0,0,0,.4);
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#0c0d0b; --surface:#141510; --surface-2:#1a1b14; --ink:#f4efe4; --muted:#b7b1a4;
+    --line:#2a2b26; --gold:#c9a227; --rust:#c45c26;
+    --good:#8caa5a; --good-soft:#1e2417; --bad:#c45c26; --bad-soft:#241a12; --neutral:#8a8272; --neutral-soft:#1a1a15;
+    --gold-soft:#221d0e; --shadow:0 1px 2px rgba(0,0,0,.4);
+  }
+
+  *{box-sizing:border-box;}
+  html{ scroll-behavior:smooth; }
+  body{ margin:0; background:var(--bg); color:var(--ink); font-family:"Source Sans 3",ui-sans-serif,system-ui,sans-serif;
+    font-size:16px; line-height:1.6; -webkit-font-smoothing:antialiased; }
+  h1,h2,h3,h4{ font-family:"Fraunces",ui-serif,Georgia,serif; text-wrap:balance; margin:0; font-weight:600; }
+  .mono{ font-family:"IBM Plex Mono",ui-monospace,monospace; }
+  code{ font-family:"IBM Plex Mono",monospace; background:var(--surface-2); padding:1px 6px; border-radius:5px; font-size:.86em; }
+  a{ color:var(--gold); }
+  a:focus-visible, button:focus-visible{ outline:2px solid var(--gold); outline-offset:2px; }
+  p{ color:var(--ink); }
+
+  .wrap{ max-width:760px; margin:0 auto; padding:0 24px 120px; }
+
+  header.hero{ padding:52px 0 8px; }
+  .eyebrow{ font-size:.78rem; text-transform:uppercase; letter-spacing:.12em; color:var(--gold); font-weight:600; }
+  h1{ font-size:clamp(2.1rem,5vw,3rem); margin-top:.4rem; }
+  .lede{ margin-top:.9rem; max-width:62ch; color:var(--muted); font-size:1.05rem; }
+
+  .callout{ margin-top:26px; border:1px solid var(--line); background:var(--surface); border-radius:12px; padding:16px 18px; }
+  .callout .k{ font-size:.72rem; text-transform:uppercase; letter-spacing:.08em; color:var(--gold); font-weight:700; }
+  .callout p{ margin:6px 0 0; font-size:.92rem; color:var(--ink); max-width:60ch; }
+
+  nav.jump{ position:sticky; top:0; z-index:30; margin-top:30px; background:color-mix(in srgb, var(--bg) 90%, transparent);
+    backdrop-filter:blur(8px); border-bottom:1px solid var(--line); border-top:1px solid var(--line); }
+  nav.jump .inner{ max-width:760px; margin:0 auto; padding:12px 24px; display:flex; gap:16px; flex-wrap:wrap; overflow-x:auto; }
+  nav.jump a{ font-size:.78rem; text-decoration:none; color:var(--muted); text-transform:uppercase; letter-spacing:.04em; white-space:nowrap; }
+  nav.jump a:hover{ color:var(--ink); }
+
+  section{ margin-top:56px; scroll-margin-top:60px; }
+  section > .kicker{ font-size:.78rem; text-transform:uppercase; letter-spacing:.1em; color:var(--gold); font-weight:600; display:flex; gap:10px; align-items:center; }
+  section > .kicker .range{ font-family:"IBM Plex Mono",monospace; font-weight:600; color:var(--muted); letter-spacing:0; text-transform:none; font-size:.8rem; }
+  section > h2{ font-size:1.85rem; margin-top:.3rem; }
+  section > .dek{ margin-top:.6rem; color:var(--muted); max-width:60ch; font-size:1rem; }
+  section h3{ font-size:1.15rem; margin-top:1.8rem; }
+  section p{ max-width:62ch; margin:.9em 0; }
+  section ul, section ol.plain{ max-width:62ch; padding-left:1.25em; margin:.9em 0; }
+  section li{ margin:.4em 0; }
+
+  /* who does it badge */
+  .who-badge{ display:inline-flex; align-items:center; gap:6px; font-size:.7rem; text-transform:uppercase; letter-spacing:.05em;
+    font-weight:700; border-radius:999px; padding:3px 10px; margin-bottom:10px; }
+  .who-badge.you{ background:var(--gold-soft); color:var(--gold); }
+  .who-badge.claude{ background:var(--good-soft); color:var(--good); }
+
+  /* numbered how-to steps */
+  ol.howto{ list-style:none; padding:0; margin:16px 0 0; counter-reset:hstep; display:grid; gap:0; }
+  ol.howto li{ counter-increment:hstep; position:relative; padding:0 0 18px 38px; border-left:1px solid var(--line); margin-left:11px; }
+  ol.howto li:last-child{ border-left-color:transparent; padding-bottom:2px; }
+  ol.howto li::before{ content:counter(hstep); position:absolute; left:-11px; top:0; width:22px; height:22px; border-radius:50%;
+    background:var(--surface-2); color:var(--muted); font-family:"IBM Plex Mono",monospace; font-size:.72rem; font-weight:600;
+    display:flex; align-items:center; justify-content:center; border:1px solid var(--bg); }
+  ol.howto .d{ font-size:.93rem; max-width:60ch; }
+
+  /* code / template block */
+  .tmpl{ margin-top:14px; border:1px solid var(--line); border-radius:12px; overflow:hidden; background:var(--surface); }
+  .tmpl .tmpl-head{ display:flex; justify-content:space-between; align-items:center; padding:9px 14px; background:var(--surface-2);
+    border-bottom:1px solid var(--line); font-size:.74rem; text-transform:uppercase; letter-spacing:.05em; color:var(--muted); font-weight:600; }
+  .tmpl pre{ margin:0; padding:14px 16px; overflow-x:auto; font-family:"IBM Plex Mono",monospace; font-size:.8rem; line-height:1.55; color:var(--ink); }
+  .tmpl .plain{ padding:14px 16px; font-size:.92rem; font-style:italic; color:var(--ink); }
+
+  .tablewrap{ overflow-x:auto; margin-top:16px; border:1px solid var(--line); border-radius:12px; }
+  table{ width:100%; border-collapse:collapse; font-size:.87rem; min-width:520px; }
+  th{ text-align:left; font-size:.7rem; text-transform:uppercase; letter-spacing:.06em; color:var(--muted);
+    font-weight:600; padding:10px 14px; background:var(--surface-2); border-bottom:1px solid var(--line); }
+  td{ padding:11px 14px; border-bottom:1px solid var(--line); vertical-align:top; color:var(--ink); }
+  tr:last-child td{ border-bottom:none; }
+
+  .checklist{ margin-top:14px; display:grid; gap:1px; background:var(--line); border:1px solid var(--line); border-radius:12px; overflow:hidden; }
+  .checkitem{ background:var(--surface); padding:11px 15px; display:flex; gap:11px; align-items:flex-start; }
+  .checkitem .box{ flex:none; width:16px; height:16px; margin-top:2px; border:1.5px solid var(--gold); border-radius:5px; }
+  .checkitem .body{ font-size:.9rem; }
+
+  footer.doc-footer{ margin-top:80px; padding-top:22px; border-top:1px solid var(--line); color:var(--muted); font-size:.85rem;
+    display:flex; justify-content:space-between; gap:16px; flex-wrap:wrap; }
+  footer a{ color:var(--muted); }
+</style>
+
+<header class="hero">
+  <div class="wrap" style="padding:0;">
+    <p class="eyebrow">First Call &middot; doing the work, assuming zero SEO experience</p>
+    <h1>The Delivery Manual</h1>
+    <p class="lede">
+      You closed a Foundation client and collected access. This is the click-by-click version of
+      <a href="https://firstcall-teal.vercel.app/playbook" target="_blank" rel="noopener"><code>/playbook</code></a>
+      — what each day actually means to <i>do</i>, with the exact templates and code to copy in, written for
+      someone who has never done this before.
+    </p>
+    <div class="callout">
+      <p class="k">Two kinds of steps on this page</p>
+      <p>
+        <span class="who-badge you">You do this</span> means logging into the client's own Google Business
+        Profile, website, or accounts — only you (or whoever holds that login) can do it; nothing in First
+        Call's own software reaches a client's accounts.
+        <span class="who-badge claude" style="margin-top:8px;">Claude drafts this</span> means it's text or
+        code — ask in chat and paste in your business details, and it'll be written for you to copy in.
+        Everything below is grouped the same way as <code>/playbook</code>'s day ranges.
+      </p>
+    </div>
+  </div>
+</header>
+
+<nav class="jump">
+  <div class="inner">
+    <a href="#access">Access &amp; baseline</a>
+    <a href="#category">Category</a>
+    <a href="#gbp">GBP</a>
+    <a href="#reviews">Reviews</a>
+    <a href="#citations">Citations</a>
+    <a href="#onpage">On-page &amp; schema</a>
+    <a href="#content">Content</a>
+    <a href="#tracking">Tracking</a>
+    <a href="#ai">AI visibility</a>
+    <a href="#report">The report</a>
+  </div>
+</nav>
+
+<div class="wrap">
+
+  <section id="access">
+    <p class="kicker">Days 1&ndash;2 <span class="range">access + baseline</span></p>
+    <h2>Get in, and write down where they actually stand</h2>
+    <p class="dek">Nothing gets fixed until you can see it and touch it. Baseline first, so month one has something to compare against.</p>
+
+    <span class="who-badge you">You do this</span>
+    <ol class="howto">
+      <li><div class="d"><b>Accept Google Business Profile access.</b> Have the owner add you at
+        <a href="https://business.google.com" target="_blank" rel="noopener">business.google.com</a> →
+        their listing → <span class="mono">Business Profile settings</span> → <span class="mono">People and
+        access</span> → invite your email as <b>Manager</b>. You'll get an email invite to accept.</div></li>
+      <li><div class="d"><b>Get Google Search Console access.</b> They go to
+        <a href="https://search.google.com/search-console" target="_blank" rel="noopener">search.google.com/search-console</a>,
+        select their property, <span class="mono">Settings</span> → <span class="mono">Users and
+        permissions</span> → add your email as <b>Full</b>. This shows you real search queries and clicks —
+        it's the closest thing to ground truth you'll get.</div></li>
+      <li><div class="d"><b>Get Google Analytics (GA4) access.</b> Same idea: <span class="mono">Admin</span> →
+        <span class="mono">Property Access Management</span> → add your email as <b>Editor</b>. If they don't
+        have GA4 installed at all, that's a same-day fix — Google's setup wizard walks through it, and most
+        CMS platforms have a one-field paste-your-ID option.</div></li>
+      <li><div class="d"><b>Get their website/CMS login.</b> WordPress admin is normally at
+        <span class="mono">[theirsite].com/wp-admin</span>; Wix and Squarespace you log in at wix.com or
+        squarespace.com and select their site. Confirm you can actually edit a page before you move on.</div></li>
+      <li><div class="d"><b>Screenshot their current Map Pack position.</b> Open an incognito/private browser
+        window (so your own search history doesn't skew the result), search "<span class="mono">[their
+        trade] near [their city]</span>", and screenshot where they show up — in the map 3-pack, further
+        down, or not at all. This screenshot is today's baseline; you'll take the same shot again at day 30.</div></li>
+      <li><div class="d"><b>Count their reviews.</b> Total count, average rating, and the date of the most
+        recent one — straight off their live Google listing.</div></li>
+      <li><div class="d"><b>Check if any schema already exists.</b> Right-click their homepage →
+        <span class="mono">View Page Source</span> → search (Ctrl/Cmd+F) for
+        <span class="mono">application/ld+json</span>. If nothing's there, that's your day 9&ndash;11 task
+        already scoped. You can also paste the URL into Google's free
+        <a href="https://search.google.com/test/rich-results" target="_blank" rel="noopener">Rich Results
+        Test</a> for a friendlier view of the same thing.</div></li>
+      <li><div class="d"><b>Ask for their honest current call/job volume.</b> A real number, even a rough
+        one, beats no number. "We don't really track it" is a valid, documented baseline — write that down
+        exactly.</div></li>
+    </ol>
+  </section>
+
+  <section id="category">
+    <p class="kicker">Day 3 <span class="range">category</span></p>
+    <h2>Get the primary category right</h2>
+    <p class="dek">This is the single field Google weights the most for "who shows up" — worth getting exactly right, not guessed.</p>
+
+    <span class="who-badge you">You do this</span>
+    <ol class="howto">
+      <li><div class="d">Search "<span class="mono">[trade] near [city]</span>" in incognito and open the
+        Google Business Profile of each of the top 3 map-pack results.</div></li>
+      <li><div class="d">Click their business name in the results to open the full profile panel — the
+        category shows just under the business name (e.g. "HVAC contractor," not the more generic
+        "Contractor").</div></li>
+      <li><div class="d">Set your client's <b>primary</b> category to match the most specific, accurate
+        option available in that same family — from
+        <span class="mono">Business Profile settings → Edit profile → Business category</span>. Add
+        relevant secondary categories after, but the primary is what carries the most weight.</div></li>
+    </ol>
+  </section>
+
+  <section id="gbp">
+    <p class="kicker">Days 4&ndash;5 <span class="range">GBP completeness</span></p>
+    <h2>Fill in everything Google gives you room for</h2>
+    <p class="dek">An incomplete profile is the most common, most fixable reason a real business loses to a worse competitor.</p>
+
+    <span class="who-badge you">You do this</span>
+    <p>All from <span class="mono">business.google.com</span> → their profile → <span class="mono">Edit
+    profile</span>:</p>
+    <div class="checklist">
+      <div class="checkitem"><div class="box"></div><div class="body"><b>Hours</b> — including holiday hours and any 24/7 emergency line, kept current.</div></div>
+      <div class="checkitem"><div class="box"></div><div class="body"><b>Services</b> — every real service they offer, each with its own short description (not just a list of names).</div></div>
+      <div class="checkitem"><div class="box"></div><div class="body"><b>Photos</b> — real photos only: exterior, interior/vehicle, team, and completed work. Aim for at least 3 in each category to start.</div></div>
+      <div class="checkitem"><div class="box"></div><div class="body"><b>Business description</b> — 750 characters, plain language, naming the trade and service area — written for a human, not stuffed with keywords.</div></div>
+      <div class="checkitem"><div class="box"></div><div class="body"><b>Messaging &amp; Q&amp;A</b> — turn on messaging if they can realistically respond fast, and answer any existing public questions yourself.</div></div>
+      <div class="checkitem"><div class="box"></div><div class="body"><b>Booking / call link</b> — if they take online bookings anywhere, link it; otherwise confirm the phone number is click-to-call correct.</div></div>
+    </div>
+  </section>
+
+  <section id="reviews">
+    <p class="kicker">Day 6 <span class="range">review acquisition</span></p>
+    <h2>Set up a review system that runs without you</h2>
+    <p class="dek">This has to become a habit attached to every completed job — not a one-time push.</p>
+
+    <span class="who-badge you">You do this</span>
+    <ol class="howto">
+      <li><div class="d">Get their direct review link: in Google Business Profile, open
+        <span class="mono">Home</span> → the <span class="mono">Get more reviews</span> card gives a
+        shareable link and a QR code that drops a customer straight onto the review box — no searching
+        required.</div></li>
+      <li><div class="d">Put that QR code on the invoice or a leave-behind card, and text or email the link
+        within 24 hours of a completed job — while the work is still fresh.</div></li>
+      <li><div class="d">Respond to every review within 48 hours — positive or negative. No gating reviews
+        (asking happy customers only) and no incentives that violate Google's policies — First Call doesn't
+        do either.</div></li>
+    </ol>
+
+    <span class="who-badge claude" style="margin-top:18px;">Claude drafts this</span>
+    <div class="tmpl">
+      <div class="tmpl-head">Review-request text template</div>
+      <pre>Hi [customer name], it's [business name] — thanks for having us out for the
+[service] today. If you have 30 seconds, a Google review really helps other
+[city] homeowners find us: [review link]
+
+Thank you!</pre>
+    </div>
+  </section>
+
+  <section id="citations">
+    <p class="kicker">Days 7&ndash;8 <span class="range">citations</span></p>
+    <h2>Make their name, address, and phone number match everywhere</h2>
+    <p class="dek">Inconsistent NAP across the web is a direct, measurable trust penalty — this is mechanical work, not creative work.</p>
+
+    <span class="who-badge you">You do this</span>
+    <p>Use the exact NAP you confirmed at kickoff — same abbreviation style, same phone format — everywhere below:</p>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>Directory</th><th>Where</th></tr></thead>
+        <tbody>
+          <tr><td>Yellow Pages Canada</td><td><a href="https://www.yellowpages.ca" target="_blank" rel="noopener">yellowpages.ca</a> — claim or create the free listing</td></tr>
+          <tr><td>Better Business Bureau</td><td><a href="https://www.bbb.org" target="_blank" rel="noopener">bbb.org</a> — search for an existing profile before creating a new one</td></tr>
+          <tr><td>Bing Places</td><td><a href="https://www.bingplaces.com" target="_blank" rel="noopener">bingplaces.com</a> — free, often overlooked</td></tr>
+          <tr><td>Trade association directory</td><td>Search "[trade] association [province]" — e.g. HRAI for HVAC in Ontario, or the provincial roofing/remediation association</td></tr>
+          <tr><td>Local Chamber of Commerce</td><td>Search "[city] chamber of commerce directory"</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>To check what's already out there and inconsistent, search the business name plus phone number in
+    quotes and scan what comes back before you start fixing.</p>
+  </section>
+
+  <section id="onpage">
+    <p class="kicker">Days 9&ndash;11 <span class="range">on-page &amp; schema</span></p>
+    <h2>Fix the website itself</h2>
+    <p class="dek">The one genuinely technical step in month one — but it's copy-paste work once you have the code, not custom development.</p>
+
+    <span class="who-badge you">You do this</span>
+    <ol class="howto">
+      <li><div class="d"><b>Title tag &amp; H1.</b> Every key page's title tag and main heading should name
+        the service and the city plainly — "24/7 Emergency HVAC Repair in Calgary," not a clever tagline
+        alone.</div></li>
+      <li><div class="d"><b>NAP in the footer.</b> Name, address, and phone visible on every page, matching
+        your citations exactly.</div></li>
+      <li><div class="d"><b>Click-to-call.</b> The phone number should be a real <span class="mono">tel:</span>
+        link so a mobile visitor can tap to call, not just plain text.</div></li>
+      <li><div class="d"><b>Paste in the schema.</b> Ask Claude to draft the LocalBusiness schema below with
+        the client's real details, then add it to the site's <span class="mono">&lt;head&gt;</span>:
+        WordPress → a header/footer plugin (e.g. "Insert Headers and Footers") or your theme's custom-code
+        area; Wix → <span class="mono">Settings → Custom Code</span>; Squarespace →
+        <span class="mono">Settings → Advanced → Code Injection, Header</span>.</div></li>
+    </ol>
+
+    <span class="who-badge claude">Claude drafts this</span>
+    <div class="tmpl">
+      <div class="tmpl-head">LocalBusiness schema — fill in the brackets</div>
+      <pre>&lt;script type="application/ld+json"&gt;
+{
+  "@context": "https://schema.org",
+  "@type": "LocalBusiness",
+  "name": "[Business name]",
+  "image": "[URL to a real photo of the business]",
+  "telephone": "[Phone, e.g. +1-403-555-0100]",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "[Street address]",
+    "addressLocality": "[City]",
+    "addressRegion": "[Province abbreviation, e.g. AB]",
+    "postalCode": "[Postal code]",
+    "addressCountry": "CA"
+  },
+  "url": "[https://theirsite.com]",
+  "priceRange": "[$$ or a real range]",
+  "openingHours": "[e.g. Mo-Fr 08:00-18:00]"
+}
+&lt;/script&gt;</pre>
+    </div>
+    <p style="font-size:.88rem; color:var(--muted); margin-top:10px;">Give Claude the real business details
+    in chat and it'll write the exact filled-in version instead of the template above.</p>
+  </section>
+
+  <section id="content">
+    <p class="kicker">Days 12&ndash;14 <span class="range">content</span></p>
+    <h2>Publish one real, useful page</h2>
+    <p class="dek">One genuinely good service+city page beats ten thin ones — this is the E-E-A-T bar the research agent itself is held to.</p>
+
+    <span class="who-badge you">You do this</span>
+    <p>Pick their highest-value service plus their primary city (e.g. "Furnace Repair in Calgary") and
+    publish the page yourself once it's written — this is the same page format the free
+    <a href="https://firstcall-teal.vercel.app" target="_blank" rel="noopener">First Call site</a> uses for
+    its own industry pages, for reference.</p>
+
+    <span class="who-badge claude">Claude drafts this</span>
+    <p>Give Claude the trade, city, and 2-3 real differentiators (years in business, certifications, a
+    genuine specialty) and ask for a draft page: what the service actually involves, why this business
+    specifically, real photos called out where they should go, and one FAQ block. Real facts only — Claude
+    won't invent credentials, review counts, or claims about a business it wasn't given.</p>
+  </section>
+
+  <section id="tracking">
+    <p class="kicker">Day 15 <span class="range">tracking</span></p>
+    <h2>Know what's actually working</h2>
+    <p class="dek">Real call tracking costs a little money. Until the client's ready for that, a manual habit is a legitimate substitute.</p>
+
+    <span class="who-badge you">You do this</span>
+    <p><b>Zero-cost version, start here:</b> have the client (or whoever answers the phone) ask every new
+    caller "how did you find us?" and log it — even a shared notes doc works. It's not precise, but it's
+    honest, and it's what the month-1 report can build on.</p>
+    <p><b>When there's budget for it:</b> a dedicated tracking phone number that forwards to their real line
+    (several providers offer this in the $10&ndash;30/month range) tells you definitively which calls came
+    from Google versus elsewhere. Don't promise this as included in Foundation — it's an optional upgrade to
+    mention, not a default cost to absorb.</p>
+  </section>
+
+  <section id="ai">
+    <p class="kicker">Days 16&ndash;25 <span class="range">photos, posts, AI visibility</span></p>
+    <h2>Keep the profile active, and make sure AI can actually see the site</h2>
+    <p class="dek">Two habits, plus one file most sites are missing entirely.</p>
+
+    <span class="who-badge you">You do this</span>
+    <ol class="howto">
+      <li><div class="d"><b>Photo and post cadence (days 16&ndash;20).</b> Add a new photo and a short
+        Google Business Profile post every week or two — a recent job, a team update, a seasonal reminder.
+        Profiles that look actively maintained outperform ones that go quiet.</div></li>
+      <li><div class="d"><b>Check robots.txt isn't blocking AI crawlers.</b> Visit
+        <span class="mono">[theirsite].com/robots.txt</span> in a browser. If you see
+        <span class="mono">Disallow: /</span> under <span class="mono">GPTBot</span>,
+        <span class="mono">ClaudeBot</span>, <span class="mono">PerplexityBot</span>, or
+        <span class="mono">Google-Extended</span>, that's actively blocking AI answer engines from citing
+        the site at all — remove that line via the CMS's robots.txt or SEO plugin settings.</div></li>
+      <li><div class="d"><b>Add an FAQ block to the new service page.</b> Real questions a customer would
+        actually ask, in the customer's own words — this is what AI Overviews and assistants prefer to
+        quote directly.</div></li>
+    </ol>
+
+    <span class="who-badge claude">Claude drafts this</span>
+    <div class="tmpl">
+      <div class="tmpl-head">llms.txt — a plain-text permissions file for AI crawlers</div>
+      <pre># [Business name]
+# [https://theirsite.com]
+
+Allow crawling and citation of this site's public pages by AI assistants
+and answer engines. Primary services: [list the real services]. Service
+area: [city / region].</pre>
+    </div>
+    <p style="font-size:.88rem; color:var(--muted); margin-top:6px;">Save this as <span class="mono">/llms.txt</span>
+    at the site's root — ask Claude for the exact filled-in version with the client's real services.</p>
+  </section>
+
+  <section id="report">
+    <p class="kicker">Days 26&ndash;30 <span class="range">the month-1 report</span></p>
+    <h2>Show them what actually changed</h2>
+    <p class="dek">There's no report-generator for this yet — you compile it, in plain English, from the baseline you took on day 2.</p>
+
+    <span class="who-badge claude">Claude drafts this</span>
+    <div class="tmpl">
+      <div class="tmpl-head">Month-1 report — structure</div>
+      <div class="plain">
+        1. <b>Visibility</b> — the day-2 Map Pack screenshot next to today's. Any Search Console impressions/clicks worth naming.<br><br>
+        2. <b>Calls / jobs</b> — the honest number, even if it's a self-reported estimate, against the day-2 baseline.<br><br>
+        3. <b>What we shipped</b> — the actual list from this manual: GBP completed, review system live ([count] new reviews), citations fixed, schema added, one new page published.<br><br>
+        4. <b>What's next month</b> — 2-3 concrete, specific items — never a vague "continue optimizing."
+      </div>
+    </div>
+    <p>Ask Claude to turn your day-2 baseline and day-30 numbers into the actual written report — give it
+    the real figures and it'll write the plain-English version, never inventing a number you didn't
+    provide.</p>
+
+    <span class="who-badge you" style="margin-top:18px;">You do this</span>
+    <p>Sit down with the owner (call or in person) and walk through the report together. Confirm, in their
+    own words, what "more calls" needs to mean for month two — write that down, it's the north star for
+    everything in the next 30 days.</p>
+  </section>
+
+  <footer class="doc-footer">
+    <span>First Call — internal. Getting the client:
+      <a href="https://claude.ai/code/artifact/228b1f47-aa5b-4821-869d-661776a110f3" target="_blank" rel="noopener">The First Sale</a>.
+      Everything in one place:
+      <a href="https://claude.ai/code/artifact/86ae4a6e-6a0c-4a37-804e-d90e2b939c97" target="_blank" rel="noopener">Command Center</a>.
+    </span>
+    <span>Built 2026-09-06.</span>
+  </footer>
