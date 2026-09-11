@@ -129,16 +129,17 @@
   <h1>Run First Call from here</h1>
   <p class="lede">
     Every tool, every file, and everything left to do — in one place, all of it clickable. Built 2026-08-25,
-    last refreshed 2026-09-06.
+    last refreshed 2026-09-10.
     For the full story behind any of this, the <a href="https://claude.ai/code/artifact/3b3447ad-cb89-4352-85a6-9e3570909e40" target="_blank" rel="noopener">Readiness report</a>
     and the <a href="https://claude.ai/code/artifact/2de5a1b9-001b-4cd9-926d-1d6b18dfcc24" target="_blank" rel="noopener">Field Manual</a> go deep — this page is the launcher.
   </p>
   <div class="statusbar">
     <span class="status good"><span class="dot"></span>Working site: firstcall-teal.vercel.app</span>
-    <span class="status bad"><span class="dot"></span>firstcallmarketing.ai unrecoverable — buy firstcallconsulting.ai ($160/2yr)</span>
+    <span class="status bad"><span class="dot"></span>firstcallconsulting.ai not purchased — env already points there, but the domain doesn't resolve yet</span>
     <span class="status good"><span class="dot"></span>CRM live — manager account created, sign in at /crm</span>
     <span class="status good"><span class="dot"></span>4 packages live on /pricing: Foundation, Growth, Domination, Audit</span>
-    <span class="status warn"><span class="dot"></span>Stripe / Resend not connected — mock mode active, no package can charge yet</span>
+    <span class="status good"><span class="dot"></span>Stripe + Resend live — real checkout + email confirmed end-to-end 2026-09-07</span>
+    <span class="status good"><span class="dot"></span>824 leads in CRM — 822 from the Calgary open-data import, 7 hand-qualified HVAC prospects (warm, ready to call)</span>
   </div>
 </header>
 
@@ -188,7 +189,7 @@
         <a class="tile" href="https://firstcall-teal.vercel.app/crm/leads/new" target="_blank" rel="noopener">
           <span class="icon">➕</span><span class="name">Add a lead</span><span class="sub">/crm/leads/new</span></a>
         <a class="tile" href="https://firstcall-teal.vercel.app/crm/leads" target="_blank" rel="noopener">
-          <span class="icon">📤</span><span class="name">Send outreach</span><span class="sub">/crm/leads — cold-lead email agent, needs Resend</span></a>
+          <span class="icon">📤</span><span class="name">Send outreach</span><span class="sub">/crm/leads — cold-lead email agent, Resend live</span></a>
         <a class="tile" href="https://claude.ai/code/artifact/21f535cd-7b62-4ce7-af29-21ead88cae93" target="_blank" rel="noopener">
           <span class="icon">📞</span><span class="name">Switchboard</span><span class="sub">live call walkthrough — Open→Handoff</span></a>
       </div>
@@ -217,10 +218,10 @@
           <span class="icon">🐙</span><span class="name">GitHub repo</span><span class="sub">source of truth</span></a>
         <a class="tile" href="https://vercel.com/fc-consulting/firstcall" target="_blank" rel="noopener">
           <span class="icon">▲</span><span class="name">Vercel project</span><span class="sub">deploys, env vars, domains</span></a>
-        <a class="tile dim" href="https://dashboard.stripe.com/register" target="_blank" rel="noopener">
-          <span class="icon">💳</span><span class="name">Stripe</span><span class="sub">not created yet</span></a>
-        <a class="tile dim" href="https://resend.com/signup" target="_blank" rel="noopener">
-          <span class="icon">✉️</span><span class="name">Resend</span><span class="sub">not created yet</span></a>
+        <a class="tile" href="https://dashboard.stripe.com" target="_blank" rel="noopener">
+          <span class="icon">💳</span><span class="name">Stripe</span><span class="sub">live — 7 prices across 4 packages</span></a>
+        <a class="tile" href="https://resend.com/emails" target="_blank" rel="noopener">
+          <span class="icon">✉️</span><span class="name">Resend</span><span class="sub">live — lead + client email</span></a>
       </div>
     </div>
   </section>
@@ -341,11 +342,28 @@
     </div>
 
     <div class="filecat">
-      <h3>2026-09-06 <span class="filecat-meta">today — outreach agent shipped, pricing activated</span></h3>
+      <h3>2026-09-06 <span class="filecat-meta">outreach agent shipped, pricing activated</span></h3>
       <div class="filerows">
         <span class="filerow local"><span class="ficon">📤</span><span class="fname">Outreach agent</span><span class="fdesc">A third Claude agent drafts CASL-compliant cold-outreach emails for cold CRM leads; sending is manager-only, capped at one send per lead by the existing cold→hot status transition</span></span>
         <span class="filerow local"><span class="ficon">💲</span><span class="fname">Growth, Domination, and the Audit activated</span><span class="fdesc">All four packages are now real, self-serve Stripe checkout offers on /pricing, not "coming soon" — Growth/Domination/Audit were priced as ranges, fixed at the low end of each for instant checkout. /start and /legal/sow are now package-aware</span></span>
         <span class="filerow local"><span class="ficon">📇</span><span class="fname">Lead-won records now say which package</span><span class="fdesc">The webhook forwards the purchased package through to the "Deal closed" email and CRM notes instead of always assuming Foundation</span></span>
+        <span class="filerow local"><span class="ficon">🐛</span><span class="fname">Fixed lead capture crashing in production</span><span class="fdesc">Read-only-filesystem bug in the lead-capture path — found and fixed the same day</span></span>
+        <span class="filerow local"><span class="ficon">🎯</span><span class="fname">"The First Sale" + "The Delivery Manual" written</span><span class="fdesc">The actual working sales playbook (prospecting, call script, objections, close) and a click-by-click SEO execution guide for delivering a Foundation client — both more tactical than the Field Manual</span></span>
+      </div>
+    </div>
+
+    <div class="filecat">
+      <h3>2026-09-07 <span class="filecat-meta">Stripe + Resend confirmed live, Calgary lead import</span></h3>
+      <div class="filerows">
+        <span class="filerow local"><span class="ficon">✅</span><span class="fname">Real end-to-end test passed</span><span class="fdesc">A live Stripe test purchase ran the full path — checkout → webhook → CRM marked "won" with the correct package, and a separate test confirmed Resend delivers through the live lead-capture pipeline. Both proven working, not just configured</span></span>
+        <span class="filerow local"><span class="ficon">📋</span><span class="fname">Calgary open-data lead importer</span><span class="fdesc">Bulk-imported 822 licensed Calgary home-service businesses (HVAC, Roofing, Cleaning, Auto &amp; Wraps, Mold &amp; Remediation, Trucking) into the CRM as cold leads, from the City of Calgary's public business-licence data — plus a safe bulk-undo script for the same import</span></span>
+      </div>
+    </div>
+
+    <div class="filecat">
+      <h3>2026-09-10 <span class="filecat-meta">today — first real prospect list qualified</span></h3>
+      <div class="filerows">
+        <span class="filerow local"><span class="ficon">🔎</span><span class="fname">7 HVAC leads hand-qualified and promoted to warm</span><span class="fdesc">Instead of cold-calling the raw import, researched review counts, ratings, and business longevity for each of the 64 imported HVAC leads to find the highest-probability prospects (real revenue proof, plausible visibility gap, or a neglected online presence). Added phone numbers, websites, and call-priority notes directly on the matching CRM records — ready to call from <a href="https://firstcall-teal.vercel.app/crm/leads" target="_blank" rel="noopener">/crm/leads</a></span></span>
       </div>
     </div>
   </section>
@@ -359,6 +377,7 @@
       <div class="fact"><div class="k">Trades covered</div><div class="v">HVAC, Roofing, Remediation, Cleaning, Auto, Trucking</div></div>
       <div class="fact"><div class="k">Legal entity</div><div class="v">Not yet confirmed (placeholder: "First Call")</div></div>
       <div class="fact"><div class="k">Working URL</div><div class="v mono">firstcall-teal.vercel.app</div></div>
+      <div class="fact"><div class="k">CRM leads</div><div class="v">824 total — 822 cold (Calgary import), 7 warm (hand-qualified HVAC, ready to call)</div></div>
     </div>
   </section>
 
@@ -375,10 +394,10 @@
     {id:"crm-build", t:"Build the CRM", d:"Leads, contacts, employee accounts, KPIs.", tag:"free", done:true},
     {id:"jurisdiction", t:"Fix US-jurisdiction copy + MSA governing law", d:"Schema, /markets page, and MSA \u00a710 now correctly say Canada / Alberta.", tag:"free", done:true},
     {id:"reset", t:"CRM self-serve password reset", d:"Built \u2014 needs Resend configured to actually send.", tag:"free", done:true},
-    {id:"domain", t:"Buy firstcallconsulting.ai", d:"Confirmed available, $160 for 2 years, via Vercel \u2014 auto-configures DNS.", tag:"cost $160", done:false},
+    {id:"domain", t:"Buy firstcallconsulting.ai", d:"Still not purchased \u2014 NEXT_PUBLIC_SITE_URL already points at it in .env.local, but the domain itself doesn't resolve yet. Don't mistake the env var for the purchase. $160 for 2 years via Vercel \u2014 auto-configures DNS.", tag:"cost $160", done:false},
     {id:"pricing-activate", t:"Activate Growth/Domination/Audit for checkout", d:"Done 2026-09-06 — /pricing, /start, and the legal SOW are package-aware now. Just needs the matching Stripe prices below to actually charge.", tag:"free", done:true},
-    {id:"stripe", t:"Create a free Stripe account + prices for all 4 packages", d:"7 prices total: Foundation/Growth/Domination each need a setup + monthly pair, Audit needs one one-time price. Unlocks building and testing checkout end to end before it's ever real money.", tag:"free", done:false},
-    {id:"resend", t:"Create a free Resend account", d:"100 emails/day free \u2014 turns on lead notifications, client emails, CRM password reset.", tag:"free", done:false},
+    {id:"stripe", t:"Create a Stripe account + prices for all 4 packages", d:"Done — all 7 prices live (Foundation/Growth/Domination setup + monthly pairs, one Audit price). Confirmed working with a real test purchase 2026-09-07 (checkout to webhook to CRM \"won\").", tag:"free", done:true},
+    {id:"resend", t:"Create a Resend account", d:"Done \u2014 confirmed live 2026-09-07 with a real send through the lead-capture pipeline.", tag:"free", done:true},
     {id:"postgres", t:"Create the free Vercel Postgres database", d:"Done 2026-08-25 \u2014 neon-lime-fence, connected, migrated. CRM is live at /crm.", tag:"free", done:true},
     {id:"secrets", t:"Paste the generated secrets into Vercel", d:"Done 2026-08-25 \u2014 AUTH_SECRET and CRM_IMPORT_SECRET added and redeployed. (UNSUBSCRIBE_SECRET / ADMIN_API_SECRET turned out to already be set by an earlier session.)", tag:"free", done:true},
     {id:"managersetup", t:"Create your manager account", d:"Verified live 2026-09-04 \u2014 /crm/setup now redirects to the sign-in page, confirming the account exists.", tag:"free", done:true},
@@ -387,7 +406,8 @@
     {id:"gbp", t:"Create a Google Business Profile for First Call itself", d:"You're selling GBP optimization \u2014 worth having your own.", tag:"free", done:false},
     {id:"counsel", t:"Legal counsel review of the MSA and SOW", d:"Both documents ask for this explicitly \u2014 hasn't happened yet.", tag:"cost varies", done:false},
     {id:"worktree", t:"Clean up the stale git worktree branch", d:"Safety-blocked pending your explicit go-ahead \u2014 tell Claude to retry.", tag:"free", done:false},
-    {id:"e2e", t:"Run one real end-to-end test", d:"Submit /start in Stripe test mode, confirm the webhook + report + email all fire, before the first real customer.", tag:"free", done:false}
+    {id:"e2e", t:"Run one real end-to-end test", d:"Done 2026-09-07 — a real Stripe test purchase confirmed checkout, webhook, and CRM \"won\" status all fire correctly; a separate test confirmed Resend delivery through the lead-capture pipeline.", tag:"free", done:true},
+    {id:"firstcalllist", t:"Line up a real call list instead of the raw import", d:"Done 2026-09-10 — hand-qualified 7 of the 64 imported HVAC leads (reviews, ratings, longevity) into a priority-ranked, phone-number-ready shortlist, now marked warm in the CRM. Same pass should extend to Roofing next.", tag:"free", done:true}
   ];
 
   var STORE_KEY = "fc-command-center-tasks-v1";
