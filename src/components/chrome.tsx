@@ -1,5 +1,8 @@
+import type { CSSProperties } from "react";
 import Link from "next/link";
 import { site } from "@/lib/content";
+
+const d = (n: number) => ({ "--d": n }) as CSSProperties;
 
 const nav = [
   { href: "/services/local-seo", label: "Services" },
@@ -132,21 +135,35 @@ export function Cta({
 }) {
   return (
     <section className="mx-auto max-w-6xl px-5 py-20">
-      <p className="text-xs uppercase tracking-widest text-gold">The first step</p>
-      <h2 className="mt-3 max-w-3xl font-serif text-4xl">{title}</h2>
-      <p className="mt-4 max-w-2xl text-muted">
+      <p className="reveal text-xs uppercase tracking-widest text-gold" style={d(0)}>
+        <span className="ruleline">The first step</span>
+      </p>
+      <h2 className="reveal mt-3 max-w-3xl font-serif tracking-tight text-4xl" style={d(1)}>
+        {title}
+      </h2>
+      <p className="reveal mt-4 max-w-2xl text-muted" style={d(1)}>
         The free 100-point audit names your gaps across every surface, puts a number on staying
         invisible, and shows the path to more calls. Yours to keep, no obligation.
       </p>
-      <div className="mt-8 flex flex-wrap gap-4">
-        <Link
-          href="/audit"
-          className="rounded-full bg-gold px-5 py-3 text-ink no-underline hover:opacity-90"
-        >
+      <div className="reveal mt-8 flex flex-wrap items-stretch gap-3" style={d(2)}>
+        <Link href="/audit" className="btn-primary">
           Get your free visibility audit
+          <svg
+            className="arrow"
+            width="14"
+            height="14"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth={2.4}
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <path d="M5 12h14M13 6l6 6-6 6" />
+          </svg>
         </Link>
-        <Link href="/contact" className="rounded-full border border-line px-5 py-3 no-underline">
-          Talk to a strategist
+        <Link href="/contact" className="btn-secondary justify-center">
+          <span className="bl-title">Talk to a strategist</span>
         </Link>
       </div>
     </section>

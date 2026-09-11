@@ -293,20 +293,37 @@ export default function HomePage() {
       </section>
 
       <section className="mx-auto max-w-6xl px-5 py-10">
-        <p className="text-xs uppercase tracking-widest text-gold">Packaging</p>
-        <h2 className="mt-3 font-serif text-4xl">One offer to start. Foundation.</h2>
-        <p className="mt-4 max-w-2xl text-muted">
+        <p className="reveal text-xs uppercase tracking-widest text-gold" style={d(0)}>
+          <span className="ruleline">Packaging</span>
+        </p>
+        <h2 className="reveal mt-3 font-serif tracking-tight text-4xl" style={d(1)}>
+          One offer to start. Foundation.
+        </h2>
+        <p className="reveal mt-4 max-w-2xl text-muted" style={d(1)}>
           Growth and Domination stay a conversation. The first sale is Foundation:{" "}
           {foundation.priceOneTimeLabel} to start, then {foundation.priceMonthlyLabel}.{" "}
           {foundation.cadence}
         </p>
-        <ul className="mt-6 grid gap-2 text-sm text-muted md:grid-cols-2">
+        <ul className="reveal mt-6 grid gap-2 text-sm text-muted md:grid-cols-2" style={d(2)}>
           {foundation.included.map((item) => (
             <li key={item}>— {item}</li>
           ))}
         </ul>
-        <Link href="/pricing" className="mt-6 inline-block text-gold">
-          Full Foundation offer →
+        <Link href="/pricing" className="linkarrow reveal mt-6" style={d(3)}>
+          Full Foundation offer
+          <svg
+            className="arrow"
+            width="14"
+            height="14"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth={2.4}
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <path d="M5 12h14M13 6l6 6-6 6" />
+          </svg>
         </Link>
       </section>
 

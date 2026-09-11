@@ -407,6 +407,17 @@ html.reveal-enabled .reveal.in-view .ruleline::after {
 .btn-secondary .bl-title { font-size: 0.92rem; font-weight: 600; }
 .btn-secondary .bl-price { font-family: var(--font-mono); font-size: 0.7rem; color: #8b8778; font-variant-numeric: tabular-nums; }
 
+.linkarrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: #c9a227;
+  text-decoration: none;
+}
+.linkarrow .arrow { transition: transform 0.2s ease; }
+.linkarrow:hover .arrow { transform: translateX(3px); }
+.linkarrow:focus-visible { outline: 2px solid #c9a227; outline-offset: 3px; }
+
 @media print {
   header,
   footer {
