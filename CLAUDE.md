@@ -307,6 +307,26 @@ last handful of entries; prune older ones once they're no longer load-bearing.
   "The domain problem" section above. **Don't set `RESEND_FROM` to a firstcallconsulting.ai address
   until those records are actually added and the domain shows verified in Resend** — it will silently
   fail to send otherwise.
+  **Then: Gmail forwarding set up** (`cartyjosh7@gmail.com` → `firstcallconsulting.ai@gmail.com`),
+  scoped to First-Call-only mail per the user's choice, not a blanket forward. Verifying the forwarding
+  address required completing it via the actual confirmation email (logged into the
+  firstcallconsulting.ai Google account discovered above to find and click it). Saving the scoping
+  filter (`from:onboarding@resend.dev` → forward) hit a Google identity-verification challenge mid-save
+  — left for the user to finish by hand rather than pushed through (that flow can lead into
+  password/2FA territory). **As of this writing the filter may still need to be created manually** —
+  check Gmail → Settings → Filters and Blocked Addresses before assuming it's done.
+  **Then: the user spotted Josh's personal email live in a screenshot of the site footer**, sent to
+  every visitor. Root-caused it two layers deep — both `content.ts`'s code fallback *and* an explicit
+  Vercel Production env var (`NEXT_PUBLIC_CONTACT_EMAIL`, set since **2026-08-23**, day one) pointed at
+  `cartyjosh7@gmail.com`. It rendered on the footer (every page), `/contact`, `/pricing`, every legal
+  page, and client-facing proposal pages. Also found `NEXT_PUBLIC_MAILING_ADDRESS` was live in
+  Production holding its literal dev-placeholder string (`[Street address, Calgary, AB, Canada]`),
+  printed verbatim on `/privacy` and `/terms` for any real visitor. Fixed both the code fallback and
+  the Vercel env vars (contact email → `firstcallconsulting.ai@gmail.com`; mailing-address placeholder
+  deleted, code now omits the clause cleanly instead of showing broken text when it's unset),
+  redeployed, and verified live on the actual pages. **Lesson for future sessions: an env var set once
+  on day one and never revisited can quietly leak for weeks — worth periodically checking what's
+  actually live in Vercel Production against what the code assumes, not just what `.env.local` shows.**
   **Same-day follow-up:** user asked to (a) delete the CRM leads and (b) make the Command Center link
   fully self-sufficient for a fresh-PC setup. For (a), confirmed the GitHub repo is public
   (`private: false` via the GitHub API) — every file link on the dashboard already works with no auth
