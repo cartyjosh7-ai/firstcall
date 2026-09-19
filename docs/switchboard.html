@@ -1,0 +1,860 @@
+<title>Switchboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;700;800&family=Public+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+  :root{
+    --ground:#F3F6F4;
+    --surface:#FFFFFF;
+    --surface-2:#EAEEEB;
+    --ink:#14212B;
+    --ink-dim:#4B5B63;
+    --border:rgba(20,33,43,0.13);
+    --accent:#C9642F;
+    --accent-strong:#A6501F;
+    --accent-tint:#F4E1D3;
+    --success:#2E8B6F;
+    --success-tint:#DCEEE6;
+    --warning:#B8862B;
+    --warning-tint:#F5EAD2;
+    --critical:#B5453A;
+    --shadow: 0 1px 2px rgba(20,33,43,.06), 0 8px 24px rgba(20,33,43,.08);
+    --font-display:'Big Shoulders Display',"Arial Narrow",sans-serif;
+    --font-body:'Public Sans',-apple-system,"Segoe UI",sans-serif;
+    --font-mono:'IBM Plex Mono',"SFMono-Regular",Consolas,monospace;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --ground:#101820;
+      --surface:#182430;
+      --surface-2:#1F2C39;
+      --ink:#ECE7DE;
+      --ink-dim:#9FB0B9;
+      --border:rgba(236,231,222,0.14);
+      --accent:#E08248;
+      --accent-strong:#F0A06D;
+      --accent-tint:#3A2B21;
+      --success:#49B58C;
+      --success-tint:#1B3830;
+      --warning:#D9A94A;
+      --warning-tint:#3A2F18;
+      --critical:#D66B60;
+      --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px rgba(0,0,0,.35);
+    }
+  }
+  :root[data-theme="dark"]{
+    --ground:#101820;
+    --surface:#182430;
+    --surface-2:#1F2C39;
+    --ink:#ECE7DE;
+    --ink-dim:#9FB0B9;
+    --border:rgba(236,231,222,0.14);
+    --accent:#E08248;
+    --accent-strong:#F0A06D;
+    --accent-tint:#3A2B21;
+    --success:#49B58C;
+    --success-tint:#1B3830;
+    --warning:#D9A94A;
+    --warning-tint:#3A2F18;
+    --critical:#D66B60;
+    --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px rgba(0,0,0,.35);
+  }
+
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--ground);
+    color:var(--ink);
+    font-family:var(--font-body);
+    font-size:15px;
+    line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3{font-family:var(--font-display);font-weight:700;text-wrap:balance;margin:0;}
+  .mono{font-family:var(--font-mono);font-variant-numeric:tabular-nums;}
+  a{color:var(--accent);}
+  button{font-family:var(--font-body);cursor:pointer;}
+  :focus-visible{outline:2px solid var(--accent);outline-offset:2px;}
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:0.01ms !important;transition-duration:0.01ms !important;}
+  }
+
+  /* ---------- Header ---------- */
+  .topbar{
+    display:flex;align-items:center;gap:16px;
+    padding:14px 20px;
+    background:var(--surface);
+    border-bottom:1px solid var(--border);
+    position:sticky;top:0;z-index:20;
+  }
+  .brand{display:flex;flex-direction:column;line-height:1.1;}
+  .brand .eyebrow{
+    font-family:var(--font-mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-dim);
+  }
+  .brand .word{font-family:var(--font-display);font-weight:800;font-size:22px;letter-spacing:.01em;}
+  .brand .word::after{content:"";display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--accent);margin-left:8px;vertical-align:middle;}
+  .step-indicator{
+    font-family:var(--font-mono);font-size:12px;color:var(--ink-dim);
+    padding:4px 10px;border:1px solid var(--border);border-radius:999px;white-space:nowrap;
+  }
+  .step-indicator b{color:var(--ink);font-weight:600;}
+  .topbar-spacer{flex:1;}
+  .timer{
+    display:flex;align-items:center;gap:8px;
+    font-family:var(--font-mono);font-size:15px;
+    padding:6px 12px;border-radius:8px;background:var(--surface-2);
+    border:1px solid var(--border);
+  }
+  .timer .dot{width:7px;height:7px;border-radius:50%;background:var(--ink-dim);}
+  .timer.live .dot{background:var(--critical);animation:pulse 1.6s ease-in-out infinite;}
+  @keyframes pulse{0%,100%{opacity:1;}50%{opacity:.35;}}
+  .btn{
+    font-size:13px;font-weight:600;border-radius:8px;border:1px solid var(--border);
+    background:var(--surface);color:var(--ink);padding:8px 14px;
+    display:inline-flex;align-items:center;gap:6px;transition:background .12s,border-color .12s;
+  }
+  .btn:hover{background:var(--surface-2);}
+  .btn.primary{background:var(--accent);border-color:var(--accent);color:#fff;}
+  .btn.primary:hover{background:var(--accent-strong);border-color:var(--accent-strong);}
+  .btn.ghost{background:transparent;}
+  .btn svg{width:14px;height:14px;flex:none;}
+  .btn.danger-confirm{background:var(--critical);border-color:var(--critical);color:#fff;}
+
+  /* ---------- Layout ---------- */
+  .layout{display:flex;max-width:1280px;margin:0 auto;}
+  .rail{
+    width:250px;flex:none;padding:18px 10px 60px;
+    display:flex;flex-direction:column;gap:2px;
+    border-right:1px solid var(--border);
+    position:sticky;top:57px;align-self:flex-start;
+    height:calc(100vh - 57px);overflow-y:auto;
+  }
+  .rail-item{
+    display:flex;align-items:center;gap:10px;
+    padding:10px 10px;border-radius:8px;border:1px solid transparent;
+    background:none;text-align:left;width:100%;color:var(--ink-dim);
+  }
+  .rail-item:hover{background:var(--surface-2);}
+  .rail-item.active{background:var(--accent-tint);border-color:var(--accent);color:var(--ink);}
+  .rail-num{
+    font-family:var(--font-mono);font-size:12px;width:22px;height:22px;flex:none;
+    display:flex;align-items:center;justify-content:center;border-radius:50%;
+    border:1px solid var(--border);color:var(--ink-dim);
+  }
+  .rail-item.active .rail-num{border-color:var(--accent);color:var(--accent-strong);}
+  .rail-item.done .rail-num{background:var(--success);border-color:var(--success);color:#fff;}
+  .rail-label{font-size:13px;font-weight:600;color:inherit;}
+
+  .main{flex:1;min-width:0;padding:28px 32px 120px;max-width:760px;}
+
+  /* ---------- Stage chip scroller (mobile) ---------- */
+  .rail-mobile{display:none;}
+
+  /* ---------- Stage card ---------- */
+  .stage-head{margin-bottom:18px;}
+  .stage-kicker{font-family:var(--font-mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent-strong);}
+  .stage-title{font-size:32px;margin-top:4px;}
+  .stage-purpose{color:var(--ink-dim);margin-top:8px;font-size:15px;max-width:62ch;}
+
+  .block{margin:22px 0;}
+  .block-label{
+    font-family:var(--font-mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;
+    color:var(--ink-dim);margin-bottom:10px;
+  }
+
+  .script{
+    background:var(--surface);border:1px solid var(--border);border-radius:12px;
+    padding:16px 18px;box-shadow:var(--shadow);
+  }
+  .script ul{margin:0;padding-left:20px;}
+  .script li{margin:7px 0;}
+  .script p{margin:0 0 8px;}
+  .script p:last-child{margin-bottom:0;}
+
+  .checklist{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px;}
+  .check-row{
+    display:flex;align-items:flex-start;gap:10px;
+    background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:10px 12px;
+  }
+  .check-row input[type=checkbox]{
+    appearance:none;-webkit-appearance:none;width:18px;height:18px;flex:none;margin-top:1px;
+    border:1.5px solid var(--ink-dim);border-radius:5px;position:relative;cursor:pointer;
+  }
+  .check-row input[type=checkbox]:checked{background:var(--success);border-color:var(--success);}
+  .check-row input[type=checkbox]:checked::after{
+    content:"";position:absolute;left:5px;top:1px;width:4px;height:9px;
+    border:solid #fff;border-width:0 2px 2px 0;transform:rotate(40deg);
+  }
+  .check-row label{font-size:14px;cursor:pointer;}
+  .check-row.checked label{color:var(--ink-dim);text-decoration:line-through;text-decoration-color:var(--border);}
+
+  .fields{display:flex;flex-direction:column;gap:12px;}
+  .field label{display:block;font-size:12px;font-weight:600;color:var(--ink-dim);margin-bottom:5px;}
+  .field input[type=text], .field input[type=number], .field input[type=date], .field select, .field textarea{
+    width:100%;font-family:var(--font-body);font-size:14px;color:var(--ink);
+    background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:9px 11px;
+  }
+  .field textarea{min-height:64px;resize:vertical;font-family:var(--font-body);}
+  .field-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+  @media (max-width:520px){.field-row{grid-template-columns:1fr;}}
+
+  .callout{
+    display:flex;gap:12px;border-radius:10px;padding:13px 15px;border:1px solid;
+    font-size:13.5px;line-height:1.5;
+  }
+  .callout.warn{background:var(--warning-tint);border-color:var(--warning);}
+  .callout .callout-icon{flex:none;width:18px;height:18px;color:var(--warning);margin-top:2px;}
+  .callout b{display:block;font-size:11px;letter-spacing:.08em;text-transform:uppercase;margin-bottom:3px;color:var(--warning);}
+
+  blockquote{
+    margin:0;padding:14px 16px;border-left:3px solid var(--accent);
+    background:var(--accent-tint);border-radius:0 10px 10px 0;font-size:14px;font-style:italic;color:var(--ink);
+  }
+
+  table.ref{width:100%;border-collapse:collapse;font-size:13.5px;}
+  table.ref th, table.ref td{text-align:left;padding:9px 10px;border-bottom:1px solid var(--border);}
+  table.ref th{font-family:var(--font-mono);font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-dim);font-weight:500;}
+  table.ref td.num{font-family:var(--font-mono);}
+
+  .pkg-list{display:flex;flex-direction:column;gap:10px;}
+  .pkg{
+    display:flex;align-items:flex-start;gap:12px;border:1px solid var(--border);border-radius:12px;
+    padding:14px 16px;background:var(--surface);cursor:pointer;
+  }
+  .pkg.pkg-checked, .pkg:has(input:checked){border-color:var(--accent);background:var(--accent-tint);}
+  .pkg input{margin:3px 0 0;flex:none;accent-color:var(--accent);width:16px;height:16px;}
+  .pkg-body{display:flex;flex-direction:column;gap:6px;flex:1;min-width:0;}
+  .pkg-top{display:flex;align-items:baseline;justify-content:space-between;gap:10px;flex-wrap:wrap;}
+  .pkg-name{font-weight:700;font-size:15px;}
+  .pkg-price{font-size:12.5px;color:var(--accent-strong);white-space:nowrap;}
+  .pkg-sub{font-size:12px;color:var(--ink-dim);}
+  .pkg-value{font-size:13px;font-style:italic;color:var(--ink-dim);line-height:1.5;}
+  .pkg-includes{display:flex;flex-wrap:wrap;gap:6px;margin-top:2px;}
+  .pkg-chip{
+    font-size:11px;background:var(--surface-2);border:1px solid var(--border);border-radius:999px;
+    padding:3px 9px;color:var(--ink-dim);
+  }
+
+  .nav-buttons{display:flex;justify-content:space-between;margin-top:32px;padding-top:20px;border-top:1px solid var(--border);}
+
+  /* ---------- Drawer ---------- */
+  .scrim{position:fixed;inset:0;background:rgba(16,24,32,.35);opacity:0;pointer-events:none;transition:opacity .18s;z-index:29;}
+  .scrim.open{opacity:1;pointer-events:auto;}
+  .drawer{
+    position:fixed;top:0;right:0;bottom:0;width:380px;max-width:92vw;
+    background:var(--surface);border-left:1px solid var(--border);
+    transform:translateX(100%);transition:transform .2s ease;z-index:30;
+    display:flex;flex-direction:column;box-shadow:-8px 0 24px rgba(0,0,0,.15);
+  }
+  .drawer.open{transform:translateX(0);}
+  .drawer-head{display:flex;align-items:center;gap:10px;padding:16px 18px;border-bottom:1px solid var(--border);}
+  .drawer-head h2{font-size:20px;flex:1;}
+  .drawer-body{flex:1;overflow-y:auto;padding:16px 18px;display:flex;flex-direction:column;gap:16px;}
+  .sheet-group{}
+  .sheet-group h3{font-family:var(--font-mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-dim);margin-bottom:8px;}
+  .sheet-row{display:flex;justify-content:space-between;gap:10px;font-size:13px;padding:5px 0;border-bottom:1px dashed var(--border);}
+  .sheet-row .k{color:var(--ink-dim);}
+  .sheet-row .v{font-weight:600;text-align:right;max-width:60%;}
+  .sheet-empty{font-size:13px;color:var(--ink-dim);font-style:italic;}
+  .drawer-foot{padding:14px 18px;border-top:1px solid var(--border);display:flex;gap:10px;}
+  .drawer-foot .btn{flex:1;justify-content:center;}
+
+  @media (max-width:900px){
+    .rail{display:none;}
+    .rail-mobile{
+      display:flex;gap:6px;overflow-x:auto;padding:10px 14px;border-bottom:1px solid var(--border);
+      background:var(--surface);position:sticky;top:57px;z-index:19;
+    }
+    .rail-mobile button{
+      flex:none;font-family:var(--font-mono);font-size:11px;padding:6px 10px;border-radius:999px;
+      border:1px solid var(--border);background:var(--surface-2);color:var(--ink-dim);
+    }
+    .rail-mobile button.active{background:var(--accent);border-color:var(--accent);color:#fff;}
+    .rail-mobile button.done{border-color:var(--success);color:var(--success);}
+    .main{padding:22px 18px 100px;max-width:100%;}
+    .brand .word{font-size:18px;}
+    .step-indicator{display:none;}
+  }
+</style>
+
+<div class="topbar">
+  <div class="brand"><span class="eyebrow">Call Console</span><span class="word">Switchboard</span></div>
+  <div class="step-indicator" id="stepIndicator"></div>
+  <div class="topbar-spacer"></div>
+  <div class="timer" id="timer"><span class="dot"></span><span class="mono" id="timerReadout">00:00</span></div>
+  <button class="btn ghost" id="timerToggle">Start</button>
+  <button class="btn" id="menuBtn">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+    Menu
+  </button>
+  <button class="btn" id="drawerBtn">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M8 4v16M3 9h5"/></svg>
+    Call Sheet
+  </button>
+  <button class="btn ghost" id="newCallBtn">New Call</button>
+</div>
+
+<div class="rail-mobile" id="railMobile"></div>
+
+<div class="layout">
+  <nav class="rail" id="rail"></nav>
+  <main class="main" id="main"></main>
+</div>
+
+<div class="scrim" id="scrim"></div>
+<aside class="drawer" id="drawer" aria-label="Live call sheet">
+  <div class="drawer-head">
+    <h2>Live Call Sheet</h2>
+    <button class="btn ghost" id="drawerClose" aria-label="Close">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 6l12 12M18 6L6 18"/></svg>
+    </button>
+  </div>
+  <div class="drawer-body" id="drawerBody"></div>
+  <div class="drawer-foot">
+    <button class="btn primary" id="copySummary">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"/></svg>
+      Copy Summary
+    </button>
+  </div>
+</aside>
+
+<aside class="drawer" id="menuDrawer" aria-label="Package menu">
+  <div class="drawer-head">
+    <h2>Package Menu</h2>
+    <button class="btn ghost" id="menuClose" aria-label="Close">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 6l12 12M18 6L6 18"/></svg>
+    </button>
+  </div>
+  <div class="drawer-body" id="menuBody"></div>
+  <div class="drawer-foot">
+    <button class="btn primary" id="menuToClose">Go to Close stage →</button>
+  </div>
+</aside>
+
+<script>
+(function(){
+  "use strict";
+
+  var ICON = {
+    check: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>',
+    warn: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 9v4M12 17h.01M10.3 3.9L1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z"/></svg>'
+  };
+
+  function esc(s){ return String(s==null?'':s).replace(/[&<>"]/g, function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];}); }
+
+  var STAGES = [
+    {
+      id:'prep', label:'Prep', kicker:'Before you dial',
+      title:'Get set up', purpose:'Have your reference material open before the phone rings.',
+      fields:[
+        {key:'businessName', label:'Business name', type:'text', placeholder:'e.g. Northside Plumbing'},
+        {key:'contactName', label:'Contact name', type:'text', placeholder:'Who you\'re calling'},
+        {key:'phone', label:'Phone number', type:'text', placeholder:'(403) 555-0100'},
+        {key:'website', label:'Current website (if any)', type:'text', placeholder:'northsideplumbing.ca'}
+      ],
+      script:'<p>Pull up this console, the pricing packages (Close stage), and the guarantee language (Objections stage) before you dial. If you have a pre-call audit for this lead from <code>/audit</code>, keep it open in another tab for the Present Findings stage.</p>',
+      checklist:[
+        'Business name, website, and phone confirmed',
+        'Pricing packages reviewed',
+        'Pre-call audit ready, or discovery questions ready to run live',
+        'Payment link ready to send (/start?package=&lt;id&gt;)'
+      ]
+    },
+    {
+      id:'open', label:'Open', kicker:'Stage 1',
+      title:'Open the call', purpose:'Set the agenda and earn permission to ask questions — this is a discovery call, not a pitch.',
+      script:'<p>Confident and plain-spoken, allergic to hype — that\'s First Call\'s actual brand voice, not a script gimmick.</p><ul><li>Introduce yourself and First Call.</li><li>State the purpose plainly: you\'re here to understand their goals, current situation, and timeline — not to hard-sell.</li><li>Confirm how much time they have, and adjust the call plan if it\'s short.</li></ul>',
+      quote:'"Hi, is this [owner name]? This is [you] with First Call — we help [trade] businesses in [city] show up first when someone searches for [trade] near me, on Google, on the map, and now in AI answers like ChatGPT. Got 60 seconds?"',
+      checklist:[
+        'Identified yourself and First Call',
+        'Stated the purpose of the call',
+        'Confirmed time available'
+      ]
+    },
+    {
+      id:'discovery', label:'Discovery', kicker:'Stage 2',
+      title:'Discovery', purpose:'Understand goals, current state, and timeline. Qualify fit before you present anything.',
+      script:'<p>Ask these in your own words, in whatever order feels natural. You\'ll reuse every answer later — nothing here gets asked twice.</p>',
+      fields:[
+        {key:'services', label:'Primary services / products', type:'textarea'},
+        {key:'targetLocations', label:'Target locations / service area', type:'text'},
+        {key:'targetCustomers', label:'Target customers (who, pain points)', type:'textarea'},
+        {key:'competitors', label:'Top competitors (3–5)', type:'text'},
+        {key:'channels', label:'Current marketing channels (ads, social, email)', type:'text'},
+        {key:'currentLeads', label:'Current monthly leads/customers from web', type:'text'},
+        {key:'goals', label:'Goals for the next 6–12 months', type:'textarea'},
+        {key:'previousWork', label:'Previous SEO/web work — what, and by whom?', type:'textarea'}
+      ],
+      checklist:[
+        'Confirmed the decision-maker is on the call',
+        'Understood timeline / urgency',
+        'Have enough to qualify a package (single location vs. multi, budget signal)'
+      ]
+    },
+    {
+      id:'demo', label:'Demo', kicker:'Stage 3',
+      title:'Present findings', purpose:'Walk them through what you found. Tie every point back to their business outcomes — leads, calls, revenue — never vanity metrics.',
+      script:'<p>If you ran a real scan at <code>/audit</code> before the call, use their actual score. If not, preview what the audit would surface based on what they told you in Discovery. Walk through it as a diagnostic, not a scare tactic:</p><ul>'
+        +'<li><b>Maps</b> — "This is the map with the top three results. Right now a competitor is sitting there instead of you — that\'s a phone ringing for them, not you."</li>'
+        +'<li><b>AI Overviews / AI Assistants</b> — "When someone asks ChatGPT or Google\'s AI answer who to call, it quotes whoever\'s content is structured so it can be quoted. Right now that\'s not you."</li>'
+        +'<li><b>Voice</b> — "More searches start as a spoken question every year. If your listing isn\'t complete and consistent everywhere, voice assistants skip you."</li>'
+        +'<li><b>Website &amp; Reviews</b> — "This is your site\'s technical health and review signal — both feed directly into whether Google trusts you enough to rank you."</li>'
+        +'</ul><p>Connect each point to what they said their goals were in Discovery. If it doesn\'t connect to a goal, don\'t lead with it.</p>',
+      checklist:[
+        'Walked through the real (or illustrative) visibility score',
+        'Connected findings to their stated goals',
+        'Named the gap honestly — never claimed a specific rank, call volume, or revenue outcome'
+      ],
+      watch:'Never claim a specific rank, call volume, or revenue outcome — the audit measures signals, not guarantees, and the contract says so explicitly. That restraint is itself part of the pitch: every trades owner has already heard the guarantee pitch, and didn\'t believe it.'
+    },
+    {
+      id:'objections', label:'Objections', kicker:'Stage 4',
+      title:'Handle objections', purpose:'Get ahead of price, scope, and timeline pushback before it derails the close.',
+      script:'<p><b>"Will I actually rank #1?"</b> — "I won\'t promise a specific rank or call volume — nobody honest can, and our contract says so in writing. What I can tell you exactly is what we\'re fixing and why it moves the signals that decide who gets the call."</p>'
+        +'<p><b>"I actually need a new website."</b> — "Foundation optimizes what you\'ve already got — it doesn\'t include building a new site from scratch. If yours genuinely needs a rebuild, that\'s a separate conversation to scope — let\'s start with Foundation, and handle that piece on its own."</p>'
+        +'<p><b>"I already have someone doing my Google stuff."</b> — "Fair — can I ask what your Map Pack position is for your main service right now? [Listen.] That\'s exactly the kind of thing our monthly report tracks in plain numbers, so you can actually see whether what you\'re paying for is working."</p>'
+        +'<p><b>"Let me think about it."</b> — Don\'t discount. If the retainer feels like too big a first step, offer the standalone Technical SEO Audit ($497 one-time) instead — a real, lower-commitment entry point, not a consolation prize.</p>',
+      quote:'"We do not guarantee specific rankings, call volume, or revenue — search results are determined by Google’s algorithms outside any provider’s control. What we guarantee is professional execution of proven SEO best practices, transparent reporting, and continuous optimization based on data. Meaningful results typically take 60–90 days and continue to compound over time."',
+      fields:[
+        {key:'objectionNotes', label:'Objections raised (optional notes)', type:'textarea'}
+      ],
+      checklist:[
+        'Set honest timeline expectations (60–90 days for first local wins)',
+        'Did not guarantee specific rankings, calls, or revenue',
+        'Offered the Audit as a lower-commitment fallback if they stalled on a retainer'
+      ]
+    },
+    {
+      id:'close', label:'Close', kicker:'Stage 5',
+      title:'Close — package & price', purpose:'Assume the sale, then make paying the easiest part of the call. Pick the package with the client, live.',
+      pkgTable:true,
+      script:'<p>"Should I text you the payment link now, or would you rather I email it? Either way it\'s the same page — business name, website, and trade, then straight to checkout." The link is <code>/start</code> for Foundation, or <code>/start?package=growth</code> / <code>domination</code> / <code>audit</code> for the others — same form, same flow, correct price on the other end.</p>',
+      fields:[
+        {key:'price', label:'Agreed price', type:'text', placeholder:'Fills in automatically once a package is selected above'},
+        {key:'term', label:'Contract term', type:'select', options:['Month-to-month (standard)','One-time only (Audit)']}
+      ],
+      checklist:[
+        'Package selected and confirmed with client out loud',
+        'Price agreed out loud',
+        'Sent the correct /start link for the package they chose'
+      ],
+      watch:'First Call never touches a card number directly — Stripe Checkout does. The setup fee and the monthly retainer bill together as one subscription (except Audit, which is one-time only, no retainer).'
+    },
+    {
+      id:'payment', label:'Payment', kicker:'Stage 6',
+      title:'Confirm payment', purpose:'Everything past the payment link is automatic — confirm it actually cleared before moving to onboarding.',
+      script:'<p>Once they pay on Stripe’s hosted page, the system confirms payment, runs the research + 90-day-plan agents in the background, saves the report, and mirrors the client into the CRM as <b>won</b> — nothing for you to trigger manually. If checkout isn\'t working for some reason, log the sale in the CRM yourself as <b>won</b> from <code>/crm/leads/new</code> and arrange payment by invoice instead — don\'t let a real prospect sit on a broken page wondering if it\'s you or them.</p>',
+      fields:[
+        {key:'paymentStatus', label:'Payment status', type:'select', options:['Not sent','Link sent','Paid via Stripe checkout','Paid via manual invoice']},
+        {key:'paymentMethod', label:'Notes', type:'text', placeholder:'e.g. confirmed in CRM as won'}
+      ],
+      checklist:[
+        'Payment link sent',
+        'Payment confirmed — checkout succeeded or invoice arranged',
+        'Confirmed the lead shows as "won" in the CRM with the correct package'
+      ]
+    },
+    {
+      id:'onboarding', label:'Onboarding', kicker:'Stage 7',
+      title:'Collect onboarding data', purpose:'Everything execution needs to start month one — access, assets, and the details Discovery already captured.',
+      script:'<p>The fields below marked “carried from Discovery” are already filled in — just confirm they’re still accurate. The automatic “deal closed” email already asks for the first few access items directly — you’re following up on it, not starting from scratch.</p>',
+      fields:[
+        {key:'address', label:'Business address (NAP — must match Google Business Profile)', type:'text'},
+        {key:'services', label:'Primary services/products', type:'textarea', carry:true},
+        {key:'targetLocations', label:'Target locations / service area', type:'text', carry:true},
+        {key:'brandAssets', label:'Brand assets available (logo, colors, fonts, guidelines)', type:'textarea'},
+        {key:'contactPref', label:'Preferred contact method & frequency', type:'text'}
+      ],
+      access:['Google Business Profile (manager)','Google Search Console','Google Analytics 4 (GA4)','Call tracking, or an honest starting number','Website / CMS login','Single point of contact confirmed'],
+      checklist:[
+        'All applicable access items requested',
+        'NAP confirmed and matches (or will match) Google Business Profile',
+        'Brand assets collected or requested'
+      ],
+      watch:'NAP (Name, Address, Phone) must match exactly across GBP, the website footer, schema, and directories — down to abbreviation and phone formatting. Get it right here and it saves a cleanup pass later.'
+    },
+    {
+      id:'handoff', label:'Handoff', kicker:'Stage 8',
+      title:'Hand off to delivery', purpose:'Point the client (and yourself) at the actual execution plan, and lock in the next milestone.',
+      script:'<p>Delivery follows the real, live day-by-day checklist at <code>/playbook</code> — not a generic SOP. Month 1 covers kickoff and baselines, primary-category research, full GBP completeness, review acquisition, citation audit, on-page and schema work, one real service+city page, tracking confirmed, and the month-1 report. If this is your first time delivering with zero prior SEO experience, use the Delivery Manual (click-by-click version, with templates to copy in) alongside the playbook.</p>',
+      fields:[
+        {key:'kickoffDate', label:'Kickoff call date', type:'date'},
+        {key:'nextDate', label:'Month-1 report date', type:'date'}
+      ],
+      checklist:[
+        'Kickoff call scheduled',
+        'Client pointed at what "month one" actually looks like',
+        'Access requests sent for everything checked in Onboarding',
+        'Next milestone date set and shared with client'
+      ]
+    }
+  ];
+
+  var PACKAGES = [
+    {name:'Foundation', oneTime:2799, monthly:139.99, sub:'Single-location home-service businesses getting found',
+      value:'The entry point built for a single-location, owner-led business — Business Profile, reviews, on-page, and monthly reporting as one compounding system. Lead with this.',
+      includes:['Business Profile + local optimization','Review acquisition system','Core on-page + LocalBusiness schema','Foundational content','Plain-English monthly reporting','Senior strategist ownership']},
+    {name:'Growth', oneTime:3800, monthly:249, sub:'Established local/regional businesses ready to scale',
+      value:'Everything in Foundation plus technical fixes, more content volume, internal linking, and real rank tracking — for a business ready to compete past the basics.',
+      includes:['Everything in Foundation','Technical SEO audit + fixes','4–8 optimized content pages/month','Internal linking + basic link building','GA4 + rank tracking']},
+    {name:'Domination', oneTime:5500, monthly:449, sub:'Multi-location businesses and competitive niches',
+      value:'Full-service push for multi-location or competitive-niche clients — aggressive content, digital PR, CRO, and Map Pack monitoring across every location.',
+      includes:['Everything in Growth','Aggressive content (8–12 pages/month)','Digital PR and link building','Conversion rate optimization','Map Pack monitoring, every location','Quarterly strategy review']},
+    {name:'Technical SEO Audit', oneTime:497, monthly:null, sub:'One-time diagnostic before committing to a retainer',
+      value:'Low-commitment diagnostic that demonstrates expertise and surfaces real opportunities — the easiest way to convert a skeptical lead, or a fallback close if a retainer feels like too big a first step.',
+      includes:['Full technical, on-page, local, and backlink audit','Prioritized action plan','Walkthrough call']}
+  ];
+  function pkgPriceLine(p){
+    return p.monthly
+      ? 'CA$'+p.oneTime.toLocaleString()+' one-time + CA$'+p.monthly.toFixed(2)+'/mo'
+      : 'CA$'+p.oneTime.toLocaleString()+' one-time — no retainer';
+  }
+
+  var STORE_KEY = 'switchboard_state_v2';
+  var state = load();
+
+  function defaultState(){
+    return { stage:0, checklist:{}, fields:{}, timerStart:null, timerElapsed:0 };
+  }
+  function load(){
+    try{
+      var raw = localStorage.getItem(STORE_KEY);
+      if(!raw) return defaultState();
+      var parsed = JSON.parse(raw);
+      return Object.assign(defaultState(), parsed);
+    }catch(e){ return defaultState(); }
+  }
+  function save(){
+    try{ localStorage.setItem(STORE_KEY, JSON.stringify(state)); }catch(e){}
+  }
+
+  // ---------- Timer ----------
+  var timerInterval = null;
+  function timerSeconds(){
+    var extra = state.timerStart ? Math.floor((Date.now()-state.timerStart)/1000) : 0;
+    return state.timerElapsed + extra;
+  }
+  function fmtTime(sec){
+    var m = Math.floor(sec/60), s = sec%60;
+    return (m<10?'0':'')+m+':'+(s<10?'0':'')+s;
+  }
+  function renderTimer(){
+    document.getElementById('timerReadout').textContent = fmtTime(timerSeconds());
+    document.getElementById('timer').classList.toggle('live', !!state.timerStart);
+    document.getElementById('timerToggle').textContent = state.timerStart ? 'Pause' : 'Start';
+  }
+  document.getElementById('timerToggle').addEventListener('click', function(){
+    if(state.timerStart){
+      state.timerElapsed = timerSeconds();
+      state.timerStart = null;
+    } else {
+      state.timerStart = Date.now();
+    }
+    save(); renderTimer();
+  });
+  timerInterval = setInterval(function(){ if(state.timerStart) renderTimer(); }, 1000);
+
+  // ---------- New call ----------
+  var newCallBtn = document.getElementById('newCallBtn');
+  var newCallArmed = false, newCallTimeout;
+  newCallBtn.addEventListener('click', function(){
+    if(!newCallArmed){
+      newCallArmed = true;
+      newCallBtn.textContent = 'Click to confirm';
+      newCallBtn.classList.add('danger-confirm');
+      newCallTimeout = setTimeout(function(){
+        newCallArmed = false;
+        newCallBtn.textContent = 'New Call';
+        newCallBtn.classList.remove('danger-confirm');
+      }, 3000);
+      return;
+    }
+    clearTimeout(newCallTimeout);
+    state = defaultState();
+    save();
+    newCallArmed = false;
+    newCallBtn.textContent = 'New Call';
+    newCallBtn.classList.remove('danger-confirm');
+    renderAll();
+  });
+
+  // ---------- Rail ----------
+  function stageComplete(stage){
+    var items = state.checklist[stage.id];
+    if(!stage.checklist || !stage.checklist.length) return false;
+    if(!items) return false;
+    return stage.checklist.every(function(_,i){ return !!items[i]; });
+  }
+
+  function renderRail(){
+    var rail = document.getElementById('rail');
+    var mobile = document.getElementById('railMobile');
+    rail.innerHTML=''; mobile.innerHTML='';
+    STAGES.forEach(function(s, i){
+      var active = i===state.stage;
+      var done = stageComplete(s);
+      var btn = document.createElement('button');
+      btn.className = 'rail-item'+(active?' active':'')+(done?' done':'');
+      btn.innerHTML = '<span class="rail-num">'+(done?ICON.check:(i+1))+'</span><span class="rail-label">'+esc(s.label)+'</span>';
+      btn.addEventListener('click', function(){ goTo(i); });
+      rail.appendChild(btn);
+
+      var chip = document.createElement('button');
+      chip.className = (active?'active ':'')+(done?'done':'');
+      chip.textContent = (i+1)+'. '+s.label;
+      chip.addEventListener('click', function(){ goTo(i); });
+      mobile.appendChild(chip);
+    });
+    document.getElementById('stepIndicator').innerHTML = 'Step <b>'+(state.stage+1)+'</b> of '+STAGES.length;
+  }
+
+  function goTo(i){
+    state.stage = Math.max(0, Math.min(STAGES.length-1, i));
+    save();
+    renderAll();
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+
+  // ---------- Main content ----------
+  function fieldHTML(f){
+    var val = state.fields[f.key] || '';
+    var carryTag = f.carry ? ' <span style="font-weight:400;color:var(--ink-dim);text-transform:none;letter-spacing:0;">(from Discovery)</span>' : '';
+    var input;
+    if(f.type==='textarea'){
+      input = '<textarea data-field="'+f.key+'" placeholder="'+esc(f.placeholder||'')+'">'+esc(val)+'</textarea>';
+    } else if(f.type==='select'){
+      input = '<select data-field="'+f.key+'">' + f.options.map(function(o){
+        return '<option'+(val===o?' selected':'')+'>'+esc(o)+'</option>';
+      }).join('') + '</select>';
+    } else {
+      input = '<input type="'+f.type+'" data-field="'+f.key+'" placeholder="'+esc(f.placeholder||'')+'" value="'+esc(val)+'">';
+    }
+    return '<div class="field"><label>'+esc(f.label)+carryTag+'</label>'+input+'</div>';
+  }
+
+  function renderMain(){
+    var stage = STAGES[state.stage];
+    var html = '';
+    html += '<div class="stage-head"><div class="stage-kicker">'+esc(stage.kicker)+'</div><h1 class="stage-title">'+esc(stage.title)+'</h1><p class="stage-purpose">'+esc(stage.purpose)+'</p></div>';
+
+    if(stage.script){
+      html += '<div class="block"><div class="block-label">Talking points</div><div class="script">'+stage.script+'</div></div>';
+    }
+    if(stage.quote){
+      html += '<div class="block"><blockquote>'+stage.quote+'</blockquote></div>';
+    }
+    if(stage.pkgTable){
+      html += '<div class="block"><div class="block-label">Packages — full menu</div><div class="pkg-list">';
+      PACKAGES.forEach(function(p, pi){
+        var checked = state.fields.package === p.name;
+        html += '<label class="pkg'+(checked?' pkg-checked':'')+'">'
+          +'<input type="radio" name="package" data-field="package" data-pkgindex="'+pi+'" value="'+esc(p.name)+'"'+(checked?' checked':'')+'>'
+          +'<span class="pkg-body">'
+            +'<span class="pkg-top"><span class="pkg-name">'+esc(p.name)+'</span><span class="pkg-price mono">'+esc(pkgPriceLine(p))+'</span></span>'
+            +'<span class="pkg-sub">'+esc(p.sub)+'</span>'
+            +'<span class="pkg-value">'+esc(p.value)+'</span>'
+            +'<span class="pkg-includes">'+p.includes.map(function(i){return '<span class="pkg-chip">'+esc(i)+'</span>';}).join('')+'</span>'
+          +'</span></label>';
+      });
+      html += '</div></div>';
+    }
+    if(stage.access){
+      html += '<div class="block"><div class="block-label">Access checklist</div><ul class="checklist" id="accessList">';
+      stage.access.forEach(function(item, i){
+        var checked = !!(state.checklist['access_'+stage.id] && state.checklist['access_'+stage.id][i]);
+        html += '<li class="check-row'+(checked?' checked':'')+'"><input type="checkbox" id="acc_'+i+'" data-access="'+i+'"'+(checked?' checked':'')+'><label for="acc_'+i+'">'+esc(item)+'</label></li>';
+      });
+      html += '</ul></div>';
+    }
+    if(stage.fields){
+      html += '<div class="block"><div class="block-label">Details</div><div class="fields">';
+      stage.fields.forEach(function(f){ html += fieldHTML(f); });
+      html += '</div></div>';
+    }
+    if(stage.watch){
+      html += '<div class="block"><div class="callout warn"><span class="callout-icon">'+ICON.warn+'</span><div><b>Watch out</b>'+esc(stage.watch)+'</div></div></div>';
+    }
+    if(stage.checklist && stage.checklist.length){
+      html += '<div class="block"><div class="block-label">Checklist</div><ul class="checklist" id="stageChecklist">';
+      stage.checklist.forEach(function(item, i){
+        var checked = !!(state.checklist[stage.id] && state.checklist[stage.id][i]);
+        html += '<li class="check-row'+(checked?' checked':'')+'"><input type="checkbox" id="chk_'+i+'" data-check="'+i+'"'+(checked?' checked':'')+'><label for="chk_'+i+'">'+esc(item)+'</label></li>';
+      });
+      html += '</ul></div>';
+    }
+
+    html += '<div class="nav-buttons">';
+    html += state.stage>0 ? '<button class="btn" id="prevBtn">← Back</button>' : '<span></span>';
+    html += state.stage<STAGES.length-1 ? '<button class="btn primary" id="nextBtn">Next →</button>' : '<button class="btn primary" id="drawerBtn2">Review call sheet →</button>';
+    html += '</div>';
+
+    var main = document.getElementById('main');
+    main.innerHTML = html;
+
+    main.querySelectorAll('[data-field]').forEach(function(el){
+      el.addEventListener('input', function(){
+        state.fields[el.getAttribute('data-field')] = el.value;
+        save();
+        if(el.type==='radio'){ renderMain(); renderDrawer(); renderRail(); }
+      });
+      el.addEventListener('change', function(){
+        if(el.type==='radio'){
+          state.fields[el.getAttribute('data-field')] = el.value;
+          var pi = el.getAttribute('data-pkgindex');
+          if(pi!==null){ state.fields.price = pkgPriceLine(PACKAGES[+pi]); }
+          save(); renderMain(); renderDrawer(); renderRail();
+        }
+      });
+    });
+    main.querySelectorAll('[data-check]').forEach(function(el){
+      el.addEventListener('change', function(){
+        var i = +el.getAttribute('data-check');
+        state.checklist[stage.id] = state.checklist[stage.id] || {};
+        state.checklist[stage.id][i] = el.checked;
+        save();
+        el.closest('.check-row').classList.toggle('checked', el.checked);
+        renderRail();
+      });
+    });
+    main.querySelectorAll('[data-access]').forEach(function(el){
+      el.addEventListener('change', function(){
+        var key = 'access_'+stage.id;
+        var i = +el.getAttribute('data-access');
+        state.checklist[key] = state.checklist[key] || {};
+        state.checklist[key][i] = el.checked;
+        save();
+        el.closest('.check-row').classList.toggle('checked', el.checked);
+      });
+    });
+    var prev = document.getElementById('prevBtn'); if(prev) prev.addEventListener('click', function(){ goTo(state.stage-1); });
+    var next = document.getElementById('nextBtn'); if(next) next.addEventListener('click', function(){ goTo(state.stage+1); });
+    var db2 = document.getElementById('drawerBtn2'); if(db2) db2.addEventListener('click', openDrawer);
+  }
+
+  // ---------- Drawer / summary ----------
+  function summaryGroups(){
+    var f = state.fields;
+    return [
+      { title:'Contact', rows:[
+        ['Business', f.businessName], ['Contact', f.contactName], ['Phone', f.phone], ['Website', f.website]
+      ]},
+      { title:'Discovery', rows:[
+        ['Services', f.services], ['Target area', f.targetLocations], ['Target customers', f.targetCustomers],
+        ['Competitors', f.competitors], ['Channels', f.channels], ['Current leads', f.currentLeads],
+        ['6–12mo goals', f.goals], ['Previous work', f.previousWork]
+      ]},
+      { title:'Close', rows:[
+        ['Package', f.package], ['Price', f.price], ['Term', f.term]
+      ]},
+      { title:'Payment', rows:[
+        ['Status', f.paymentStatus], ['Notes', f.paymentMethod]
+      ]},
+      { title:'Onboarding', rows:[
+        ['Address / NAP', f.address], ['Brand assets', f.brandAssets], ['Contact pref.', f.contactPref]
+      ]},
+      { title:'Next steps', rows:[
+        ['Kickoff date', f.kickoffDate], ['Next milestone', f.nextDate]
+      ]}
+    ];
+  }
+
+  function renderDrawer(){
+    var body = document.getElementById('drawerBody');
+    var groups = summaryGroups();
+    var html = '';
+    groups.forEach(function(g){
+      var rows = g.rows.filter(function(r){ return r[1]; });
+      html += '<div class="sheet-group"><h3>'+esc(g.title)+'</h3>';
+      if(!rows.length){ html += '<div class="sheet-empty">Nothing captured yet</div>'; }
+      else {
+        rows.forEach(function(r){
+          html += '<div class="sheet-row"><span class="k">'+esc(r[0])+'</span><span class="v">'+esc(r[1])+'</span></div>';
+        });
+      }
+      html += '</div>';
+    });
+    body.innerHTML = html;
+  }
+
+  function buildSummaryText(){
+    var f = state.fields;
+    var groups = summaryGroups();
+    var lines = [];
+    lines.push('CALL SUMMARY — '+(f.businessName||'Untitled')+'  ['+new Date().toLocaleDateString()+']');
+    groups.forEach(function(g){
+      var rows = g.rows.filter(function(r){ return r[1]; });
+      if(!rows.length) return;
+      lines.push('');
+      lines.push(g.title.toUpperCase());
+      rows.forEach(function(r){ lines.push(r[0]+': '+r[1]); });
+    });
+    return lines.join('\n');
+  }
+
+  var drawer = document.getElementById('drawer');
+  var menuDrawer = document.getElementById('menuDrawer');
+  var scrim = document.getElementById('scrim');
+  function closeAllDrawers(){
+    drawer.classList.remove('open');
+    menuDrawer.classList.remove('open');
+    scrim.classList.remove('open');
+  }
+  function openDrawer(){ closeAllDrawers(); drawer.classList.add('open'); scrim.classList.add('open'); }
+  function closeDrawer(){ closeAllDrawers(); }
+  function openMenu(){ closeAllDrawers(); renderMenuDrawer(); menuDrawer.classList.add('open'); scrim.classList.add('open'); }
+  document.getElementById('drawerBtn').addEventListener('click', openDrawer);
+  document.getElementById('drawerClose').addEventListener('click', closeDrawer);
+  document.getElementById('menuBtn').addEventListener('click', openMenu);
+  document.getElementById('menuClose').addEventListener('click', closeAllDrawers);
+  document.getElementById('menuToClose').addEventListener('click', function(){
+    closeAllDrawers();
+    goTo(STAGES.map(function(s){return s.id;}).indexOf('close'));
+  });
+  scrim.addEventListener('click', closeAllDrawers);
+
+  function renderMenuDrawer(){
+    var body = document.getElementById('menuBody');
+    var html = '<div class="pkg-list">';
+    PACKAGES.forEach(function(p){
+      var current = state.fields.package === p.name;
+      html += '<div class="pkg'+(current?' pkg-checked':'')+'" style="cursor:default;">'
+        +'<span class="pkg-body">'
+          +'<span class="pkg-top"><span class="pkg-name">'+esc(p.name)+(current?' <span class="pkg-chip" style="border-color:var(--accent);color:var(--accent-strong);">selected</span>':'')+'</span><span class="pkg-price mono">'+esc(pkgPriceLine(p))+'</span></span>'
+          +'<span class="pkg-sub">'+esc(p.sub)+'</span>'
+          +'<span class="pkg-value">'+esc(p.value)+'</span>'
+          +'<span class="pkg-includes">'+p.includes.map(function(i){return '<span class="pkg-chip">'+esc(i)+'</span>';}).join('')+'</span>'
+        +'</span></div>';
+    });
+    html += '</div>';
+    body.innerHTML = html;
+  }
+
+  var copyBtn = document.getElementById('copySummary');
+  copyBtn.addEventListener('click', function(){
+    var text = buildSummaryText();
+    var done = function(){
+      var original = copyBtn.innerHTML;
+      copyBtn.innerHTML = ICON.check+' Copied';
+      setTimeout(function(){ copyBtn.innerHTML = original; }, 1600);
+    };
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(text).then(done).catch(function(){ fallbackCopy(text, done); });
+    } else { fallbackCopy(text, done); }
+  });
+  function fallbackCopy(text, cb){
+    var ta = document.createElement('textarea');
+    ta.value = text; ta.style.position='fixed'; ta.style.opacity='0';
+    document.body.appendChild(ta); ta.select();
+    try{ document.execCommand('copy'); }catch(e){}
+    document.body.removeChild(ta);
+    cb();
+  }
+
+  function renderAll(){
+    renderRail();
+    renderMain();
+    renderDrawer();
+    renderTimer();
+  }
+  renderAll();
+})();
+</script>

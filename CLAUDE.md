@@ -392,3 +392,14 @@ last handful of entries; prune older ones once they're no longer load-bearing.
   tile + task list + docs/README), the user said to retire it, and it's now **deleted** — the artifact
   URL `21f535cd-...` no longer resolves for anyone. Removed its tile from the Command Center and its
   task-list item is marked done; docs/README's note updated to past tense. Nothing else references it.
+  **Same day, user asked for it back** ("where is the call walkthrough and training for new
+  employees") and then to rebuild it with correct pricing. Rebuilt from scratch, same 9-stage
+  call-console design (Prep → Open → Discovery → Present Findings → Objections → Close → Payment →
+  Onboarding → Handoff, timer, package-menu drawer, live call-sheet drawer with copy-to-clipboard
+  summary, `localStorage` persistence) but with the real 4 packages from `content.ts` — Foundation
+  CA$2,799 + $139.99/mo, Growth CA$3,800 + $249/mo, Domination CA$5,500 + $449/mo, Audit CA$497
+  one-time/no retainer (the old version's bug was assuming one flat retainer across every package;
+  the real pricing has a different monthly for each, and Audit has none). Published as a **new**
+  artifact (`DKpurwXKr1WurScaNR6qdn` — the old URL is permanently gone) and, unlike the original,
+  mirrored locally this time at `docs/switchboard.html` and indexed in `docs/README.md`. Re-added its
+  tile to the Command Center's Internal Tools and updated the task list/history entries to match.

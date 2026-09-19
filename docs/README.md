@@ -95,11 +95,14 @@ domain is bought and the remaining setup is done (see `../CLAUDE.md`), since a l
   the score talking points, the pricing strip, tap-to-expand objection handling, the close script, and
   the kickoff checklist. Live version: https://claude.ai/artifact/Gdmn7KqLtVBw3YdoYHHNi4
 
-**Note on "Switchboard"** — a separate, older call-console artifact, once linked from the Command
-Center's Internal Tools, carried a different, stale package structure (Starter/Growth/Authority at
-$750/$1,500/$3,000 + flat $139.99/mo) that didn't match live pricing above and was never mirrored or
-indexed here. Found and deleted 2026-09-18 at the user's request rather than repriced — use the Day
-One Call Sheet above instead.
+- [`switchboard.html`](switchboard.html) (rebuilt 2026-09-18) — the live-call console and new-hire
+  training tool: a 9-stage rail (Prep → Open → Discovery → Present Findings → Objections → Close →
+  Payment → Onboarding → Handoff) with talking points, a live call timer, a package-menu drawer, and a
+  copy-to-clipboard call summary, state saved locally per browser. An older version of this same tool
+  carried a stale, different package structure (Starter/Growth/Authority at $750/$1,500/$3,000 + a flat
+  $139.99/mo retainer) that didn't match live pricing and was never mirrored here — it was deleted
+  2026-09-18, then rebuilt same day with the real 4 packages (Foundation/Growth/Domination/Audit) from
+  `src/lib/content.ts`. Live version: https://claude.ai/artifact/DKpurwXKr1WurScaNR6qdn
 
 ## Not included here
 
