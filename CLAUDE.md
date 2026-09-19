@@ -358,6 +358,16 @@ last handful of entries; prune older ones once they're no longer load-bearing.
   actually works, since that's exactly the case that would have silently broken without it. Also
   clicked through the interactive visibility-checker quiz end to end to confirm the progress bar and
   step transitions still function.
+
+  **Then: fixed the Services/Industries nav.** Both previously linked straight to a single page
+  (`/services/local-seo`, `/industries/hvac`) instead of showing the full list — "Industries" always
+  dead-ended on HVAC no matter what a visitor wanted, caught by the user from a screenshot of the
+  footer's Services list, expecting the same items to work as a header dropdown too. Neither
+  `/services` nor `/industries` has an index page, so turned both nav labels into hover/focus dropdowns
+  (`NavDropdown` in `chrome.tsx`) listing all 5 services / 6 industries by name, sourced directly from
+  the same `content.ts` arrays the individual pages already use — adding a new one there automatically
+  appears in the dropdown. Verified live in the browser: both menus open on hover, chevron rotates, and
+  clicking navigates to the correct page.
   **Same-day follow-up:** user asked to (a) delete the CRM leads and (b) make the Command Center link
   fully self-sufficient for a fresh-PC setup. For (a), confirmed the GitHub repo is public
   (`private: false` via the GitHub API) — every file link on the dashboard already works with no auth
