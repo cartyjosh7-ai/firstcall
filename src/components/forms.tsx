@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import type { AuditResult } from "@/lib/audit";
 import { trades } from "@/lib/content";
 
@@ -35,7 +35,7 @@ export function AuditForm() {
 
   return (
     <div>
-      <form onSubmit={onSubmit} className="grid gap-3 rounded-2xl border border-line bg-[#12130f] p-6 md:grid-cols-2">
+      <form onSubmit={onSubmit} className="panel grid gap-3 rounded-2xl border border-line bg-[#12130f] p-6 md:grid-cols-2">
         <label className="md:col-span-2 text-sm">
           Website
           <input
@@ -44,7 +44,7 @@ export function AuditForm() {
             value={url}
             onChange={(e) => setUrl(e.target.value)}
             placeholder="yourbusiness.com"
-            className="mt-1 w-full rounded-lg border border-line bg-ink px-3 py-2"
+            className="field-input mt-1 w-full rounded-lg border border-line bg-ink px-3 py-2"
           />
         </label>
         <label className="text-sm">
@@ -52,7 +52,7 @@ export function AuditForm() {
           <input
             value={name}
             onChange={(e) => setName(e.target.value)}
-            className="mt-1 w-full rounded-lg border border-line bg-ink px-3 py-2"
+            className="field-input mt-1 w-full rounded-lg border border-line bg-ink px-3 py-2"
           />
         </label>
         <label className="text-sm">
@@ -61,13 +61,10 @@ export function AuditForm() {
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="mt-1 w-full rounded-lg border border-line bg-ink px-3 py-2"
+            className="field-input mt-1 w-full rounded-lg border border-line bg-ink px-3 py-2"
           />
         </label>
-        <button
-          disabled={busy}
-          className="md:col-span-2 rounded-full bg-gold py-3 font-medium text-ink disabled:opacity-60"
-        >
+        <button disabled={busy} className="btn-block md:col-span-2">
           {busy ? "Scanning…" : "Run my audit"}
         </button>
         <p className="md:col-span-2 text-xs text-muted">
@@ -82,8 +79,17 @@ export function AuditForm() {
 }
 
 function AuditReport({ result }: { result: AuditResult }) {
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => {
+    const raf = requestAnimationFrame(() => setMounted(true));
+    return () => cancelAnimationFrame(raf);
+  }, []);
+
   return (
-    <div className="mt-10 rounded-2xl border border-line p-6">
+    <div
+      className="mt-10 rounded-2xl border border-line p-6 transition-all duration-500 ease-out"
+      style={{ opacity: mounted ? 1 : 0, transform: mounted ? "none" : "translateY(10px)" }}
+    >
       {result.error ? (
         <p className="text-muted">{result.error}</p>
       ) : (
@@ -107,8 +113,8 @@ function AuditReport({ result }: { result: AuditResult }) {
                 </div>
                 <div className="mt-1 h-1.5 overflow-hidden rounded-full bg-line">
                   <div
-                    className="h-full bg-gold"
-                    style={{ width: `${(c.score / c.max) * 100}%` }}
+                    className="h-full rounded-full bg-gold transition-[width] duration-1000 ease-out"
+                    style={{ width: mounted ? `${(c.score / c.max) * 100}%` : "0%" }}
                   />
                 </div>
               </li>
@@ -169,11 +175,11 @@ export function ContactForm({ kind = "contact" }: { kind?: "contact" | "proposal
     <form onSubmit={onSubmit} className="grid gap-3 md:grid-cols-2">
       <label className="text-sm">
         Your name
-        <input name="name" required className="mt-1 w-full rounded-lg border border-line bg-ink px-3 py-2" />
+        <input name="name" required className="field-input mt-1 w-full rounded-lg border border-line bg-ink px-3 py-2" />
       </label>
       <label className="text-sm">
         Business name
-        <input name="business" className="mt-1 w-full rounded-lg border border-line bg-ink px-3 py-2" />
+        <input name="business" className="field-input mt-1 w-full rounded-lg border border-line bg-ink px-3 py-2" />
       </label>
       <label className="text-sm">
         Email
@@ -181,20 +187,20 @@ export function ContactForm({ kind = "contact" }: { kind?: "contact" | "proposal
           name="email"
           type="email"
           required
-          className="mt-1 w-full rounded-lg border border-line bg-ink px-3 py-2"
+          className="field-input mt-1 w-full rounded-lg border border-line bg-ink px-3 py-2"
         />
       </label>
       <label className="text-sm">
         Phone
-        <input name="phone" className="mt-1 w-full rounded-lg border border-line bg-ink px-3 py-2" />
+        <input name="phone" className="field-input mt-1 w-full rounded-lg border border-line bg-ink px-3 py-2" />
       </label>
       <label className="text-sm">
         Website
-        <input name="website" className="mt-1 w-full rounded-lg border border-line bg-ink px-3 py-2" />
+        <input name="website" className="field-input mt-1 w-full rounded-lg border border-line bg-ink px-3 py-2" />
       </label>
       <label className="text-sm">
         Trade
-        <select name="trade" className="mt-1 w-full rounded-lg border border-line bg-ink px-3 py-2">
+        <select name="trade" className="field-input mt-1 w-full rounded-lg border border-line bg-ink px-3 py-2">
           <option value="">Select your trade</option>
           {trades.map((t) => (
             <option key={t}>{t}</option>
@@ -203,12 +209,9 @@ export function ContactForm({ kind = "contact" }: { kind?: "contact" | "proposal
       </label>
       <label className="md:col-span-2 text-sm">
         How can we help? (optional)
-        <textarea name="message" rows={4} className="mt-1 w-full rounded-lg border border-line bg-ink px-3 py-2" />
+        <textarea name="message" rows={4} className="field-input mt-1 w-full rounded-lg border border-line bg-ink px-3 py-2" />
       </label>
-      <button
-        disabled={status === "busy"}
-        className="md:col-span-2 rounded-full bg-gold py-3 font-medium text-ink disabled:opacity-60"
-      >
+      <button disabled={status === "busy"} className="btn-block md:col-span-2">
         {status === "busy" ? "Sending…" : kind === "proposal" ? "Request Foundation" : "Send message"}
       </button>
       {message ? <p className="md:col-span-2 text-sm text-muted">{message}</p> : null}

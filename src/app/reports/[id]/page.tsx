@@ -1,14 +1,17 @@
 import type { Metadata } from "next";
+import type { CSSProperties } from "react";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { loadReport } from "@/lib/reports";
 
 export const metadata: Metadata = { title: "Your research & implementation plan" };
 
+const d = (n: number) => ({ "--d": n }) as CSSProperties;
+
 function Bar({ score, max }: { score: number; max: number }) {
   return (
     <div className="mt-1 h-1.5 overflow-hidden rounded-full bg-line">
-      <div className="h-full bg-gold" style={{ width: `${max ? (score / max) * 100 : 0}%` }} />
+      <div className="scorebar h-full bg-gold" style={{ "--w": `${max ? (score / max) * 100 : 0}%` } as CSSProperties} />
     </div>
   );
 }
@@ -37,23 +40,25 @@ export default async function ReportPage({ params }: { params: Promise<{ id: str
           illustrative placeholders. Do not send this link to a client.
         </div>
       ) : null}
-      <div className="flex items-center justify-between gap-4">
-        <p className="text-xs uppercase tracking-widest text-gold">Research & 90-day plan</p>
-        <Link
-          href={`/reports/${id}/proposal`}
-          className="rounded-full border border-line px-4 py-1.5 text-xs no-underline hover:border-gold"
-        >
-          Generate proposal →
+      <div className="reveal flex items-center justify-between gap-4" style={d(0)}>
+        <p className="text-xs uppercase tracking-widest text-gold">
+          <span className="ruleline">Research & 90-day plan</span>
+        </p>
+        <Link href={`/reports/${id}/proposal`} className="linkarrow text-xs">
+          Generate proposal
+          <svg className="arrow" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.4} strokeLinecap="round" strokeLinejoin="round">
+            <path d="M5 12h14M13 6l6 6-6 6" />
+          </svg>
         </Link>
       </div>
-      <h1 className="mt-3 font-serif text-5xl">{brief.business}</h1>
-      <p className="mt-2 text-sm text-muted">
+      <h1 className="reveal mt-3 font-serif text-5xl" style={d(1)}>{brief.business}</h1>
+      <p className="reveal mt-2 text-sm text-muted" style={d(2)}>
         {brief.trade}
         {brief.location ? ` · ${brief.location}` : ""} · {brief.website} · generated{" "}
         {new Date(generatedAt).toLocaleDateString()}
       </p>
 
-      <section className="mt-12">
+      <section className="reveal mt-12" style={d(0)}>
         <p className="text-xs uppercase tracking-widest text-gold">Site audit</p>
         <p className="mt-2 font-serif text-5xl">
           {brief.siteAudit.score}
@@ -84,14 +89,14 @@ export default async function ReportPage({ params }: { params: Promise<{ id: str
       </section>
 
       {brief.keywordOpportunities.length > 0 ? (
-        <section className="mt-12">
+        <section className="reveal mt-12">
           <h2 className="font-serif text-2xl">Keyword opportunities</h2>
           <p className="mt-2 text-xs text-rust">
             Estimated volumes are placeholders until a live keyword data provider is connected.
           </p>
           <div className="mt-4 space-y-3">
             {brief.keywordOpportunities.map((k, i) => (
-              <div key={i} className="rounded-xl border border-line p-4">
+              <div key={i} className="whycard rounded-xl border border-line p-4">
                 <div className="flex flex-wrap items-center justify-between gap-2">
                   <p className="text-paper">{k.keyword}</p>
                   <div className="flex gap-2">
@@ -108,11 +113,11 @@ export default async function ReportPage({ params }: { params: Promise<{ id: str
       ) : null}
 
       {brief.competitorGaps.length > 0 ? (
-        <section className="mt-12">
+        <section className="reveal mt-12">
           <h2 className="font-serif text-2xl">Competitive gaps</h2>
           <div className="mt-4 space-y-3">
             {brief.competitorGaps.map((g, i) => (
-              <div key={i} className="rounded-xl border border-line p-4">
+              <div key={i} className="whycard rounded-xl border border-line p-4">
                 <p className="text-paper">{g.competitor}</p>
                 <p className="mt-1 text-sm text-muted">Gap: {g.gap}</p>
                 <p className="mt-1 text-sm text-muted">Opportunity: {g.opportunity}</p>
@@ -123,7 +128,7 @@ export default async function ReportPage({ params }: { params: Promise<{ id: str
       ) : null}
 
       {brief.localSeoFindings.length > 0 ? (
-        <section className="mt-12">
+        <section className="reveal mt-12">
           <h2 className="font-serif text-2xl">Local SEO findings</h2>
           <ul className="mt-4 space-y-2 text-sm">
             {brief.localSeoFindings.map((f, i) => (
@@ -136,7 +141,7 @@ export default async function ReportPage({ params }: { params: Promise<{ id: str
       ) : null}
 
       {plan.quickWins.length > 0 ? (
-        <section className="mt-12">
+        <section className="reveal mt-12">
           <h2 className="font-serif text-2xl">Quick wins</h2>
           <ul className="mt-4 space-y-2 text-sm">
             {plan.quickWins.map((w, i) => (
@@ -157,7 +162,7 @@ export default async function ReportPage({ params }: { params: Promise<{ id: str
               <h3 className="font-serif text-xl text-gold">{phase.name}</h3>
               <div className="mt-3 space-y-3">
                 {phase.actions.map((a, i) => (
-                  <div key={i} className="rounded-xl border border-line p-4">
+                  <div key={i} className="whycard rounded-xl border border-line p-4">
                     <div className="flex flex-wrap items-center justify-between gap-2">
                       <p className="text-paper">{a.title}</p>
                       <div className="flex gap-2">
@@ -177,7 +182,7 @@ export default async function ReportPage({ params }: { params: Promise<{ id: str
       </section>
 
       {plan.kpisToTrack.length > 0 ? (
-        <section className="mt-12">
+        <section className="reveal mt-12">
           <h2 className="font-serif text-2xl">KPIs we'll track</h2>
           <ul className="mt-4 space-y-2 text-sm text-muted">
             {plan.kpisToTrack.map((k, i) => (

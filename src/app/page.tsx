@@ -2,7 +2,6 @@ import type { CSSProperties } from "react";
 import Link from "next/link";
 import { Cta } from "@/components/chrome";
 import { foundation, industries } from "@/lib/content";
-import { RevealInit } from "@/components/motion/reveal-init";
 import { HeroPanel } from "@/components/motion/hero-panel";
 import { TiltCard } from "@/components/motion/tilt-card";
 
@@ -12,8 +11,6 @@ const d = (n: number) => ({ "--d": n }) as CSSProperties;
 export default function HomePage() {
   return (
     <>
-      <RevealInit />
-
       <HeroPanel className="pb-16 pt-16">
         <div className="mx-auto max-w-6xl px-5">
           <div className="grid gap-10 md:grid-cols-2 md:gap-14 md:items-center">

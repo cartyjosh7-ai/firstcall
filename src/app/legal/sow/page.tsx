@@ -18,8 +18,10 @@ export default async function SowPage({
 
   return (
     <article className="prose-fc mx-auto max-w-3xl px-5 py-16">
-      <p className="text-xs uppercase tracking-widest text-gold">Contract</p>
-      <h1 className="font-serif text-5xl text-paper">{pkg.name} Statement of Work</h1>
+      <p className="reveal text-xs uppercase tracking-widest text-gold">
+        <span className="ruleline">Contract</span>
+      </p>
+      <h1 className="reveal font-serif text-5xl text-paper">{pkg.name} Statement of Work</h1>
       <p>
         This SOW is issued under the <a href="/legal/msa">MSA</a>. Offer: {pkg.name} —{" "}
         {pkg.priceOneTimeLabel}

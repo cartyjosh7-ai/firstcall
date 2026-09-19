@@ -6,9 +6,11 @@ export const metadata: Metadata = { title: "Master Services Agreement" };
 export default function MsaPage() {
   return (
     <article className="prose-fc mx-auto max-w-3xl px-5 py-16">
-      <p className="text-xs uppercase tracking-widest text-gold">Contract</p>
-      <h1 className="font-serif text-5xl text-paper">Master Services Agreement</h1>
-      <p className="text-sm text-muted">
+      <p className="reveal text-xs uppercase tracking-widest text-gold">
+        <span className="ruleline">Contract</span>
+      </p>
+      <h1 className="reveal font-serif text-5xl text-paper">Master Services Agreement</h1>
+      <p className="reveal text-sm text-muted">
         Short-form MSA for Foundation. Have counsel review. Print or PDF from the browser.
       </p>
       <h2>1. Parties</h2>

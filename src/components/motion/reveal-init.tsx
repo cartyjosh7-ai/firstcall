@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
+import { usePathname } from "next/navigation";
 
 function animateCounters(root: ParentNode) {
   root.querySelectorAll<HTMLElement>(".countup").forEach((el) => {
@@ -28,9 +29,18 @@ function animateCounters(root: ParentNode) {
 /**
  * Mounts the shared scroll-reveal system for `.reveal` (focus-pull) and
  * `.maskline` (load-time wipe) elements anywhere on the page, plus the
- * `.countup` number animation. Renders nothing — mount once per page.
+ * `.countup` number animation. Renders nothing.
+ *
+ * Lives once in the root layout, not per-page — but Next's App Router keeps
+ * the layout mounted across client-side navigations, so this re-scans the
+ * DOM on every pathname change (a fresh IntersectionObserver each time)
+ * instead of relying on a remount. Without that, a page reached via a Link
+ * click (not a full reload) would never get its `.reveal` elements observed
+ * and they'd sit at opacity:0 forever.
  */
 export function RevealInit() {
+  const pathname = usePathname();
+
   useEffect(() => {
     if (!("IntersectionObserver" in window)) {
       animateCounters(document);
@@ -49,9 +59,15 @@ export function RevealInit() {
       },
       { root: null, threshold: 0.15 }
     );
-    document.querySelectorAll(".reveal, .maskline").forEach((el) => io.observe(el));
-    return () => io.disconnect();
-  }, []);
+    // Wait a tick so the new page's DOM (post-navigation) is actually in place.
+    const raf = requestAnimationFrame(() => {
+      document.querySelectorAll(".reveal, .maskline").forEach((el) => io.observe(el));
+    });
+    return () => {
+      cancelAnimationFrame(raf);
+      io.disconnect();
+    };
+  }, [pathname]);
 
   return null;
 }

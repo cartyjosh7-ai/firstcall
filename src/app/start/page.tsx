@@ -1,9 +1,12 @@
 "use client";
 
 import { Suspense, useState } from "react";
+import type { CSSProperties } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { salesPackages, trades, type PackageId } from "@/lib/content";
+
+const d = (n: number) => ({ "--d": n }) as CSSProperties;
 
 function isPackageId(value: string | null): value is PackageId {
   return value != null && value in salesPackages;
@@ -52,19 +55,21 @@ function StartForm() {
 
   return (
     <div className="mx-auto max-w-xl px-5 py-16">
-      <p className="text-xs uppercase tracking-widest text-gold">Start {pkg.name}</p>
-      <h1 className="mt-3 font-serif text-4xl">
+      <p className="reveal text-xs uppercase tracking-widest text-gold" style={d(0)}>
+        <span className="ruleline">Start {pkg.name}</span>
+      </p>
+      <h1 className="reveal mt-3 font-serif text-4xl" style={d(1)}>
         {pkg.priceMonthly
           ? `Pay ${pkg.priceOneTimeLabel} today, then ${pkg.priceMonthlyLabel}, and we start month one.`
           : `Pay ${pkg.priceOneTimeLabel} today and we start.`}
       </h1>
-      <p className="mt-4 text-muted">
+      <p className="reveal mt-4 text-muted" style={d(2)}>
         {pkg.cadence} By paying you agree to the{" "}
         <Link href="/legal/msa">MSA</Link> and{" "}
         <Link href={`/legal/sow?package=${pkg.id}`}>{pkg.name} SOW</Link>.
       </p>
 
-      <div className="mt-8 grid gap-3 rounded-2xl border border-line bg-[#12130f] p-6">
+      <div className="panel reveal mt-8 grid gap-3 rounded-2xl border border-line bg-[#12130f] p-6" style={d(3)}>
         <p className="text-sm text-muted">
           A few details so we can build your first research brief and 90-day plan the moment payment
           clears.
@@ -75,7 +80,7 @@ function StartForm() {
             required
             value={business}
             onChange={(e) => setBusiness(e.target.value)}
-            className="mt-1 w-full rounded-lg border border-line bg-ink px-3 py-2"
+            className="field-input mt-1 w-full rounded-lg border border-line bg-ink px-3 py-2"
           />
         </label>
         <label className="text-sm">
@@ -85,7 +90,7 @@ function StartForm() {
             value={website}
             onChange={(e) => setWebsite(e.target.value)}
             placeholder="yourbusiness.com"
-            className="mt-1 w-full rounded-lg border border-line bg-ink px-3 py-2"
+            className="field-input mt-1 w-full rounded-lg border border-line bg-ink px-3 py-2"
           />
         </label>
         <label className="text-sm">
@@ -94,7 +99,7 @@ function StartForm() {
             required
             value={trade}
             onChange={(e) => setTrade(e.target.value)}
-            className="mt-1 w-full rounded-lg border border-line bg-ink px-3 py-2"
+            className="field-input mt-1 w-full rounded-lg border border-line bg-ink px-3 py-2"
           >
             <option value="">Select your trade</option>
             {trades.map((t) => (
@@ -109,21 +114,17 @@ function StartForm() {
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="mt-1 w-full rounded-lg border border-line bg-ink px-3 py-2"
+            className="field-input mt-1 w-full rounded-lg border border-line bg-ink px-3 py-2"
           />
         </label>
       </div>
 
-      <button
-        onClick={startCheckout}
-        disabled={busy || !ready}
-        className="mt-8 w-full rounded-full bg-gold py-3 font-medium text-ink disabled:opacity-60"
-      >
+      <button onClick={startCheckout} disabled={busy || !ready} className="btn-block reveal mt-8 w-full" style={d(4)}>
         {busy ? "Redirecting…" : "Continue to payment"}
       </button>
       {error ? <p className="mt-4 text-sm text-rust">{error}</p> : null}
       {fallback ? <p className="mt-4 text-sm text-muted">{fallback}</p> : null}
-      <p className="mt-6 text-sm text-muted">
+      <p className="reveal mt-6 text-sm text-muted" style={d(5)}>
         No Stripe keys in this environment? Request an invoice from{" "}
         <Link href="/pricing">the pricing page</Link>.
       </p>

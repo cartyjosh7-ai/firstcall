@@ -7,9 +7,11 @@ export const metadata: Metadata = { title: "Terms of Service" };
 export default function TermsPage() {
   return (
     <article className="prose-fc mx-auto max-w-3xl px-5 py-16">
-      <p className="text-xs uppercase tracking-widest text-gold">Legal</p>
-      <h1 className="font-serif text-5xl text-paper">Terms of Service</h1>
-      <p className="text-sm text-muted">Last updated August 22, 2026.</p>
+      <p className="reveal text-xs uppercase tracking-widest text-gold">
+        <span className="ruleline">Legal</span>
+      </p>
+      <h1 className="reveal font-serif text-5xl text-paper">Terms of Service</h1>
+      <p className="reveal text-sm text-muted">Last updated August 22, 2026.</p>
       <h2>Who we are</h2>
       <p>
         These terms govern use of {site.url} and the free audit tools. Paid work is governed by the{" "}

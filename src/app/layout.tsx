@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Header, Footer } from "@/components/chrome";
 import { site } from "@/lib/content";
+import { RevealInit } from "@/components/motion/reveal-init";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -38,6 +39,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           Skip to content
         </a>
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+        <RevealInit />
         <Header />
         <main id="content">{children}</main>
         <Footer />
