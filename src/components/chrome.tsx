@@ -1,16 +1,63 @@
 import type { CSSProperties } from "react";
 import Link from "next/link";
-import { site } from "@/lib/content";
+import { site, services, industries } from "@/lib/content";
 
 const d = (n: number) => ({ "--d": n }) as CSSProperties;
 
-const nav = [
-  { href: "/services/local-seo", label: "Services" },
-  { href: "/industries/hvac", label: "Industries" },
+type NavItem =
+  | { label: string; href: string; items?: undefined }
+  | { label: string; href?: undefined; items: { href: string; label: string }[] };
+
+const nav: NavItem[] = [
+  { label: "Services", items: services.map((s) => ({ href: `/services/${s.slug}`, label: s.name })) },
+  { label: "Industries", items: industries.map((i) => ({ href: `/industries/${i.slug}`, label: i.name })) },
   { href: "/tools/visibility-checker", label: "Tools" },
   { href: "/pricing", label: "Foundation" },
   { href: "/about", label: "Company" },
 ];
+
+function NavDropdown({ label, items }: { label: string; items: { href: string; label: string }[] }) {
+  return (
+    <div className="group relative">
+      <button
+        type="button"
+        className="flex cursor-default items-center gap-1 no-underline hover:text-paper"
+        aria-haspopup="true"
+      >
+        {label}
+        <svg
+          width="10"
+          height="10"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth={2.4}
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          className="mt-px transition-transform group-hover:rotate-180 group-focus-within:rotate-180"
+        >
+          <path d="M6 9l6 6 6-6" />
+        </svg>
+      </button>
+      <div
+        className="invisible absolute left-1/2 top-full z-50 -translate-x-1/2 pt-3 opacity-0 transition-all duration-150 ease-out
+          group-hover:visible group-hover:opacity-100 group-focus-within:visible group-focus-within:opacity-100"
+      >
+        <div className="w-60 rounded-xl border border-line bg-[#12130f] p-2 shadow-[0_16px_40px_-16px_rgba(0,0,0,0.6)]">
+          {items.map((it) => (
+            <Link
+              key={it.href}
+              href={it.href}
+              className="block rounded-lg px-3 py-2 text-sm no-underline text-paper/90 hover:bg-[#181910] hover:text-gold"
+            >
+              {it.label}
+            </Link>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
 
 export function Header() {
   return (
@@ -20,11 +67,15 @@ export function Header() {
           {site.name}
         </Link>
         <nav aria-label="Primary" className="hidden items-center gap-6 text-sm text-muted md:flex">
-          {nav.map((item) => (
-            <Link key={item.href} href={item.href} className="no-underline hover:text-paper">
-              {item.label}
-            </Link>
-          ))}
+          {nav.map((item) =>
+            item.items ? (
+              <NavDropdown key={item.label} label={item.label} items={item.items} />
+            ) : (
+              <Link key={item.href} href={item.href} className="no-underline hover:text-paper">
+                {item.label}
+              </Link>
+            ),
+          )}
         </nav>
         <Link
           href="/audit"
