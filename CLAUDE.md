@@ -152,6 +152,26 @@ diagnosis, confirmed twice (once 2026-08-24, re-confirmed 2026-08-25 via the act
   everything downstream (checkout success/cancel URLs, email footers, OG tags) just works — those already
   read from `site.url`/`site.email` in `content.ts`, nothing else needs code changes for a domain swap.
 
+**Resend is blocked on this same unpurchased domain** (confirmed 2026-09-18 — see the Working Log entry
+that day for how this was tracked down). `RESEND_FROM` is still the sandbox sender
+(`onboarding@resend.dev`), which only reliably delivers to the account's own signup address
+(`cartyjosh7@gmail.com` — confirmed via real send history) — a real client will not get their
+confirmation/report email until this is fixed. **`firstcallconsulting.ai` was pre-registered in
+Resend's `cartyjosh7` account via the API on 2026-09-18** (before purchase — Resend allows this), which
+generated the DNS records needed to verify it. Once the domain is bought, add these 4 records in
+Vercel's DNS settings (Domains → the domain → DNS Records), wait for Resend to auto-verify (or hit
+"Verify" in its dashboard), then set `RESEND_FROM` to something like `First Call <hello@firstcallconsulting.ai>`:
+
+| Type | Name | Value | Priority |
+|---|---|---|---|
+| TXT | `resend._domainkey` | `p=MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDILNVEgWrOXV7B1Ge7VlxATdombNvMHhKnpcS1fWNLJ498NzcavVaTn+uzLR6Y+JKVH+8RPP/wlVfLT8FzOo0WFIpNRtAIGXrdQybM0A0+j2dF1IzOz8Lm+4Ub0AbE99EhbFWXidYpPhbDIJXw+5XGiVvbnh5JMUScxmdi6lXONQIDAQAB` | — |
+| MX | `send` | `feedback-smtp.us-east-1.amazonses.com` | 10 |
+| TXT | `send` | `v=spf1 include:amazonses.com ~all` | — |
+| CNAME | `rsend` | `send.forge.rmta.net` | — |
+
+Re-verify these against the Resend dashboard (Domains → firstcallconsulting.ai) before pasting — Resend
+can regenerate records, and this table is a snapshot from creation, not a live source.
+
 Also: no `.env`/`.env.local` exists locally — every integration (Stripe, Resend, Anthropic, admin/unsubscribe
 secrets, mailing address) is unset in local dev. Production Vercel env vars are unverified from this
 environment; check the Vercel dashboard directly.
@@ -274,8 +294,19 @@ last handful of entries; prune older ones once they're no longer load-bearing.
   webhook secret via clipboard rather than retyping it), redeployed, and verified for real: ran an
   actual `/start?package=audit` checkout and got a `cs_live_…` Stripe Checkout session with no Sandbox
   badge. This is the one item on the punch list that was actually blocking a first real sale — it's
-  now genuinely done, not just claimed done. Resend is still unverified (sandbox sender, untouched
-  today) — that's a real gap but doesn't block phone-close sales the way Stripe did.
+  now genuinely done, not just claimed done.
+  **Then: checked Resend and found it's genuinely blocked, not just unconfigured.** Had to try 3
+  different Google logins in the account chooser to find the actual production Resend workspace
+  (`cartyjosh7` — not the `firstcallconsulting.ai` one you'd guess); confirmed by cross-checking real
+  send history (5 emails, all delivered to `cartyjosh7@gmail.com` — textbook sandbox-mode behavior) and
+  by hitting `api.resend.com/domains` directly with the key from `.env.local`. Zero domains registered.
+  Root cause is the same unpurchased `firstcallconsulting.ai` problem tracked since 2026-08-25 — Resend
+  can't verify a domain nobody's DNS is controlled yet, so this was never a quick fix. Made the one
+  piece of progress possible without owning the domain: pre-registered it in Resend via the API (Resend
+  allows this before purchase) to get the 4 required DNS records generated ahead of time — saved in
+  "The domain problem" section above. **Don't set `RESEND_FROM` to a firstcallconsulting.ai address
+  until those records are actually added and the domain shows verified in Resend** — it will silently
+  fail to send otherwise.
   **Same-day follow-up:** user asked to (a) delete the CRM leads and (b) make the Command Center link
   fully self-sufficient for a fresh-PC setup. For (a), confirmed the GitHub repo is public
   (`private: false` via the GitHub API) — every file link on the dashboard already works with no auth
