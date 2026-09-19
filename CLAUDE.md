@@ -159,6 +159,35 @@ environment; check the Vercel dashboard directly.
 Known copy/schema bugs still assuming a US jurisdiction (business is Calgary, AB, Canada): root layout's
 JSON-LD `areaServed: "US"` and the `/markets` page headline ("...across the US").
 
+### Working from a second machine
+
+This repo (code + `CLAUDE.md` + `docs/`) is the entire portable memory — it's what travels via
+`git clone`. Two things do **not** travel automatically:
+
+1. **Claude Code's own session history/memory is local to whichever machine and directory it ran
+   in** — it is not synced by git or any other mechanism. On this machine, sessions run from this
+   project's own root land in `~/.claude/projects/C--Users-carty-firstcall/`; sessions run from the
+   parent `C:\Users\carty` folder (e.g. one invoked before `cd`-ing in) land under
+   `~/.claude/projects/C--Users-carty/` instead — a different bucket, invisible to future sessions
+   launched from inside `firstcall`. **Always launch Claude Code (or open the Cursor/Claude Code
+   session) from this project's own root (`C:\Users\carty\firstcall`), on any machine, every time** —
+   otherwise continuity silently breaks. This file's Working Log below is the substitute for raw
+   transcript continuity across machines; keep it current.
+2. **`.env.local` is gitignored on purpose (it holds real secrets)** and must be copied to the new
+   machine by hand — it does not come along with `git clone`. Copy the file itself (not regenerated
+   values) via a secure channel (password manager, encrypted USB, etc.), and never commit it.
+
+To resume on a new PC (with Cursor or plain Claude Code):
+1. `git clone https://github.com/cartyjosh7-ai/firstcall.git` and open that folder as the project
+   root (in Cursor: File → Open Folder on the cloned directory, then use its Claude Code
+   integration/terminal from there — not from a parent folder).
+2. Copy `.env.local` into the new project root by hand (see above).
+3. `npm install`, then `npm run dev` to confirm it runs.
+4. Nothing else to "load" — this file plus `docs/README.md` and the published Command Center
+   (`docs/command-center.html`, live link in the Working Log below) are self-contained. Open the
+   Command Center first for the clickable index of every tool, file, and open task before asking
+   Claude anything.
+
 ## Working Log
 
 Maintained by Claude across sessions — recent context so a new session doesn't start cold. Keep this to the
@@ -211,3 +240,25 @@ last handful of entries; prune older ones once they're no longer load-bearing.
   `STRIPE_PRICE_AUDIT`, see `.env.example`) and a Resend account — user was about to create both when this
   session ended; check whether they exist before assuming they don't. The Command Center dashboard and
   `docs/command-center.html` still describe the old Foundation-only pricing — refresh those next session.
+- **2026-09-11** — Two unrelated threads of work, both left uncommitted at session end (found and
+  finished 2026-09-18, see below — don't assume future sessions already picked these up):
+  (a) homepage hero redesign (`src/app/page.tsx`, `src/components/chrome.tsx`,
+  `src/components/motion/tilt-card.tsx`, `globals.css`) — committed same day (`322b039`, `d9d7549`),
+  already live; (b) a verified research pass cross-checking First Call's SEO/pricing/legal claims
+  against live Calgary market data and CRTC/CASL sources, written to
+  `docs/business/first-1000-activation-plan.md`, plus a matching edit to `docs/command-center.html`
+  (refreshed status bar, a Dispatch Board artifact link, new task-list items for the Stripe test-mode
+  key / Resend sandbox sender / placeholder mailing address found during that pass) — **neither the
+  doc nor the command-center edit were committed or pushed**, and the Command Center artifact was
+  never republished, so GitHub and the live artifact both still showed the 2026-09-10 state for a week.
+- **2026-09-18** — Found the above uncommitted work from a week prior while doing a full pass to make
+  the Command Center a complete, clickable index of literally everything First-Call-related (the
+  user's ask: "absolutely all info... in a clickable access form"), plus set up cross-machine handoff
+  (the user's second ask: pick up this project on another PC via Cursor/Claude Code). Committed and
+  pushed the stranded 2026-09-11 work; added `first-1000-activation-plan.md` to `docs/README.md`'s
+  index (it existed on disk but wasn't indexed anywhere); republished the Command Center artifact.
+  Added the "Working from a second machine" section above after discovering *this session itself* was
+  invoked from `C:\Users\carty` rather than this project root, meaning its own memory/history is
+  landing in the wrong per-machine bucket — see that section, and prefer `C:\Users\carty\firstcall`
+  as the launch directory from now on. Nothing product-side changed this session (no code, no pricing,
+  no new integrations) — this was a documentation/continuity pass only.

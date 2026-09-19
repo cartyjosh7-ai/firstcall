@@ -129,7 +129,7 @@
   <h1>Run First Call from here</h1>
   <p class="lede">
     Every tool, every file, and everything left to do — in one place, all of it clickable. Built 2026-08-25,
-    last refreshed 2026-09-10.
+    last refreshed 2026-09-18.
     For the full story behind any of this, the <a href="https://claude.ai/code/artifact/3b3447ad-cb89-4352-85a6-9e3570909e40" target="_blank" rel="noopener">Readiness report</a>
     and the <a href="https://claude.ai/code/artifact/2de5a1b9-001b-4cd9-926d-1d6b18dfcc24" target="_blank" rel="noopener">Field Manual</a> go deep — this page is the launcher.
   </p>
@@ -140,6 +140,7 @@
     <span class="status good"><span class="dot"></span>4 packages live on /pricing: Foundation, Growth, Domination, Audit</span>
     <span class="status good"><span class="dot"></span>Stripe + Resend live — real checkout + email confirmed end-to-end 2026-09-07</span>
     <span class="status good"><span class="dot"></span>824 leads in CRM — 822 from the Calgary open-data import, 7 hand-qualified HVAC prospects (warm, ready to call)</span>
+    <span class="status warn"><span class="dot"></span>2026-09-11: local .env.local shows Stripe in <b>test mode</b> (sk_test_…) and Resend still on the onboarding@resend.dev sandbox sender — re-verify against Vercel Production directly, the two can differ</span>
   </div>
 </header>
 
@@ -149,6 +150,7 @@
     <a href="#files">Every file</a>
     <a href="#todo">What's left</a>
     <a href="#history">History</a>
+    <a href="#handoff">Another PC</a>
     <a href="#facts">Quick facts</a>
   </div>
 </nav>
@@ -208,20 +210,24 @@
           <span class="icon">🧭</span><span class="name">Field Manual</span><span class="sub">how to run everything</span></a>
         <a class="tile" href="https://claude.ai/code/artifact/35144ded-d92a-4b07-a1ec-1a12562fd7a0" target="_blank" rel="noopener">
           <span class="icon">🎤</span><span class="name">Pitch deck</span><span class="sub">investor / partner facing</span></a>
+        <a class="tile" href="https://claude.ai/code/artifact/050ba0b4-7ff5-4e93-aaa5-9c7a9d64e0c7" target="_blank" rel="noopener">
+          <span class="icon">☎️</span><span class="name">Dispatch Board</span><span class="sub">new 2026-09-11 — live blocker tracker for the first $1,000</span></a>
       </div>
     </div>
 
     <div class="subgroup">
-      <h3>External accounts</h3>
+      <h3>External accounts &amp; data sources</h3>
       <div class="launch-grid">
         <a class="tile" href="https://github.com/cartyjosh7-ai/firstcall" target="_blank" rel="noopener">
           <span class="icon">🐙</span><span class="name">GitHub repo</span><span class="sub">source of truth</span></a>
         <a class="tile" href="https://vercel.com/fc-consulting/firstcall" target="_blank" rel="noopener">
           <span class="icon">▲</span><span class="name">Vercel project</span><span class="sub">deploys, env vars, domains</span></a>
         <a class="tile" href="https://dashboard.stripe.com" target="_blank" rel="noopener">
-          <span class="icon">💳</span><span class="name">Stripe</span><span class="sub">live — 7 prices across 4 packages</span></a>
+          <span class="icon">💳</span><span class="name">Stripe</span><span class="sub">verify live vs. test mode — see status bar</span></a>
         <a class="tile" href="https://resend.com/emails" target="_blank" rel="noopener">
-          <span class="icon">✉️</span><span class="name">Resend</span><span class="sub">live — lead + client email</span></a>
+          <span class="icon">✉️</span><span class="name">Resend</span><span class="sub">verify sending domain — see status bar</span></a>
+        <a class="tile" href="https://data.calgary.ca/Business-and-Economic-Activity/Calgary-Business-Licences/vdjc-pybd" target="_blank" rel="noopener">
+          <span class="icon">🏛️</span><span class="name">Calgary open data</span><span class="sub">free, legal lead source — 2,600+ contractor licences</span></a>
       </div>
     </div>
   </section>
@@ -257,6 +263,8 @@
           <span class="ficon">📄</span><span class="fname">compliance-rules.md</span><span class="fdesc">CASL / PIPEDA rules for any email or lead code</span><span class="farrow">↗</span></a>
         <a class="filerow" href="https://github.com/cartyjosh7-ai/firstcall/blob/master/docs/seo-operating-manual-source.pdf" target="_blank" rel="noopener">
           <span class="ficon">📕</span><span class="fname">seo-operating-manual-source.pdf</span><span class="fdesc">The sourced 33-page operating manual (PDF)</span><span class="farrow">↗</span></a>
+        <a class="filerow" href="https://github.com/cartyjosh7-ai/firstcall/blob/master/docs/business/first-1000-activation-plan.md" target="_blank" rel="noopener">
+          <span class="ficon">📄</span><span class="fname">first-1000-activation-plan.md</span><span class="fdesc">Verified research brief: what's already built vs. what's actually blocking a first sale</span><span class="farrow">↗</span></a>
       </div>
     </div>
 
@@ -366,6 +374,42 @@
         <span class="filerow local"><span class="ficon">🔎</span><span class="fname">7 HVAC leads hand-qualified and promoted to warm</span><span class="fdesc">Instead of cold-calling the raw import, researched review counts, ratings, and business longevity for each of the 64 imported HVAC leads to find the highest-probability prospects (real revenue proof, plausible visibility gap, or a neglected online presence). Added phone numbers, websites, and call-priority notes directly on the matching CRM records — ready to call from <a href="https://firstcall-teal.vercel.app/crm/leads" target="_blank" rel="noopener">/crm/leads</a></span></span>
       </div>
     </div>
+
+    <div class="filecat">
+      <h3>2026-09-11 <span class="filecat-meta">money-plan research + ground-truth check + hero redesign</span></h3>
+      <div class="filerows">
+        <span class="filerow local"><span class="ficon">🔎</span><span class="fname">Full "first $1,000" research pass</span><span class="fdesc">Verified the SEO/pricing/legal claims behind this business against live Calgary market data, CRTC/CASL primary sources, and Upwork's own data — full brief at docs/business/first-1000-activation-plan.md. Headline finding: First Call is already built; the blockers are administrative, not engineering</span></span>
+        <span class="filerow local"><span class="ficon">📋</span><span class="fname">Dispatch Board published</span><span class="fdesc">New companion artifact — a live checklist tracking the 6 remaining administrative blockers and the Day 1-7 plan, checkboxes saved locally in the browser</span></span>
+        <span class="filerow local"><span class="ficon">⚠️</span><span class="fname">Discrepancy found and flagged</span><span class="fdesc">This page's status bar has said "Stripe + Resend live" since 2026-09-07, but .env.local currently holds a Stripe <b>test-mode</b> key and Resend's sandbox sender address — flagged in the status bar and task list above for you to verify directly against Vercel Production, since local and prod env vars can differ</span></span>
+        <span class="filerow local"><span class="ficon">🎨</span><span class="fname">Homepage hero redesign</span><span class="fdesc">Rebuilt the homepage hero as a live "visibility scan" instrument (gold wipe reveal, cursor-tilt panel, radar scan-line, count-up review numbers) instead of a static text hero, then extended the same motion system to the Foundation offer section and the site-wide CTA component. Committed and live same day (322b039, d9d7549) — the research pass and Dispatch Board above were not committed until 2026-09-18, see below</span></span>
+      </div>
+    </div>
+
+    <div class="filecat">
+      <h3>2026-09-18 <span class="filecat-meta">today — dashboard completeness pass + cross-machine handoff</span></h3>
+      <div class="filerows">
+        <span class="filerow local"><span class="ficon">🧹</span><span class="fname">Stranded work from 2026-09-11 recovered</span><span class="fdesc">The research brief and this page's Dispatch Board/status-bar/task-list edits from a week earlier were sitting uncommitted and unpushed — GitHub and the live artifact were both a week stale. Committed and pushed; artifact republished</span></span>
+        <span class="filerow local"><span class="ficon">🔗</span><span class="fname">docs/README.md indexed the activation plan</span><span class="fdesc">first-1000-activation-plan.md existed on disk since 2026-09-11 but wasn't linked from the docs index — fixed</span></span>
+        <span class="filerow local"><span class="ficon">💻</span><span class="fname">"Working from a second machine" added to CLAUDE.md</span><span class="fdesc">Exact steps to resume this project on another PC via Cursor/Claude Code — clone, copy .env.local by hand (gitignored, doesn't travel with git), and always launch Claude Code from this project's own root so session memory lands in the right per-machine bucket (see the Handoff section below)</span></span>
+      </div>
+    </div>
+  </section>
+
+  <section id="handoff">
+    <div class="section-head"><h2>Working from another PC</h2><span class="meta">Full detail: CLAUDE.md</span></div>
+    <p class="section-intro">
+      This repo — code, <span class="mono">CLAUDE.md</span>, and everything in <span class="mono">docs/</span> —
+      is the entire portable memory; it's what travels via <code>git clone</code>. Two things do not
+      travel automatically: Claude Code's own session history (it's local to whatever machine/directory
+      it ran in), and <span class="mono">.env.local</span> (gitignored on purpose — real secrets).
+    </p>
+    <div class="facts">
+      <div class="fact"><div class="k">1. Clone</div><div class="v mono">git clone github.com/cartyjosh7-ai/firstcall</div></div>
+      <div class="fact"><div class="k">2. Open in Cursor</div><div class="v">Open the cloned folder itself as the project root — not a parent folder</div></div>
+      <div class="fact"><div class="k">3. Copy secrets by hand</div><div class="v"><span class="mono">.env.local</span> doesn't come with git — copy it via a secure channel</div></div>
+      <div class="fact"><div class="k">4. Launch Claude Code from this folder</div><div class="v">Every time, on every machine — launching from a parent folder splits session memory into a different bucket, silently breaking continuity</div></div>
+      <div class="fact"><div class="k">5. Read this page first</div><div class="v">Then <code>CLAUDE.md</code> → "Working from a second machine" for the full detail</div></div>
+    </div>
   </section>
 
   <section id="facts">
@@ -401,13 +445,17 @@
     {id:"postgres", t:"Create the free Vercel Postgres database", d:"Done 2026-08-25 \u2014 neon-lime-fence, connected, migrated. CRM is live at /crm.", tag:"free", done:true},
     {id:"secrets", t:"Paste the generated secrets into Vercel", d:"Done 2026-08-25 \u2014 AUTH_SECRET and CRM_IMPORT_SECRET added and redeployed. (UNSUBSCRIBE_SECRET / ADMIN_API_SECRET turned out to already be set by an earlier session.)", tag:"free", done:true},
     {id:"managersetup", t:"Create your manager account", d:"Verified live 2026-09-04 \u2014 /crm/setup now redirects to the sign-in page, confirming the account exists.", tag:"free", done:true},
-    {id:"address", t:"Verify your real mailing address is actually set", d:"NEXT_PUBLIC_MAILING_ADDRESS already exists in Vercel from an earlier session \u2014 unconfirmed whether it's a real address or still the placeholder. Required by CASL.", tag:"free", done:false},
+    {id:"address", t:"Set your real mailing address", d:"Confirmed 2026-09-11: NEXT_PUBLIC_MAILING_ADDRESS in .env.local is still the literal placeholder \"[Street address, Calgary, AB, Canada]\". Hard blocker on CASL-compliant email until this is a real address.", tag:"free", done:false},
+    {id:"stripe-livecheck", t:"Confirm Stripe is actually in live mode", d:"Confirmed 2026-09-11: .env.local holds a sk_test_ key, not sk_live_. Check Vercel Production env vars directly \u2014 local and prod can differ \u2014 before assuming real cards can be charged.", tag:"free", done:false},
+    {id:"resend-domain", t:"Verify a real sending domain in Resend", d:"Confirmed 2026-09-11: RESEND_FROM is still \"First Call <onboarding@resend.dev>\", Resend's sandbox default, which mostly only delivers to your own verified account address. Needs a verified domain to reach real prospects.", tag:"free", done:false},
+    {id:"crm-lead-check", t:"Log into /crm and confirm the 821 imported leads are really there", d:"scripts/import-calgary-leads.mjs's local cache says 821 leads were POSTed 2026-09-07, and a fresh dry run 2026-09-11 found 818 current matches (94 new). Nobody's confirmed this by actually opening the CRM since.", tag:"free", done:false},
     {id:"legalname", t:"Verify the legal business name value", d:"LEGAL_ENTITY_NAME already exists in Vercel from an earlier session \u2014 confirm it's actually correct.", tag:"free", done:false},
     {id:"gbp", t:"Create a Google Business Profile for First Call itself", d:"You're selling GBP optimization \u2014 worth having your own.", tag:"free", done:false},
     {id:"counsel", t:"Legal counsel review of the MSA and SOW", d:"Both documents ask for this explicitly \u2014 hasn't happened yet.", tag:"cost varies", done:false},
     {id:"worktree", t:"Clean up the stale git worktree branch", d:"Safety-blocked pending your explicit go-ahead \u2014 tell Claude to retry.", tag:"free", done:false},
     {id:"e2e", t:"Run one real end-to-end test", d:"Done 2026-09-07 — a real Stripe test purchase confirmed checkout, webhook, and CRM \"won\" status all fire correctly; a separate test confirmed Resend delivery through the lead-capture pipeline.", tag:"free", done:true},
-    {id:"firstcalllist", t:"Line up a real call list instead of the raw import", d:"Done 2026-09-10 — hand-qualified 7 of the 64 imported HVAC leads (reviews, ratings, longevity) into a priority-ranked, phone-number-ready shortlist, now marked warm in the CRM. Same pass should extend to Roofing next.", tag:"free", done:true}
+    {id:"firstcalllist", t:"Line up a real call list instead of the raw import", d:"Done 2026-09-10 — hand-qualified 7 of the 64 imported HVAC leads (reviews, ratings, longevity) into a priority-ranked, phone-number-ready shortlist, now marked warm in the CRM. Same pass should extend to Roofing next.", tag:"free", done:true},
+    {id:"launchdir", t:"Always launch Claude Code from this project's own root folder", d:"A 2026-09-18 session was invoked from the parent C:\\Users\\carty folder instead of C:\\Users\\carty\\firstcall \u2014 its session history landed in a different per-machine bucket, invisible to future sessions started correctly from this folder. Applies on every machine, see the \"Another PC\" section below.", tag:"free", done:false}
   ];
 
   var STORE_KEY = "fc-command-center-tasks-v1";

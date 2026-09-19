@@ -43,6 +43,7 @@ say so and both should be updated.
 | [`pricing-model.md`](business/pricing-model.md) | What's actually live for sale (Foundation only) vs. scoped-but-dormant (Growth/Domination/Audit/GEO add-on) |
 | [`compliance-rules.md`](business/compliance-rules.md) | CASL/PIPEDA rules governing every email/lead-capture code path |
 | [`seo-operating-manual-notes.md`](business/seo-operating-manual-notes.md) | Where the sourced operating manual's knowledge lives in the codebase |
+| [`first-1000-activation-plan.md`](business/first-1000-activation-plan.md) | Verified research brief (2026-09-11): First Call is already built, remaining blockers to a first sale are administrative (Stripe live mode, domain, mailing address, Resend domain), not engineering. Companion to the live [Dispatch Board](https://claude.ai/code/artifact/050ba0b4-7ff5-4e93-aaa5-9c7a9d64e0c7) artifact |
 
 ## 3. Sourced research
 
@@ -69,9 +70,10 @@ say so and both should be updated.
   sales-to-delivery process, closing scripts, payment collection, compliance, and a glossary for new
   hires. Live version: https://claude.ai/code/artifact/2de5a1b9-001b-4cd9-926d-1d6b18dfcc24
 
-All three are a snapshot as of 2026-08-25 — re-generate rather than hand-edit once the domain is
-bought and the remaining setup is done (see `../CLAUDE.md`), since a lot of their content is "here's
-what's still missing right now." The working, current deployment today is
+The Command Center is kept current across sessions (last refreshed 2026-09-18); the Readiness Report
+and Field Manual are a snapshot as of 2026-08-25 — re-generate rather than hand-edit those two once the
+domain is bought and the remaining setup is done (see `../CLAUDE.md`), since a lot of their content is
+"here's what's still missing right now." The working, current deployment today is
 `https://firstcall-teal.vercel.app`, not `firstcallmarketing.ai`.
 
 ## 6. The First Sale (2026-09-06)
