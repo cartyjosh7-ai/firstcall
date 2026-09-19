@@ -4,10 +4,12 @@ export const site = {
   description:
     "Local SEO for home services. We get owner-led local businesses ranked #1 on Google and the Map Pack, so the phone rings first.",
   url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://firstcallconsulting.ai",
-  email: process.env.NEXT_PUBLIC_CONTACT_EMAIL ?? "cartyjosh7@gmail.com",
+  email: process.env.NEXT_PUBLIC_CONTACT_EMAIL ?? "firstcallconsulting.ai@gmail.com",
   legalName: process.env.LEGAL_ENTITY_NAME ?? "First Call",
   // CASL requires a valid mailing address in every commercial electronic message.
-  mailingAddress: process.env.NEXT_PUBLIC_MAILING_ADDRESS ?? "[Set NEXT_PUBLIC_MAILING_ADDRESS — required by CASL]",
+  // Empty (not a placeholder string) until set, so pages/emails omit it cleanly instead of
+  // showing a broken-looking dev note to a real customer.
+  mailingAddress: process.env.NEXT_PUBLIC_MAILING_ADDRESS ?? "",
 } as const;
 
 export const trades = [

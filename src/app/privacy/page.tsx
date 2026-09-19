@@ -52,7 +52,8 @@ export default function PrivacyPage() {
       </p>
       <h2>Contact</h2>
       <p>
-        Privacy questions: <a href={`mailto:${site.email}`}>{site.email}</a>, {site.mailingAddress}.
+        Privacy questions: <a href={`mailto:${site.email}`}>{site.email}</a>
+        {site.mailingAddress ? `, ${site.mailingAddress}` : ""}.
         This policy describes our current practice. Have counsel review it against your actual
         entity, hosting, and analytics stack before you treat it as final legal advice.
       </p>
