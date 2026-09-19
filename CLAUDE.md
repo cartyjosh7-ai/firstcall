@@ -281,6 +281,7 @@ last handful of entries; prune older ones once they're no longer load-bearing.
   file's docs index. While doing that, found `docs/README.md` never actually indexed the pre-existing
   **Switchboard** artifact (`21f535cd-...`, linked from the Command Center's Internal Tools) — and that
   it carries a different, stale package structure (Starter/Growth/Authority at $750/$1,500/$3,000 +
-  flat $139.99/mo) that does not match live pricing in `content.ts`. Flagged in place (Command Center
-  tile + task list + docs/README) rather than silently fixed or deleted — retiring vs. repricing it is
-  the user's call. **Don't quote from Switchboard until that's resolved.**
+  flat $139.99/mo) that does not match live pricing in `content.ts`. Flagged it first (Command Center
+  tile + task list + docs/README), the user said to retire it, and it's now **deleted** — the artifact
+  URL `21f535cd-...` no longer resolves for anyone. Removed its tile from the Command Center and its
+  task-list item is marked done; docs/README's note updated to past tense. Nothing else references it.

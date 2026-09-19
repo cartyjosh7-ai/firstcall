@@ -95,12 +95,11 @@ domain is bought and the remaining setup is done (see `../CLAUDE.md`), since a l
   the score talking points, the pricing strip, tap-to-expand objection handling, the close script, and
   the kickoff checklist. Live version: https://claude.ai/artifact/Gdmn7KqLtVBw3YdoYHHNi4
 
-**Note on "Switchboard"** — a separate, older call-console artifact
-(https://claude.ai/code/artifact/21f535cd-7b62-4ce7-af29-21ead88cae93, linked from the Command
-Center's Internal Tools) carries a different, stale package structure (Starter/Growth/Authority at
-$750/$1,500/$3,000 + flat $139.99/mo) that doesn't match live pricing above. It was never mirrored
-here or indexed in this file — found 2026-09-18. Don't quote from it; use the Day One Call Sheet
-above instead. Flagged, not yet retired or repriced — see the Command Center task list.
+**Note on "Switchboard"** — a separate, older call-console artifact, once linked from the Command
+Center's Internal Tools, carried a different, stale package structure (Starter/Growth/Authority at
+$750/$1,500/$3,000 + flat $139.99/mo) that didn't match live pricing above and was never mirrored or
+indexed here. Found and deleted 2026-09-18 at the user's request rather than repriced — use the Day
+One Call Sheet above instead.
 
 ## Not included here
 
