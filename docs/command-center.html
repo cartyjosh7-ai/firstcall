@@ -118,6 +118,20 @@
     display:flex; justify-content:space-between; gap:16px; flex-wrap:wrap; }
   footer a{ color:var(--muted); }
 
+  /* ---- Quick-start callout ---- */
+  .quickstart{ margin-top:22px; background:var(--gold-soft); border:1px solid var(--gold); border-radius:14px; padding:18px 20px; }
+  .quickstart h2{ font-size:1.05rem; }
+  .quickstart .qs-steps{ margin-top:12px; display:grid; gap:8px; }
+  .quickstart .qs-step{ display:flex; gap:10px; align-items:flex-start; font-size:.88rem; }
+  .quickstart .qs-step .qn{ flex:none; width:20px; height:20px; border-radius:50%; background:var(--gold); color:var(--bg);
+    font-size:.72rem; font-weight:700; display:flex; align-items:center; justify-content:center; }
+  .codeblock{ margin-top:2px; background:var(--surface-2); border:1px solid var(--line); border-radius:8px;
+    padding:9px 12px; font-family:"IBM Plex Mono",monospace; font-size:.82rem; overflow-x:auto; white-space:pre; }
+  .quickstart .qs-links{ margin-top:12px; display:flex; gap:10px; flex-wrap:wrap; }
+  .quickstart .qs-links a{ font-size:.82rem; background:var(--surface); border:1px solid var(--line); border-radius:8px;
+    padding:6px 12px; text-decoration:none; color:var(--ink); }
+  .quickstart .qs-links a:hover{ border-color:var(--gold); }
+
   @media (max-width:640px){
     .filerows a.filerow{ flex-wrap:wrap; }
     .filerow .fname{ width:100%; }
@@ -139,8 +153,26 @@
     <span class="status good"><span class="dot"></span>CRM live — manager account created, sign in at /crm</span>
     <span class="status good"><span class="dot"></span>4 packages live on /pricing: Foundation, Growth, Domination, Audit</span>
     <span class="status good"><span class="dot"></span>Stripe + Resend live — real checkout + email confirmed end-to-end 2026-09-07</span>
-    <span class="status good"><span class="dot"></span>824 leads in CRM — 822 from the Calgary open-data import, 7 hand-qualified HVAC prospects (warm, ready to call)</span>
+    <span class="status good"><span class="dot"></span>10 leads in CRM — bulk Calgary cold-import cleared 2026-09-18 (815 untouched "cold" scraper leads deleted via the safe undo script); left standing: 7 hand-qualified HVAC prospects (warm), 2 warm website-submitted leads not yet reviewed, 1 "won" record</span>
     <span class="status warn"><span class="dot"></span>2026-09-11: local .env.local shows Stripe in <b>test mode</b> (sk_test_…) and Resend still on the onboarding@resend.dev sandbox sender — re-verify against Vercel Production directly, the two can differ</span>
+  </div>
+
+  <div class="quickstart">
+    <h2>New PC? Start here — everything below is public, no login needed</h2>
+    <div class="qs-steps">
+      <div class="qs-step"><span class="qn">1</span><div>Clone the repo (public — works on any machine, no GitHub login required)<div class="codeblock">git clone https://github.com/cartyjosh7-ai/firstcall.git
+cd firstcall
+npm install</div></div></div>
+      <div class="qs-step"><span class="qn">2</span><div>Open the <span class="mono">firstcall</span> folder itself in Cursor (or run <span class="mono">claude</span> in a terminal there) — <b>not</b> a parent folder, or session memory splits across machines. <code>CLAUDE.md</code> loads full architecture + working log automatically.</div></div>
+      <div class="qs-step"><span class="qn">3</span><div>Copy <span class="mono">.env.local</span> onto the new machine by hand — it's gitignored (real Stripe/Resend/Postgres/Auth secrets) so it never comes with the clone. Use a password manager secure note, an encrypted USB, or similar — never paste it into a public place. <span class="mono">.env.example</span> (in the repo) documents every variable it needs.</div></div>
+      <div class="qs-step"><span class="qn">4</span><div><span class="codeblock">npm run dev</span> to confirm it runs, then open the <a href="#todo">What's left</a> section below for exactly what's already done vs. still needed.</div></div>
+    </div>
+    <div class="qs-links">
+      <a href="https://github.com/cartyjosh7-ai/firstcall" target="_blank" rel="noopener">🐙 Browse every file on GitHub</a>
+      <a href="https://github.com/cartyjosh7-ai/firstcall/archive/refs/heads/master.zip">⬇️ Download ZIP (no git needed)</a>
+      <a href="https://github.com/cartyjosh7-ai/firstcall/blob/master/CLAUDE.md" target="_blank" rel="noopener">📄 CLAUDE.md</a>
+      <a href="#handoff">More detail ↓</a>
+    </div>
   </div>
 </header>
 
@@ -391,25 +423,29 @@
         <span class="filerow local"><span class="ficon">🧹</span><span class="fname">Stranded work from 2026-09-11 recovered</span><span class="fdesc">The research brief and this page's Dispatch Board/status-bar/task-list edits from a week earlier were sitting uncommitted and unpushed — GitHub and the live artifact were both a week stale. Committed and pushed; artifact republished</span></span>
         <span class="filerow local"><span class="ficon">🔗</span><span class="fname">docs/README.md indexed the activation plan</span><span class="fdesc">first-1000-activation-plan.md existed on disk since 2026-09-11 but wasn't linked from the docs index — fixed</span></span>
         <span class="filerow local"><span class="ficon">💻</span><span class="fname">"Working from a second machine" added to CLAUDE.md</span><span class="fdesc">Exact steps to resume this project on another PC via Cursor/Claude Code — clone, copy .env.local by hand (gitignored, doesn't travel with git), and always launch Claude Code from this project's own root so session memory lands in the right per-machine bucket (see the Handoff section below)</span></span>
+        <span class="filerow local"><span class="ficon">🗑️</span><span class="fname">CRM cold-import bulk-cleared</span><span class="fdesc">At the user's request, ran the existing safe undo script — deleted the 815 remaining untouched (source=scraper, status=cold) leads from the Calgary open-data import. Confirmed via a direct DB query that this correctly left the 7 hand-qualified warm HVAC leads, 2 warm website-submitted leads, and 1 won record untouched</span></span>
+        <span class="filerow local"><span class="ficon">🚀</span><span class="fname">"New PC? Start here" quick-start callout added</span><span class="fdesc">Moved copy-paste clone/install commands and a no-git ZIP download link to the top of the page (was previously buried in the Handoff section further down) — confirmed the GitHub repo is public, so every file link on this page already works with no login on any machine</span></span>
       </div>
     </div>
   </section>
 
   <section id="handoff">
-    <div class="section-head"><h2>Working from another PC</h2><span class="meta">Full detail: CLAUDE.md</span></div>
+    <div class="section-head"><h2>Working from another PC — the fine print</h2><span class="meta">Quick steps are in the callout up top</span></div>
     <p class="section-intro">
-      This repo — code, <span class="mono">CLAUDE.md</span>, and everything in <span class="mono">docs/</span> —
-      is the entire portable memory; it's what travels via <code>git clone</code>. Two things do not
-      travel automatically: Claude Code's own session history (it's local to whatever machine/directory
-      it ran in), and <span class="mono">.env.local</span> (gitignored on purpose — real secrets).
+      This repo — code, <span class="mono">CLAUDE.md</span>, and everything in <span class="mono">docs/</span> — is
+      public and is the entire portable memory: it's what travels via <code>git clone</code> or the ZIP link above,
+      on any machine, no GitHub login needed. Two things do not travel automatically, covered step 3/2 above:
+      <span class="mono">.env.local</span> (gitignored — real secrets) and Claude Code's own session
+      history, which is scoped to <b>whichever directory it's launched from</b>, not to the project itself —
+      a session started from a parent folder lands in a different bucket than one started from
+      <span class="mono">firstcall/</span> itself, invisibly breaking continuity. Always launch from
+      <span class="mono">firstcall/</span> directly, on every machine.
     </p>
-    <div class="facts">
-      <div class="fact"><div class="k">1. Clone</div><div class="v mono">git clone github.com/cartyjosh7-ai/firstcall</div></div>
-      <div class="fact"><div class="k">2. Open in Cursor</div><div class="v">Open the cloned folder itself as the project root — not a parent folder</div></div>
-      <div class="fact"><div class="k">3. Copy secrets by hand</div><div class="v"><span class="mono">.env.local</span> doesn't come with git — copy it via a secure channel</div></div>
-      <div class="fact"><div class="k">4. Launch Claude Code from this folder</div><div class="v">Every time, on every machine — launching from a parent folder splits session memory into a different bucket, silently breaking continuity</div></div>
-      <div class="fact"><div class="k">5. Read this page first</div><div class="v">Then <code>CLAUDE.md</code> → "Working from a second machine" for the full detail</div></div>
-    </div>
+    <p class="section-intro">
+      Full explanation (why the memory-bucket split happens, exactly what silently degrades if skipped):
+      see "Working from a second machine" in
+      <a href="https://github.com/cartyjosh7-ai/firstcall/blob/master/CLAUDE.md" target="_blank" rel="noopener">CLAUDE.md</a>.
+    </p>
   </section>
 
   <section id="facts">
@@ -421,7 +457,7 @@
       <div class="fact"><div class="k">Trades covered</div><div class="v">HVAC, Roofing, Remediation, Cleaning, Auto, Trucking</div></div>
       <div class="fact"><div class="k">Legal entity</div><div class="v">Not yet confirmed (placeholder: "First Call")</div></div>
       <div class="fact"><div class="k">Working URL</div><div class="v mono">firstcall-teal.vercel.app</div></div>
-      <div class="fact"><div class="k">CRM leads</div><div class="v">824 total — 822 cold (Calgary import), 7 warm (hand-qualified HVAC, ready to call)</div></div>
+      <div class="fact"><div class="k">CRM leads</div><div class="v">10 total — 7 warm (hand-qualified HVAC), 2 warm (website-submitted, unreviewed), 1 won. Bulk cold import cleared 2026-09-18</div></div>
     </div>
   </section>
 
@@ -448,7 +484,8 @@
     {id:"address", t:"Set your real mailing address", d:"Confirmed 2026-09-11: NEXT_PUBLIC_MAILING_ADDRESS in .env.local is still the literal placeholder \"[Street address, Calgary, AB, Canada]\". Hard blocker on CASL-compliant email until this is a real address.", tag:"free", done:false},
     {id:"stripe-livecheck", t:"Confirm Stripe is actually in live mode", d:"Confirmed 2026-09-11: .env.local holds a sk_test_ key, not sk_live_. Check Vercel Production env vars directly \u2014 local and prod can differ \u2014 before assuming real cards can be charged.", tag:"free", done:false},
     {id:"resend-domain", t:"Verify a real sending domain in Resend", d:"Confirmed 2026-09-11: RESEND_FROM is still \"First Call <onboarding@resend.dev>\", Resend's sandbox default, which mostly only delivers to your own verified account address. Needs a verified domain to reach real prospects.", tag:"free", done:false},
-    {id:"crm-lead-check", t:"Log into /crm and confirm the 821 imported leads are really there", d:"scripts/import-calgary-leads.mjs's local cache says 821 leads were POSTed 2026-09-07, and a fresh dry run 2026-09-11 found 818 current matches (94 new). Nobody's confirmed this by actually opening the CRM since.", tag:"free", done:false},
+    {id:"crm-lead-check", t:"Bulk-cleared the Calgary cold-import from the CRM", d:"Done 2026-09-18 — ran the safe undo script (deletes only untouched source=scraper, status=cold leads); 815 removed. Never touched: the 7 hand-qualified warm HVAC leads, 2 warm website-submitted leads, or the 1 won record.", tag:"free", done:true},
+    {id:"crm-website-leads", t:"Review the 2 unreviewed warm website-submitted leads", d:"Found while clearing the CRM 2026-09-18 — these came in through the site itself (source=website), not the Calgary import, and nobody's looked at them yet. Check /crm/leads.", tag:"free", done:false},
     {id:"legalname", t:"Verify the legal business name value", d:"LEGAL_ENTITY_NAME already exists in Vercel from an earlier session \u2014 confirm it's actually correct.", tag:"free", done:false},
     {id:"gbp", t:"Create a Google Business Profile for First Call itself", d:"You're selling GBP optimization \u2014 worth having your own.", tag:"free", done:false},
     {id:"counsel", t:"Legal counsel review of the MSA and SOW", d:"Both documents ask for this explicitly \u2014 hasn't happened yet.", tag:"cost varies", done:false},

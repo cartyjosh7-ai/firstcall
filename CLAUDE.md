@@ -260,5 +260,15 @@ last handful of entries; prune older ones once they're no longer load-bearing.
   Added the "Working from a second machine" section above after discovering *this session itself* was
   invoked from `C:\Users\carty` rather than this project root, meaning its own memory/history is
   landing in the wrong per-machine bucket — see that section, and prefer `C:\Users\carty\firstcall`
-  as the launch directory from now on. Nothing product-side changed this session (no code, no pricing,
-  no new integrations) — this was a documentation/continuity pass only.
+  as the launch directory from now on.
+  **Same-day follow-up:** user asked to (a) delete the CRM leads and (b) make the Command Center link
+  fully self-sufficient for a fresh-PC setup. For (a), confirmed the GitHub repo is public
+  (`private: false` via the GitHub API) — every file link on the dashboard already works with no auth
+  on any machine, so added a prominent "New PC? Start here" quick-start callout (clone/install commands
+  + a no-git ZIP download link) at the top of the page instead of leaving it buried in the Handoff
+  section. For (b), rather than deleting everything, confirmed scope with the user first since it's a
+  production DB: ran the existing safe undo script (`node scripts/import-calgary-leads.mjs
+  --delete-all`, only ever touches `source=scraper AND status=cold`) — deleted 815 leads. Verified via a
+  direct `postgres` query afterward that it correctly left 10 leads standing: the 7 hand-qualified warm
+  HVAC leads, 1 "won" record, and **2 warm, website-submitted leads nobody has reviewed yet** (found
+  incidentally during that query — new, not previously tracked anywhere; check `/crm/leads`).
