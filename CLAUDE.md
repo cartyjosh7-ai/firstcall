@@ -261,6 +261,21 @@ last handful of entries; prune older ones once they're no longer load-bearing.
   invoked from `C:\Users\carty` rather than this project root, meaning its own memory/history is
   landing in the wrong per-machine bucket — see that section, and prefer `C:\Users\carty\firstcall`
   as the launch directory from now on.
+  **Then: Stripe was actually made live, for real, via Claude in Chrome browser automation.** The
+  "Stripe + Resend live" status line had been wrong since 2026-09-07 — Production was still running a
+  sandbox key the whole time (confirmed via the Stripe dashboard's mode switcher: "Sandbox", not
+  "Live"; the checkout page's old "TEST MODE banner" check gave a false negative because Stripe
+  renamed that UI). The user pasted a live secret key into chat (flagged: don't do this, recommended
+  rotating it after — since I have no Vercel/Stripe API access, pasting into chat doesn't even let me
+  act on it directly). Found all 7 live-mode prices already existed in Stripe (created 2026-09-11,
+  never wired in) — reused those exact price IDs rather than creating duplicates. Created the missing
+  live webhook endpoint (`checkout.session.completed` → `/api/stripe/webhook`), put all 8 values into
+  Vercel Production via the now-connected Chrome extension (typed each price ID directly, pasted the
+  webhook secret via clipboard rather than retyping it), redeployed, and verified for real: ran an
+  actual `/start?package=audit` checkout and got a `cs_live_…` Stripe Checkout session with no Sandbox
+  badge. This is the one item on the punch list that was actually blocking a first real sale — it's
+  now genuinely done, not just claimed done. Resend is still unverified (sandbox sender, untouched
+  today) — that's a real gap but doesn't block phone-close sales the way Stripe did.
   **Same-day follow-up:** user asked to (a) delete the CRM leads and (b) make the Command Center link
   fully self-sufficient for a fresh-PC setup. For (a), confirmed the GitHub repo is public
   (`private: false` via the GitHub API) — every file link on the dashboard already works with no auth
