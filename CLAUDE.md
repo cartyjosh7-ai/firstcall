@@ -272,3 +272,15 @@ last handful of entries; prune older ones once they're no longer load-bearing.
   direct `postgres` query afterward that it correctly left 10 leads standing: the 7 hand-qualified warm
   HVAC leads, 1 "won" record, and **2 warm, website-submitted leads nobody has reviewed yet** (found
   incidentally during that query — new, not previously tracked anywhere; check `/crm/leads`).
+  **Later the same day**, user asked (via voice dictation) for the fastest/cheapest path to a first
+  sale starting tomorrow. Answer: nothing left to build — verify Stripe is live in Vercel Production
+  (the one real blocker, Josh-only), then sell by phone (DNCL-exempt B2B, sidesteps the CASL email
+  blockers) straight to the 9 warm CRM leads using the existing "The First Sale" script. Built
+  `docs/day-one-call-sheet.html` — a one-screen, phone-usable distillation of that script (open, pitch,
+  tap-to-expand objections, close, kickoff checklist) — and linked it from the Command Center and this
+  file's docs index. While doing that, found `docs/README.md` never actually indexed the pre-existing
+  **Switchboard** artifact (`21f535cd-...`, linked from the Command Center's Internal Tools) — and that
+  it carries a different, stale package structure (Starter/Growth/Authority at $750/$1,500/$3,000 +
+  flat $139.99/mo) that does not match live pricing in `content.ts`. Flagged in place (Command Center
+  tile + task list + docs/README) rather than silently fixed or deleted — retiring vs. repricing it is
+  the user's call. **Don't quote from Switchboard until that's resolved.**

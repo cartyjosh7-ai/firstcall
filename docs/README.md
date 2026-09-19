@@ -90,6 +90,17 @@ domain is bought and the remaining setup is done (see `../CLAUDE.md`), since a l
   llms.txt template, and the month-1 report structure. Companion to `/playbook` (the terse day-by-day
   checklist) — this is the "how," not just the "what." Live version:
   https://claude.ai/code/artifact/3a1b06e4-cc38-4dce-829c-964d7f2ca82a
+- [`day-one-call-sheet.html`](day-one-call-sheet.html) (2026-09-18) — a one-screen, phone-friendly
+  distillation of the sales playbook above, meant to stay open while actually dialing: opening lines,
+  the score talking points, the pricing strip, tap-to-expand objection handling, the close script, and
+  the kickoff checklist. Live version: https://claude.ai/artifact/Gdmn7KqLtVBw3YdoYHHNi4
+
+**Note on "Switchboard"** — a separate, older call-console artifact
+(https://claude.ai/code/artifact/21f535cd-7b62-4ce7-af29-21ead88cae93, linked from the Command
+Center's Internal Tools) carries a different, stale package structure (Starter/Growth/Authority at
+$750/$1,500/$3,000 + flat $139.99/mo) that doesn't match live pricing above. It was never mirrored
+here or indexed in this file — found 2026-09-18. Don't quote from it; use the Day One Call Sheet
+above instead. Flagged, not yet retired or repriced — see the Command Center task list.
 
 ## Not included here
 
