@@ -327,6 +327,37 @@ last handful of entries; prune older ones once they're no longer load-bearing.
   redeployed, and verified live on the actual pages. **Lesson for future sessions: an env var set once
   on day one and never revisited can quietly leak for weeks — worth periodically checking what's
   actually live in Vercel Production against what the code assumes, not just what `.env.local` shows.**
+  **Then: brought every page's design up to the homepage's level.** User's words: everything but the
+  homepage was "vibe coded, boring, have no screen animations." The homepage already had a real motion
+  system from 2026-09-11 (`HeroPanel` — blueprint grid + ambient gold-particle canvas —, `.reveal`
+  scroll-triggered fade/blur-in with staggered `--d` delays, `.ruleline` underline draws, `.whycard`
+  hover lift, `.btn-primary`/`.btn-secondary`/`.linkarrow` gold CTAs, all in `globals.css` +
+  `src/components/motion/`); it just was never extended past the homepage. Applied that same shared
+  system — not bespoke animations per page — to every marketing/tool/utility page: `/about`, `/audit`,
+  `/contact`, `/pricing`, `/results`, `/markets`, `/playbook`, `/resources` (index + `[slug]`),
+  `/services/[slug]`, `/industries/[slug]`, `/start` + `/start/success`, both `/tools/*` pages, and
+  `/reports/[id]`. Legal pages (MSA, SOW, `/privacy`, `/terms`) got a header-only reveal — left the
+  dense contract body plain and unanimated on purpose, and skipped `/reports/[id]/proposal`'s
+  print-scoped body entirely (real risk of content printing mid-transition on a business-critical
+  document). Also upgraded the shared form inputs/buttons in `forms.tsx` (focus glow, hover-lift) since
+  every form on the site uses that one file.
+
+  **Centralized `RevealInit` into the root layout** (was previously mounted per-page, only on the
+  homepage) so every page gets the reveal system for free — but this created a real regression, caught
+  before shipping: Next's App Router keeps layouts mounted across client-side navigations, so a
+  mount-once `useEffect` (the original design, correct for a per-page mount) never re-fires when a user
+  reaches a page via a `<Link>` click instead of a full reload — its `.reveal` elements would sit at
+  `opacity:0` forever, invisible. Fixed by having `RevealInit` key off `usePathname()` and re-scan the
+  DOM on every route change. **If you ever see a page's content stuck invisible on this site, this is
+  the first thing to check** — verify `reveal-init.tsx` still has that pathname dependency.
+
+  Verified this wasn't just "compiles": ran a full production build (zero type errors, all 43 routes
+  generated), then ran the actual dev server and drove it with Claude in Chrome — confirmed the
+  particle/blueprint backdrop renders, confirmed reveal-on-scroll fires, and specifically tested a
+  client-side nav between two different pages (not just direct URL loads) to prove the pathname fix
+  actually works, since that's exactly the case that would have silently broken without it. Also
+  clicked through the interactive visibility-checker quiz end to end to confirm the progress bar and
+  step transitions still function.
   **Same-day follow-up:** user asked to (a) delete the CRM leads and (b) make the Command Center link
   fully self-sufficient for a fresh-PC setup. For (a), confirmed the GitHub repo is public
   (`private: false` via the GitHub API) — every file link on the dashboard already works with no auth
